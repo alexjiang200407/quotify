@@ -2,9 +2,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "watch": "vite build --watch",
-        "dev": "vite --host"
+        "vite": "node ./node_modules/vite/bin/vite.js",
+        "build": "node ./node_modules/vite/bin/vite.js build",
+        "watch": "node ./node_modules/vite/bin/vite.js build --watch",
+        "dev": "node ./node_modules/vite/bin/vite.js --host"
     },
     "devDependencies": {
         "@types/react": "^19.0.8",
