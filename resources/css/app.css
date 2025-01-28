@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .icon-pulse {
+    animation: pulse 0.5s ease forwards;
+  }
+  
+  .icon-inactive {
+    transition: color 0.3s ease; 
+  }
+  
