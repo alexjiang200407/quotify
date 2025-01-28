@@ -21,4 +21,9 @@
   .icon-inactive {
     transition: color 0.3s ease; 
   }
-  
+
+@font-face {
+  font-family: 'logo-font';
+  src: url(../fonts/logo-font.ttf) format("truetype");
+  size-adjust: 140%;
+}
