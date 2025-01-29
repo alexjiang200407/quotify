@@ -27,3 +27,9 @@
   src: url(../fonts/logo-font.ttf) format("truetype");
   size-adjust: 140%;
 }
+
+@font-face {
+  font-family: 'body-font';
+  src: url(../fonts/body-font.ttf) format("truetype");
+  size-adjust: 100%;
+}

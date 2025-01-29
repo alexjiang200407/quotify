@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link, { LinkProps } from "./Link";
-import { Stack } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom"
 import SearchBar from "./SearchBar";
 
@@ -16,16 +16,22 @@ export interface HeaderProps {
 const Logo = () => {
     return (
         <RouterLink to="/">
-            <Typography
-                variant="h3"
-                id="logo"
-                sx={{
-                    color: "red",
-                    fontFamily: "logo-font",
-                }}
-            >
-                Quotify
-            </Typography>
+            <Tooltip title="Go Home" placement="right" arrow>
+                <Typography
+                    variant="h3"
+                    id="logo"
+                    sx={{
+                        color: "primary.main",
+                        fontFamily: "logo-font",
+                        "&:hover": {
+                            color: "lightgrey",
+                        },
+                        transition: "all 0.2s ease-in"
+                    }}
+                >
+                    Quotify
+                </Typography>
+            </Tooltip>
         </RouterLink>
     );
 } 
