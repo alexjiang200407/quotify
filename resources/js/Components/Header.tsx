@@ -53,7 +53,7 @@ const Header = (props: HeaderProps) => {
 
     return (
         <AppBar
-            position="sticky"
+            position="fixed"
             sx={{
                 top: '0',
                 backgroundColor: "white",
