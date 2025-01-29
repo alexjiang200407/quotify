@@ -10,6 +10,13 @@ const defaultColorTheme = createTheme({
 
 export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme => {
     let theme = createTheme(colorTheme, {
+        typography: {
+            'body1': {
+                fontFamily: [
+                    `body-font`
+                ].join(", ")
+            }
+        },
         components: {
             MuiLink: {
                 styleOverrides: {
@@ -23,13 +30,6 @@ export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme
                         },
                     },
                 }
-            },
-            Typography: {
-                styleOverrides: {
-                    root: {
-                        color: "black",
-                    },
-                },
             },
         },
     });
