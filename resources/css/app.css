@@ -22,6 +22,39 @@
     transition: color 0.3s ease; 
   }
 
+  .animated-divider {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, black, transparent);
+    margin: 8px auto;
+    transform: scaleX(0);
+    transform-origin: center;
+    animation: growDivider 1s ease-out forwards;
+}
+
+@keyframes growDivider {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/* Optional: Add an ornament in the middle */
+.fancy-divider::after {
+    content: "✦";  /* Fancy Star Symbol */
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: black;
+}
+
+
+
 @font-face {
   font-family: 'logo-font';
   src: url(../fonts/logo-font.ttf) format("truetype");
