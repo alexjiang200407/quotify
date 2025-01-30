@@ -15,7 +15,7 @@ export interface HeaderProps {
 
 const Logo = () => {
     return (
-        <RouterLink to="/">
+        <RouterLink to="/spa/">
             <Tooltip title="Go Home" placement="right" arrow>
                 <Typography
                     variant="h3"
