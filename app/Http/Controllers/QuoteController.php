@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Dotenv\Exception\ValidationException;
 use Exception;
 use \Illuminate\Http\Request;
 

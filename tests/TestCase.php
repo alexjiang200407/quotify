@@ -24,4 +24,8 @@ abstract class TestCase extends BaseTestCase
         return $token;
     }
 
+    protected function make_auth_request_header(string $token): array {
+        return [ "Authorization" => "Bearer $token", "Accept" => "application/json" ];
+    }
+
 }

@@ -13,10 +13,6 @@ class UserController extends Controller
     }
 
     public function getUpvoted(Request $request) {
-
-    }
-
-    public function token() {
         
     }
 
@@ -47,7 +43,20 @@ class UserController extends Controller
         }
     }
 
-    public function authUser(Request $request) {
+    public function login(Request $request) {
+        $data = $this->validateRequest($request, [
+            "password" => "required|string|min:8|max:255",
+            "email" => "required|email"
+        ]);
 
+        if (!auth()->attempt(["email" => $data["email"], "password" => $data["password"]])) {
+            return abort(response()->json([
+                "email" => "Invalid email password compination"
+            ], 401));
+        }
+
+        $token = auth()->user()->createToken("AppUserToken")->plainTextToken;
+
+        return response()->json(["token" => $token]);
     }
 }
