@@ -13,23 +13,23 @@ const headerProps = {
     pages: [
         {
             label: "Home",
-            link: "/"
+            link: "/spa/"
         },
         {
             label: "Profile",
-            link: "/profile"
+            link: "/spa/profile"
         },
         {
             label: "Suggest",
-            link: "/suggest"
+            link: "/spa/suggest"
         },
         {
             label: "Explore",
-            link: "/explore"
+            link: "/spa/explore"
         },
         {
             label: "Login",
-            link: "/login"
+            link: "/spa/login"
         },
     ]
 }
@@ -38,14 +38,14 @@ const App = () => {
     return (
         <Routes>
             <Route
-                path="/"
+                path="/spa/"
                 element={<Master headerProps={headerProps} theme={createDefaultTheme()}/>}
             >
                 <Route index element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/suggest" element={<Suggest />} />
-                <Route path="/explore" element={<Explore />} />
+                <Route path="/spa/login" element={<Login />} />
+                <Route path="/spa/profile" element={<Profile />} />
+                <Route path="/spa/suggest" element={<Suggest />} />
+                <Route path="/spa/explore" element={<Explore />} />
             </Route>
         </Routes>
     );

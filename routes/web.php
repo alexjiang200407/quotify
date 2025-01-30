@@ -1,10 +1,11 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('/api', function () {
-});
+Route::get("/spa/",function () {
+    return view("welcome");
+});;
 
-Route::fallback(function () {
-    return view('welcome');
-});
+Route::redirect('/', '/spa/');
+
