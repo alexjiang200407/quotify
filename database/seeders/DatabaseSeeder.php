@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         Author::factory(10)->create();
         Tag::factory(10)->create();
         Quote::factory(100)->create();
+
+        User::create(["name" => "test", "password" => "password", "email" => "test@gmail.com"]);
     }
 }
