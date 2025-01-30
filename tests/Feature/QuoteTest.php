@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class QuoteTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
+    use DatabaseTransactions;
+
     public function test_quote_of_the_day(): void
     {
         $response = $this->get('/api/quote/daily');
@@ -34,4 +33,10 @@ class QuoteTest extends TestCase
         $response->assertUnauthorized();
     }
 
+    public function test_like_quote_quote_id_invalid(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->post('/api/quotes/like', ["quoteID" => "asd"], ["token" => $token]);
+        $response->assertBadRequest();
+    }
 }

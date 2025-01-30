@@ -14,6 +14,18 @@ Route::prefix("api/quotes")->controller(QuoteController::class)->group(function 
     Route::post("/unsave", "unsaveQuote");
 });
 
+Route::prefix("api/user")->controller(UserController::class)->group(function () {
+    Route::get("/{userID}/saved", "getSaved");
+    Route::get("/{userID}/upvoted", "getUpvoted");
+    Route::post("/register", action: "registerUser");
+    Route::post("/auth", "authUser");
+    Route::post("/token", "token");
+});
+
+// Route::prefix("api/search")->controller(SearchController::class)->group(function () {
+//     Route::get("/saved", "getSaved");
+// });
+
 Route::fallback(function () {
     return view("welcome");
 });
