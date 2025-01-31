@@ -53,7 +53,6 @@ class QuoteController extends Controller
 
             $quote->likes()
                 ->attach($user->id);
-            $quote->save();
 
         } catch (QueryException $e) {
 
@@ -70,7 +69,28 @@ class QuoteController extends Controller
     function unlikeQuote(Request $request) {
         $user = $this->getUser($request);
         $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
-        return "Unliking quote with {$data["quoteID"]}";
+
+        try {
+            
+            $quote = Quote::find($data["quoteID"]);
+
+            if (!$quote) {
+                return response()->json(['error' => "Quote with id {$data["quoteID"]} not found"], 400);
+            }
+
+            $likes = $quote->likes();
+
+            if (!$likes->where('user_id', $user->id)->exists()) {
+                return response()->json(["error" => "Cannot unlike a quote you haven't liked"], 400);
+            }
+
+            $likes->detach($user->id);
+
+        } catch (QueryException $e) {
+
+            return response()->json(["error" => $e->getMessage()], 400);
+
+        }
     }
 
     function saveQuote(Request $request) {

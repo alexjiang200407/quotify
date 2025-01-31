@@ -116,6 +116,54 @@ class QuoteTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_unlike_quote_unauthorized(): void
+    {
+        $response = $this->post('/api/quotes/unlike', ["quoteID" => "asd"], $this->make_auth_request_header("asd"));
+        $response->assertUnauthorized();
+    }
+
+    public function test_unlike_quote_quote_id_invalid(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->post('/api/quotes/unlike', ["quoteID" => "asd"], $this->make_auth_request_header($token));
+        $response->assertBadRequest();
+    }
+
+    public function test_unlike_quote_quote_id_doesnt_exist(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->post('/api/quotes/unlike', ["quoteID" => "10000000000"], $this->make_auth_request_header($token));
+        $response->assertBadRequest();
+    }
+
+    public function test_unlike_quote_success(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $likes = $response->json('upvotes');
+        $response->assertOk();
+        $response = $this->post('/api/quotes/like', ["quoteID" => 1], $this->make_auth_request_header($token));
+        $response->assertOk();
+        $response = $this->post('/api/quotes/unlike', ["quoteID" => 1], $this->make_auth_request_header($token));
+        $response->assertOk();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $this->assertEquals($likes, $response->json('upvotes'));
+        $response->assertOk();
+    }
+    
+    public function test_unlike_quote_not_liked(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $likes = $response->json('upvotes');
+        $response->assertOk();
+        $response = $this->post('/api/quotes/unlike', ["quoteID" => 1], $this->make_auth_request_header($token));
+        $response->assertBadRequest();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $this->assertEquals($likes, $response->json('upvotes'));
+        $response->assertOk();
+    }
+
     public function test_save_quote_unauthorized(): void
     {
         $response = $this->post('/api/quotes/save', ["quoteID" => "asd"], $this->make_auth_request_header("asd"));
