@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Quote;
 use DB;
-use Exception;
+use Illuminate\Database\QueryException;
 use \Illuminate\Http\Request;
 
 class QuoteController extends Controller
@@ -14,6 +14,7 @@ class QuoteController extends Controller
 
         $quote = Quote::where("quotes.id", "=", $data["quoteID"])
             ->with(['author', 'tags'])
+            ->withCount(['likes as upvotes', 'saves as saves'])
             ->get();
 
         if ($quote->isEmpty()) {
@@ -32,6 +33,7 @@ class QuoteController extends Controller
 
         $quote = Quote::where("quotes.id", "=", $daily[0]->quote_id)
             ->with(['author', 'tags'])
+            ->withCount(['likes as upvotes', 'saves as saves'])
             ->get();
 
         return response()->json($quote[0]);
