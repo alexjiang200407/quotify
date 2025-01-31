@@ -21,7 +21,10 @@ class QuoteController extends Controller
             return response()->json(["error" => "No daily quote"], 500);
         }
 
-        $quote = Quote::with("author")->where("quotes.id", "=", $daily[0]->quote_id)->get();
+        $quote = Quote::where("quotes.id", "=", $daily[0]->quote_id)
+            ->with(['author', 'tags'])
+            ->get();
+
         return response()->json($quote[0]);
     }
 

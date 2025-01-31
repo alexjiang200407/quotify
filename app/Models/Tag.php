@@ -11,4 +11,5 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable = ["label"];
+    protected $hidden = ['pivot', 'created_at', 'updated_at'];
 }
