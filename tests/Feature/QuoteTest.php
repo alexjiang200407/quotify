@@ -82,19 +82,19 @@ class QuoteTest extends TestCase
 
     public function test_get_quote_success(): void
     {
-        // TODO Ensure quote exists
-        $response = $this->get('/api/quotes/get?quoteID=5');
-        // TODO Check json response
+        $response = $this->get('/api/quotes/daily');
+        $exp = $response->json();
         $response->assertOk();
+        $id = $response->json('id');
+        $response = $this->get("/api/quotes/get?quoteID=$id");
+        $response->assertJsonFragment($exp);
     }
 
-    // TODO Check doesn't exist
-    // public function test_get_quote_does_not_exist(): void
-    // {
-    //     $response = $this->get('/api/quotes/get?quoteID=100000');
-    //     $response->assertBadRequest();
-    // }
-
+    public function test_get_quote_does_not_exist(): void
+    {
+        $response = $this->get('/api/quotes/get?quoteID=100000');
+        $response->assertBadRequest();
+    }
 
     public function test_like_quote_unauthorized(): void
     {

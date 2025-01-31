@@ -11,7 +11,16 @@ class QuoteController extends Controller
 {
     function getQuote(Request $request) {
         $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
-        return "Get quote with ID {$data["quoteID"]}";
+
+        $quote = Quote::where("quotes.id", "=", $data["quoteID"])
+            ->with(['author', 'tags'])
+            ->get();
+
+        if ($quote->isEmpty()) {
+            return response()->json(["error" => "No quote exists with id {$data["quoteID"]}"], 400);
+        }
+
+        return response()->json($quote[0]);
     }
 
     function getDaily() {
