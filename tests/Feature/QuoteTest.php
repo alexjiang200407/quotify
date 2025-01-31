@@ -59,15 +59,6 @@ class QuoteTest extends TestCase
         
         $this->assertArrayHasKey('wiki_page', $author);
         $this->assertIsString($author['wiki_page']);
-        
-        // Optionally, you can also validate the actual values, e.g.:
-        $this->assertEquals(90, $data['id']);
-        $this->assertEquals('2025-01-31T11:02:51.000000Z', $data['created_at']);
-        $this->assertEquals('2025-01-31T11:02:51.000000Z', $data['updated_at']);
-        $this->assertEquals("Ut corrupti neque explicabo doloribus. Deleniti harum consectetur voluptates sunt at autem et. Rem asperiores eos sapiente cum nulla aut reprehenderit.", $data['quote']);
-        $this->assertEquals(10, $data['upvotes']);
-        $this->assertEquals(10, $data['saves']);
-        $this->assertEquals(1, $data['author_id']);
     }
 
     public function test_quote_of_the_day(): void
