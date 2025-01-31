@@ -96,7 +96,29 @@ class QuoteController extends Controller
     function saveQuote(Request $request) {
         $user = $this->getUser($request);
         $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
-        return "Saving quote with {$data["quoteID"]}";
+
+        try {
+            
+            $quote = Quote::find($data["quoteID"]);
+
+            if (!$quote) {
+                return response()->json(['error' => "Quote with id {$data["quoteID"]} not found"], 400);
+            }
+
+            $quote->saves()
+                ->attach($user->id);
+
+        } catch (QueryException $e) {
+
+            $msg = $e->getMessage();
+            if ($e->getCode() == 23000) {
+                $msg = "Quote has already been saved";
+            }
+
+            return response()->json(["error" => $msg], 400);
+        
+        }
+
     }
 
     function unsaveQuote(Request $request) {
