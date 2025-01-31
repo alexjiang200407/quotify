@@ -42,7 +42,29 @@ class QuoteController extends Controller
     function likeQuote(Request $request) {
         $user = $this->getUser($request);
         $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
-        return "Liking quote with {$data["quoteID"]}";
+
+        try {
+            
+            $quote = Quote::find($data["quoteID"]);
+
+            if (!$quote) {
+                return response()->json(['error' => "Quote with id {$data["quoteID"]} not found"], 400);
+            }
+
+            $quote->likes()
+                ->attach($user->id);
+            $quote->save();
+
+        } catch (QueryException $e) {
+
+            $msg = $e->getMessage();
+            if ($e->getCode() == 23000) {
+                $msg = "Quote has already been liked";
+            }
+
+            return response()->json(["error" => $msg], 400);
+        
+        }
     }
 
     function unlikeQuote(Request $request) {
