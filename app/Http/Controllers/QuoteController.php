@@ -124,6 +124,27 @@ class QuoteController extends Controller
     function unsaveQuote(Request $request) {
         $user = $this->getUser($request);
         $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
-        return "Unsaving quote with {$data["quoteID"]}";
+
+        try {
+            
+            $quote = Quote::find($data["quoteID"]);
+
+            if (!$quote) {
+                return response()->json(['error' => "Quote with id {$data["quoteID"]} not found"], 400);
+            }
+
+            $saves = $quote->saves();
+
+            if (!$saves->where('user_id', $user->id)->exists()) {
+                return response()->json(["error" => "Cannot unsave a quote you haven't saved"], 400);
+            }
+
+            $saves->detach($user->id);
+
+        } catch (QueryException $e) {
+
+            return response()->json(["error" => $e->getMessage()], 400);
+
+        }
     }
 }
