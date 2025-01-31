@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function make_user_helper(string $email = "test@gmail.com", string $username = "abcde", string $password = "password"): string {
+    protected function make_user_helper(string $email = "testingabcassd@gmail.com", string $username = "abcde", string $password = "password"): string {
         $this->assertTrue(true);
         $response = $this->post("/api/user/register", [
             "username" => $username,
