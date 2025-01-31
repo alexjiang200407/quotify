@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quote;
+use DB;
 use Exception;
 use \Illuminate\Http\Request;
 
@@ -13,7 +15,14 @@ class QuoteController extends Controller
     }
 
     function getDaily() {
-        return "Daily Quote";
+        $daily = DB::select("SELECT quote_id from daily_quote");
+        
+        if (!$daily || !property_exists($daily[0], 'quote_id')) {
+            return response()->json(["error" => "No daily quote"], 500);
+        }
+
+        $quote = Quote::with("author")->where("quotes.id", "=", $daily[0]->quote_id)->get();
+        return response()->json($quote[0]);
     }
 
     function likeQuote(Request $request) {

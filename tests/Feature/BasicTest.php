@@ -12,7 +12,7 @@ class BasicTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/spa');
+        $response = $this->get('/spa/home');
 
         $response->assertStatus(200);
     }
