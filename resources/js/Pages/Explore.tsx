@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Box, Typography, keyframes } from "@mui/material";
+import { 
+  Box, 
+  keyframes, 
+} from "@mui/material";
 import { CompactCard } from "../Components/CompactQuoteCard";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes} from "@fortawesome/free-solid-svg-icons";
 import { ExpandedQuoteCard } from "../Components/ExpandedQuoteCard";
 import { Quote } from "../../types/types"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PaginationSystem } from "../Components/PaginationSystem";
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -34,7 +38,7 @@ const quotes: Quote[] = [
   },
   {
     id: 2,
-    quote: "The only thing we have to fear is fear itself—a nameless, unreasoning, unjustified terror which paralyzes needed efforts to convert retreat into advance. In every dark hour of our national life, leadership has met with that refusal to panic, and with courage, we shall endure.",
+    quote: "The only thing we have to fear is fear itself—\na nameless, unreasoning, unjustified terror\n which paralyzes needed efforts to convert retreat into advance.\n In every dark hour of our national life,\n leadership has met with that refusal to panic,\n and with courage, we shall endure.",
     author: {
       id: 2,
       fullName: "Franklin D. Roosevelt",
@@ -97,9 +101,15 @@ const quotes: Quote[] = [
     saves: 90
   }
 ];
+
+
 const Explore = () => {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(quotes.length / itemsPerPage);  
 
   const handleCardClick = (index: number) => {
     setSelectedQuoteIndex(index);
@@ -114,11 +124,10 @@ const Explore = () => {
     }, 300);
   };
 
+  
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "120px", padding: 2 }}>
-      <Typography variant="h5" sx={{ marginBottom: 2 }}>
-        Explore Quotes
-      </Typography>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "200px", padding: 2 }}>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "90%" }}>
         {quotes.map((quote, index) => (
@@ -164,13 +173,17 @@ const Explore = () => {
             <FontAwesomeIcon icon={faTimes} size="lg" />
           </Box>
 
-
-
           <ExpandedQuoteCard
             quote={quotes[selectedQuoteIndex]}
           />
         </Box>
       )}
+
+      <PaginationSystem
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </Box>
   );
 };
