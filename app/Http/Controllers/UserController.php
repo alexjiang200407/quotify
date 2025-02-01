@@ -5,6 +5,7 @@ use App\Models\User;
 use Exception;
 use Hash;
 use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 { 
@@ -20,19 +21,20 @@ class UserController extends Controller
         $data = $this->validateRequest($request, [
             "username" => "required|string|max:255|min:5",
             "password" => "required|string|min:8|max:255",
-            "email" => "required|email"
+            "email" => "required|email|unique:users"
         ]);
         
-        $user = new User();
-        $user->name = $data["username"];
-        $user->password = Hash::make($data["password"]);
-        $user->email = $data["email"];
-        
+        $user = User::create([
+            'name' => $data["username"],
+            'email' => $data["email"],
+            'password' => Hash::make($data["password"]),
+        ]);
+
         try {
             
+            // $token = $user->createToken("AppUserToken");
             $user->save();
-            $token = $user->createToken("AppUserToken");
-            return response()->json(["token" => $token->plainTextToken]);
+            return;
 
         } catch (Exception $e) {
             
@@ -44,19 +46,24 @@ class UserController extends Controller
     }
 
     public function login(Request $request) {
-        $data = $this->validateRequest($request, [
+        $this->validateRequest($request, [
             "password" => "required|string|min:8|max:255",
             "email" => "required|email"
         ]);
+        
+        $user = User::where('email', $request->email)->first();
 
-        if (!auth()->attempt(["email" => $data["email"], "password" => $data["password"]])) {
-            return abort(response()->json([
-                "email" => "Invalid email password compination"
-            ], 401));
+        if (!$user || !Hash::check($request->password, $user->password)) {
+           return response('Email password combination is incorrect, try again', 401);
         }
-
-        $token = auth()->user()->createToken("AppUserToken")->plainTextToken;
-
+        Auth::login($user);
+        $token = $user->createToken("AppUserToken")->plainTextToken;
         return response()->json(["token" => $token]);
+    }
+
+
+    public function logout()
+    {
+        Auth::logout();
     }
 }

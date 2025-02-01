@@ -8,4 +8,3 @@ Route::get("/spa/{any}",function () {
 });;
 
 Route::redirect('/', '/spa/');
-

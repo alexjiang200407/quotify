@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -60,6 +61,17 @@ class UserTest extends TestCase
             "email" => "abcde@gmail.com",
         ]);
     }
+
+    public function test_multiple_user_data(): void
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $response = $this->actingAs($user1)->get('api/user');
+        $json1 = $response->json();
+        $response = $this->actingAs($user2)->get('api/user');
+        $this->assertNotEquals($response->json(), $json1);
+    }
+
 
 
     public function test_user_login_success(): void
@@ -120,7 +132,6 @@ class UserTest extends TestCase
 
     public function test_user_get_liked_unauthorized(): void
     {
-        $token = $this->make_user_helper();
         $response = $this->get("/api/user/upvoted", headers: $this->make_auth_request_header("abcd"));
         $response->assertUnauthorized();
     }

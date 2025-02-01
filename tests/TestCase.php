@@ -7,13 +7,21 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     protected function make_user_helper(string $email = "testingabcassd@gmail.com", string $username = "abcde", string $password = "password"): string {
-        $this->assertTrue(true);
         $response = $this->post("/api/user/register", [
             "username" => $username,
             "password" => $password,
             "email" => $email
         ]);
         $response->assertOk();
+        
+        $response = $this->post("/api/login", [
+            "email" => $email,
+            "password" => $password,
+        ]);
+        // $response->assertStatus(302);
+        // $response = $this->followRedirects($response);
+        $response->assertOk();
+
         $response->assertJsonIsObject();
         $response->assertJsonStructure([
             "token"
@@ -25,7 +33,12 @@ abstract class TestCase extends BaseTestCase
     }
 
     protected function make_auth_request_header(string $token): array {
-        return [ "Authorization" => "Bearer $token", "Accept" => "application/json" ];
+        return [
+            "Authorization" => "Bearer $token",
+            "Accept" => "application/json",
+            "access-control-allow-origin" => "*",
+            "cache-control" => "no-cache, private",
+        ];
     }
 
 }

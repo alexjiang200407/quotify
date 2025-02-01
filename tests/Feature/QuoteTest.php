@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use function PHPUnit\Framework\assertEquals;
 
 class QuoteTest extends TestCase
 {
@@ -150,6 +152,33 @@ class QuoteTest extends TestCase
         $this->assertEquals($likes, $response->json('upvotes'));
         $response->assertOk();
     }
+
+    public function test_like_quote_different(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $likes = $response->json('likes');
+        $response->assertOk();
+        $response = $this->post('/api/quotes/like', ["quoteID" => 2], $this->make_auth_request_header($token));
+        $response->assertOk();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $this->assertEquals($likes, $response->json('likes'));
+        $response->assertOk();
+    }
+
+    public function test_like_quote_multiple_users(): void
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $response = $this->get("api/quotes/get?quoteID=1");
+        $likes = $response->json('upvotes');
+
+        $this->actingAs($user1)->post('api/quotes/like', ["quoteID" => 1])->assertOk();
+        $this->actingAs($user2)->post('api/quotes/like', ["quoteID" => 1])->assertOk();
+
+        $response = $this->get("api/quotes/get?quoteID=1");
+        assertEquals($likes + 2, $response->json('upvotes'));
+    }
     
     public function test_unlike_quote_not_liked(): void
     {
@@ -196,7 +225,34 @@ class QuoteTest extends TestCase
         $this->assertEquals($saves + 1, $response->json('saves'));
         $response->assertOk();
     }
+
+    public function test_save_quote_different(): void
+    {
+        $token = $this->make_user_helper();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $saves = $response->json('saves');
+        $response->assertOk();
+        $response = $this->post('/api/quotes/save', ["quoteID" => 2], $this->make_auth_request_header($token));
+        $response->assertOk();
+        $response = $this->get('/api/quotes/get?quoteID=1', $this->make_auth_request_header($token));
+        $this->assertEquals($saves, $response->json('saves'));
+        $response->assertOk();
+    }
     
+    public function test_save_quote_multiple_users(): void
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $response = $this->get("api/quotes/get?quoteID=1");
+        $saves = $response->json('saves');
+
+        $this->actingAs($user1)->post('api/quotes/save', ["quoteID" => 1])->assertOk();
+        $this->actingAs($user2)->post('api/quotes/save', ["quoteID" => 1])->assertOk();
+
+        $response = $this->get("api/quotes/get?quoteID=1");
+        assertEquals($saves + 2, $response->json('saves'));
+    }
+
     public function test_save_quote_already_saved(): void
     {
         $token = $this->make_user_helper();
