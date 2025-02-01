@@ -21,12 +21,8 @@ class QuoteFactory extends Factory
      */
     public function definition(): array
     {
-        $upvotes = $this->faker->numberBetween(0, min(10, User::count()));
-        $saves = $this->faker->numberBetween(0, min(10, User::count()));
         return [
             "quote" => $this->faker->sentences(asText: true),
-            "upvotes" => $upvotes,
-            "saves" => $saves,
             "author_id" => Author::inRandomOrder()->first()
         ];
     }
@@ -42,9 +38,12 @@ class QuoteFactory extends Factory
                     "tag_id" => $tag,
                 ]);
             }
+            
+            $upvotes = $this->faker->numberBetween(0, min(10, User::count()));
+            $saves = $this->faker->numberBetween(0, min(10, User::count()));
 
-            $userLikes = User::inRandomOrder()->take($quote->getAttribute("upvotes"))->pluck("id");
-            $userSaves = User::inRandomOrder()->take($quote->getAttribute("saves"))->pluck("id");
+            $userLikes = User::inRandomOrder()->take($upvotes)->pluck("id");
+            $userSaves = User::inRandomOrder()->take($saves)->pluck("id");
 
             foreach ($userLikes as $userID) {
                 DB::table("quote_likes")->insert([

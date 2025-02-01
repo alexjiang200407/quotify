@@ -11,6 +11,7 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = ["full_name", "description", "wiki_page"];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function quotes()
     {

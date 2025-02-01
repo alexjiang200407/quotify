@@ -8,4 +8,3 @@ Route::any("/spa/{any?}",function () {
 })->where('any', '.*');
 
 Route::redirect('/', '/spa/');
-
