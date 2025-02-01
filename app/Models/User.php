@@ -46,4 +46,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function likes() {
+        return $this->belongsToMany(Quote::class, 'quote_likes');
+    }
+
+    public function saves() {
+        return $this->belongsToMany(Quote::class, 'quote_saves');
+    }
 }

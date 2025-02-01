@@ -5,6 +5,7 @@ namespace Tests\Feature;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -93,6 +94,35 @@ class UserTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_user_login_removes_old_token(): void
+    {
+        $this->markTestSkipped('Not possible to test due to sanctum testing limitations. 🖕🖕🖕 FUCK U Laravel Sanctum');
+        
+        $user = User::factory()->create(["password" => "password"]);
+        
+        $response = $this->postJson('/api/login', [
+            "email" => $user->email, "password" => "password"
+        ]);
+        
+        $response->assertOk();
+        $token1 = $response->json('token');
+        
+        $token2 = $this->postJson('/api/login', [
+            "email" => $user->email, "password" => "password"
+            ])->assertOk()->json('token');
+            
+        $this->assertNotEquals($token1, $token2);
+            
+        
+        // Sanctum::actingAs($user);
+        $this->getJson("/api/user", $this->make_auth_request_header($token1))
+        ->assertUnauthorized();
+        
+        $response = $this->getJson("/api/user", $this->make_auth_request_header($token2))
+        ->assertOk();
+        
+    }
+
 
     public function test_user_login_failure(): void
     {
@@ -108,12 +138,78 @@ class UserTest extends TestCase
 
     public function test_user_get_saved(): void
     {
-        $token = $this->make_user_helper();
-        $response = $this->get("/api/user/saved", headers: $this->make_auth_request_header($token));
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->getJson("api/user/saved");
         
-        // TODO Check saved format
         $response->assertOk();
+        $response->assertJsonIsArray();
+        $response->assertJsonFragment([]);
+        
+        $response = $this->postJson("api/quotes/save?quoteID=1");
+        $response->assertOk();
+        $response = $this->getJson("api/user/saved");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(1);
+        
+        $response = $this->postJson("api/quotes/save?quoteID=2");
+        $response->assertOk();
+        $response = $this->getJson("api/user/saved");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(2);
+        
+        $response = $this->postJson("api/quotes/save?quoteID=3");
+        $response->assertOk();
+        $response = $this->getJson("api/user/saved");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(3);
+
+        $response = $this->postJson("api/quotes/save?quoteID=4");
+        $response->assertOk();
+        $response = $this->getJson("api/user/saved");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(4);
     }
+
+
+    public function test_user_get_saved_multiple_users(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+        
+        $response = $this->postJson("api/quotes/save?quoteID=1");
+        $response->assertOk();
+
+        Sanctum::actingAs(User::factory()->create());
+        $response = $this->getJson("api/user/saved");
+        $response->assertOk();
+        $response->assertJsonCount(0);
+    }
+
 
     public function test_user_get_saved_unauthorized(): void
     {
@@ -123,16 +219,80 @@ class UserTest extends TestCase
 
     public function test_user_get_liked(): void
     {
-        $token = $this->make_user_helper();
-        $response = $this->get("/api/user/upvoted", headers: $this->make_auth_request_header($token));
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->getJson("api/user/upvoted");
         
-        // TODO Check liked format
         $response->assertOk();
+        $response->assertJsonIsArray();
+        $response->assertJsonFragment([]);
+        
+        $response = $this->postJson("api/quotes/like?quoteID=1");
+        $response->assertOk();
+        $response = $this->getJson("api/user/upvoted");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(1);
+        
+        $response = $this->postJson("api/quotes/like?quoteID=2");
+        $response->assertOk();
+        $response = $this->getJson("api/user/upvoted");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(2);
+        
+        $response = $this->postJson("api/quotes/like?quoteID=3");
+        $response->assertOk();
+        $response = $this->getJson("api/user/upvoted");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(3);
+
+        $response = $this->postJson("api/quotes/like?quoteID=4");
+        $response->assertOk();
+        $response = $this->getJson("api/user/upvoted");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'quote',
+            ],
+        ]);
+        $response->assertJsonCount(4);
     }
 
     public function test_user_get_liked_unauthorized(): void
     {
         $response = $this->get("/api/user/upvoted", headers: $this->make_auth_request_header("abcd"));
         $response->assertUnauthorized();
+    }
+
+    public function test_user_get_liked_multiple_users(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+        
+        $response = $this->postJson("api/quotes/like?quoteID=1");
+        $response->assertOk();
+
+        Sanctum::actingAs(User::factory()->create());
+        $response = $this->getJson("api/user/upvoted");
+        $response->assertOk();
+        $response->assertJsonCount(0);
     }
 }

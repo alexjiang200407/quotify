@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 { 
     public function getSaved(Request $request) {
-
+        $user = $this->getUser($request);
+        return response()->json($user->saves()->get());
     }
 
     public function getUpvoted(Request $request) {
-        
+        $user = $this->getUser($request);
+        return response()->json($user->likes()->get());
     }
 
     public function registerUser(Request $request) {
@@ -32,7 +34,6 @@ class UserController extends Controller
 
         try {
             
-            // $token = $user->createToken("AppUserToken");
             $user->save();
             return;
 
@@ -52,18 +53,19 @@ class UserController extends Controller
         ]);
         
         $user = User::where('email', $request->email)->first();
-
+        
         if (!$user || !Hash::check($request->password, $user->password)) {
-           return response('Email password combination is incorrect, try again', 401);
+            return response('Email password combination is incorrect, try again', 401);
         }
+        
+        $user->tokens()->delete();
         Auth::login($user);
         $token = $user->createToken("AppUserToken")->plainTextToken;
         return response()->json(["token" => $token]);
     }
 
 
-    public function logout()
-    {
-        Auth::logout();
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
     }
 }

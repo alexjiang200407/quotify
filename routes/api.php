@@ -3,10 +3,9 @@
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post("login", [UserController::class, "login"]);
+Route::post("login", [UserController::class, "login"]); //->middleware('guest:sanctum');
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -16,7 +15,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/quotes/unsave", [QuoteController::class, "unsaveQuote"]);
     Route::get("/user/saved", [UserController::class, "getSaved"]);
     Route::get("/user/upvoted", [UserController::class, "getUpvoted"]);
-    Route::get("/logout", [UserController::class, "logout"]);
+    Route::post("/logout", [UserController::class, "logout"]);
     Route::get("/user", [UserController::class, "getUser"]);
 });
 
