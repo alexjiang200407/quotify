@@ -18,6 +18,18 @@
     animation: pulse 0.5s ease forwards;
   }
   
+  .expanded-view {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
   .icon-inactive {
     transition: color 0.3s ease; 
   }

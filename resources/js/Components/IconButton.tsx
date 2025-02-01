@@ -1,3 +1,4 @@
+// IconButton.tsx
 import React, { useState } from 'react';
 import { IconButton as MuiIconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +9,7 @@ interface IconButtonProps {
     solidIcon: IconProp;
     activeColor?: string;
     defaultColor?: string;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -15,38 +17,31 @@ export const IconButton: React.FC<IconButtonProps> = ({
     solidIcon,
     activeColor = 'red',
     defaultColor = 'black',
+    onClick
 }) => {
     const [isActive, setIsActive] = useState(false);
 
-
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         setIsActive((prev) => !prev);
+        onClick?.(e);
     }
 
-    return <MuiIconButton
-        sx={{
-            backgroundColor: 'transparent',
-            '&:hover': {
+    return (
+        <MuiIconButton
+            sx={{
                 backgroundColor: 'transparent',
-            },
-            '&:active': {
-                backgroundColor: 'transparent',
-            },
-            '&:focus': {
-                backgroundColor: 'transparent',
-            },
-
-        }}
-
-        onClick={handleClick}
-
-    >
-        <FontAwesomeIcon
-            icon={isActive ? solidIcon : icon}
-            style={{
-                color: isActive ? activeColor : defaultColor, // Apply active color
+                '&:hover': { backgroundColor: 'transparent' },
+                '&:active': { backgroundColor: 'transparent' },
+                '&:focus': { backgroundColor: 'transparent' },
             }}
-            className={`${isActive ? 'icon-pulse' : ''} icon-inactive`} // Add the pulse effect class
-        />
-    </MuiIconButton>;
+            onClick={handleClick}
+        >
+            <FontAwesomeIcon
+                icon={isActive ? solidIcon : icon}
+                style={{ color: isActive ? activeColor : defaultColor }}
+                className={`${isActive ? 'icon-pulse' : ''} icon-inactive`}
+            />
+        </MuiIconButton>
+    );
 };
