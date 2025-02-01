@@ -3,10 +3,9 @@
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post("login", [UserController::class, "login"])->middleware('guest:sanctum');
+Route::post("login", [UserController::class, "login"]); //->middleware('guest:sanctum');
 
 
 Route::middleware('auth:sanctum')->group(function () {
