@@ -22,13 +22,14 @@ abstract class Controller
         }
     }
 
-    protected function getUser(Request $request) {
-        $user = $request->user();
-        if ($user) {
+    public function getUser(Request $request) {
+        try {
+            $user = $request->user();
             return $user;
+        } catch (Exception $e) {
+            abort(response()->json([
+                'errors' => "Unauthorized user",
+            ], 401));
         }
-        abort(response()->json([
-            'errors' => "Unauthorized user",
-        ], 401));        
     }
 }

@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->text("quote");
-            $table->unsignedInteger("upvotes");
-            $table->unsignedInteger("saves");
             $table->foreignId("author_id");
             
             $table->foreign("author_id")
