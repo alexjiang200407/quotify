@@ -1,4 +1,4 @@
-import { AxiosError } from "axios"
+import type { AxiosError } from 'axios'
 
 export interface Author {
   id: number
@@ -27,6 +27,4 @@ export interface AuthToken {
   token: string
 }
 
-
-export type QuotifyAPIError = AxiosError<HTTPErrorResponse>;
-
+export type QuotifyAPIError = AxiosError<HTTPErrorResponse>

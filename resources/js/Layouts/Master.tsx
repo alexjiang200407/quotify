@@ -1,4 +1,4 @@
-import { type Theme } from '@mui/material'
+import type { Theme } from '@mui/material'
 
 import type { HeaderProps } from '../Components/Header'
 
@@ -18,13 +18,13 @@ function Master(props: MasterProps) {
     <div>
       <ThemeProvider theme={props.theme}>
         <Header {...props.headerProps} />
-          <main>
-            <NotificationProvider>
+        <main>
+          <NotificationProvider>
             <section>
               <Outlet />
             </section>
-            </NotificationProvider>
-          </main>
+          </NotificationProvider>
+        </main>
       </ThemeProvider>
     </div>
   )

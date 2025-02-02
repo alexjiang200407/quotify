@@ -4,7 +4,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -15,20 +14,20 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import axios from 'axios'
 import React, { useState } from 'react'
-import { loginUser } from '../Datastore/authSlice';
-import { useAppDispatch } from '../Datastore/hooks';
-import { useNotification } from '../Components/NotificationProvider';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+import { useNotification } from '../Components/NotificationProvider'
+import { loginUser } from '../Datastore/authSlice'
+import { useAppDispatch } from '../Datastore/hooks'
 
 function AuthPage() {
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const dispatch = useAppDispatch();
-  const {handleHttpError, addNotification} = useNotification();
-  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const dispatch = useAppDispatch()
+  const { handleHttpError, addNotification } = useNotification()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -40,26 +39,37 @@ function AuthPage() {
     setActiveTab(newValue)
   }
 
+  const login = () => {
+    dispatch(loginUser(formData.email, formData.password))
+    .then(() => {
+      navigate('/spa'); 
+      addNotification({ label: 'Logged in successfully', alert: 'success' })
+    })
+    .catch(e => handleHttpError(e))
+  }
+
+  const register = () => {
+    if (formData.password !== formData.confirmPassword) {
+      addNotification({ label: 'Passwords does not match', alert: 'error' })
+    }
+    else {
+      axios.post('/api/user/register', {
+        email: formData.email,
+        username: formData.name,
+        password: formData.password,
+      })
+        .then(() => addNotification({ label: 'Registration successful please login', alert: 'success' }))
+        .catch(e => handleHttpError(e))
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (activeTab === 0) {
-      // console.log('Logging in:', { email: formData.email, password: formData.password })
-      dispatch(loginUser(formData.email, formData.password))
-      .then(() => { navigate('/spa'); addNotification({label: 'Logged in successfully', alert: 'success'}) })
-      .catch((e) => handleHttpError(e))
+      login()
     }
     else {
-      if (formData.password !== formData.confirmPassword) {
-        addNotification({label: 'Passwords does not match', alert: 'error'})
-      } else {
-        axios.post('/api/user/register', {
-          email: formData.email,
-          username: formData.name,
-          password: formData.password
-        })
-        .then(() => addNotification({label: 'Registration successful please login', alert: 'success'}))
-        .catch((e) => handleHttpError(e))
-      }
+      register()
     }
   }
 
@@ -116,33 +126,27 @@ function AuthPage() {
             )}
           </Box>
 
-          {/* {activeTab === 0 && (
-            <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
-              <FormControlLabel control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />} label="Remember me" />
-            </Box>
-          )} */}
-
           <Button fullWidth variant="contained" size="large" type="submit">
             {activeTab === 0 ? 'Sign In' : 'Create Account'}
           </Button>
         </form>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          {activeTab === 0
-            ? (
-                <>
-                  Don't have an account?
-                  {' '}
-                  <Button onClick={() => setActiveTab(1)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign up</Button>
-                </>
-              )
-            : (
-                <>
-                  Already have an account?
-                  {' '}
-                  <Button onClick={() => setActiveTab(0)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign in</Button>
-                </>
-              )}
+        {activeTab === 0
+          ? (
+              <>
+                Don't have an account?
+                {' '}
+                <Button onClick={() => setActiveTab(1)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign up</Button>
+              </>
+            )
+          : (
+              <>
+                Already have an account?
+                {' '}
+                <Button onClick={() => setActiveTab(0)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign in</Button>
+              </>
+            )}
         </Typography>
       </Card>
     </Box>

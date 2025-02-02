@@ -36,11 +36,13 @@ const authSlice = createSlice({
 export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
 export default authSlice.reducer
 
-export const loginUser = (email: string, password: string) =>  async (dispatch: Dispatch) => {
-  dispatch(loginStart())
-  const response = await axios.post('/api/login', {
-    email,
-    password,
-  })
-  dispatch(loginSuccess(response.data.token))
+export function loginUser(email: string, password: string) {
+  return async (dispatch: Dispatch) => {
+    dispatch(loginStart())
+    const response = await axios.post('/api/login', {
+      email,
+      password,
+    })
+    dispatch(loginSuccess(response.data.token))
+  }
 }
