@@ -30,7 +30,7 @@ function NotificationProvider({ children }: NotificationProviderProps) {
   }
 
   const handleHttpError = (err: Error) => {
-    if (axios.isAxiosError(err) && err.status != 500 && err.response) {
+    if (axios.isAxiosError(err) && err.status !== 500 && err.response) {
       addNotification({ label: err.response.data.error, alert: 'error' })
       return
     }

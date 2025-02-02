@@ -5,7 +5,7 @@ import axios from 'axios'
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    token: null,
+    token: localStorage.getItem('token'),
     isAuthenticated: false,
     loading: false,
     error: null,

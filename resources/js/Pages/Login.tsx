@@ -41,11 +41,11 @@ function AuthPage() {
 
   const login = () => {
     dispatch(loginUser(formData.email, formData.password))
-    .then(() => {
-      navigate('/spa'); 
-      addNotification({ label: 'Logged in successfully', alert: 'success' })
-    })
-    .catch(e => handleHttpError(e))
+      .then(() => {
+        navigate('/spa')
+        addNotification({ label: 'Logged in successfully', alert: 'success' })
+      })
+      .catch(e => handleHttpError(e))
   }
 
   const register = () => {
@@ -132,21 +132,21 @@ function AuthPage() {
         </form>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-        {activeTab === 0
-          ? (
-              <>
-                Don't have an account?
-                {' '}
-                <Button onClick={() => setActiveTab(1)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign up</Button>
-              </>
-            )
-          : (
-              <>
-                Already have an account?
-                {' '}
-                <Button onClick={() => setActiveTab(0)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign in</Button>
-              </>
-            )}
+          {activeTab === 0
+            ? (
+                <>
+                  Don't have an account?
+                  {' '}
+                  <Button onClick={() => setActiveTab(1)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign up</Button>
+                </>
+              )
+            : (
+                <>
+                  Already have an account?
+                  {' '}
+                  <Button onClick={() => setActiveTab(0)} sx={{ textTransform: 'none', fontWeight: 500 }}>Sign in</Button>
+                </>
+              )}
         </Typography>
       </Card>
     </Box>
