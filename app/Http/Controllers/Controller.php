@@ -17,7 +17,7 @@ abstract class Controller
         }
         catch (Exception $e) {
             abort(response()->json([
-                'errors' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 400));
         }
     }
@@ -28,7 +28,7 @@ abstract class Controller
             return $user;
         } catch (Exception $e) {
             abort(response()->json([
-                'errors' => "Unauthorized user",
+                'error' => "Unauthorized user",
             ], 401));
         }
     }

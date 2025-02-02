@@ -40,7 +40,7 @@ class UserController extends Controller
         } catch (Exception $e) {
             
             return response()->json([
-                'errors' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 400);
         
         }
@@ -55,7 +55,7 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->first();
         
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response('Email password combination is incorrect, try again', 401);
+            return response()->json(['error' => 'Email password combination is incorrect, try again'], 401);
         }
         
         $user->tokens()->delete();
