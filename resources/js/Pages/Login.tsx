@@ -21,7 +21,7 @@ const AuthPage = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -79,11 +79,11 @@ const AuthPage = () => {
             )}
           </Box>
 
-          {activeTab === 0 && (
+          {/* {activeTab === 0 && (
             <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
               <FormControlLabel control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />} label="Remember me" />
             </Box>
-          )}
+          )} */}
 
           <Button fullWidth variant="contained" size="large" type="submit">
             {activeTab === 0 ? "Sign In" : "Create Account"}
