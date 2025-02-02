@@ -4,6 +4,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -15,12 +16,18 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
+import { loginUser } from '../Datastore/authSlice';
+import { useAppDispatch } from '../Datastore/hooks';
+import { useNotification } from '../Components/NotificationProvider';
+import { useNavigate } from 'react-router-dom';
 
 function AuthPage() {
-  const [activeTab, setActiveTab] = useState<number>(0)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  // const [rememberMe, setRememberMe] = useState(false);
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const {handleHttpError} = useNotification();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -36,12 +43,13 @@ function AuthPage() {
     e.preventDefault()
     if (activeTab === 0) {
       // console.log('Logging in:', { email: formData.email, password: formData.password })
+      dispatch(loginUser(formData.email, formData.password))
+      .then(() => navigate('/spa'))
+      .catch((e) => handleHttpError(e))
     }
     else {
       if (formData.password !== formData.confirmPassword) {
-        // alert('Passwords don\'t match!')
       }
-      // console.log('Signing up:', formData)
     }
   }
 
