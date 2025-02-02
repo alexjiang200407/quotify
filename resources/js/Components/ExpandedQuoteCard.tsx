@@ -22,7 +22,6 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
 }) => {
     return (
         <Box sx={{ display: "flex", flexDirection: isMobile ? "row" : "column", width: "100%", margin: "auto", justifyContent: "center", alignItems: "center" }}>
-            {/* Icons Box */}
             <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 1, alignItems: "center" }}>
                 <IconButton icon={regularHeart} solidIcon={solidHeart} activeColor="red" defaultColor="black" />
                 <Typography variant="caption">{quote.upvotes}</Typography>

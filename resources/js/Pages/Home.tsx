@@ -1,8 +1,5 @@
 import React from "react";
 import { Box, Typography, Card, CardContent, Chip, Divider } from "@mui/material";
-import { faHeart as solidHeart, faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as regularHeart, faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
-import { IconButton } from "../Components/IconButton";
 import { ExpandedQuoteCard } from "../Components/ExpandedQuoteCard";
 
 const Home = () => {
