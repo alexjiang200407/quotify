@@ -24,5 +24,6 @@ Route::get("/quotes/get", [QuoteController::class, "getQuote"]);
 Route::post("/user/register", [UserController::class, "registerUser"]);
 
 
-Route::get("/search", [SearchController::class, "search"]);
+Route::get("/search/quotes", [SearchController::class, "searchQuotes"]);
+Route::get("/search/authors", [SearchController::class, "searchAuthors"]);
 
