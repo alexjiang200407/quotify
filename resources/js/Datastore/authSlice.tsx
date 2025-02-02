@@ -1,0 +1,58 @@
+import type { Dispatch } from '@reduxjs/toolkit'
+import type { AxiosError } from 'axios'
+import type { HTTPErrorResponse } from '../types/httpResponseTypes'
+import { createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    token: null,
+    isAuthenticated: false,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    loginStart: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    loginSuccess: (state, action) => {
+      state.token = action.payload
+      state.isAuthenticated = true
+      state.loading = false
+      localStorage.setItem('token', action.payload)
+    },
+    loginFailure: (state, action) => {
+      state.loading = false
+      state.error = action.payload
+    },
+    logout: (state) => {
+      state.token = null
+      state.isAuthenticated = false
+      localStorage.removeItem('token')
+    },
+  },
+})
+
+export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
+export default authSlice.reducer
+
+export function loginUser(username: string, password: string) {
+  return async (dispatch: Dispatch) => {
+    dispatch(loginStart())
+    try {
+      const response = await axios.post('/api/login', {
+        username,
+        password,
+      })
+      dispatch(loginSuccess(response.data.token))
+    }
+    catch (error) {
+      const axiosError = error as AxiosError <HTTPErrorResponse>
+      if (axiosError.response) {
+        dispatch(loginFailure(axiosError.response?.data?.error || 'Login failed'))
+      }
+    }
+  }
+}

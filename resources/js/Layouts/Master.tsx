@@ -1,29 +1,30 @@
-import React from "react";
+import type { Theme } from '@mui/material'
 
-import { Outlet } from "react-router-dom";
+import type { HeaderProps } from '../Components/Header'
 
-import Header, { HeaderProps } from "../Components/Header";
-import { ThemeProvider } from "@emotion/react";
-import { Theme } from "@mui/material";
+import { ThemeProvider } from '@emotion/react'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import Header from '../Components/Header'
 
 export interface MasterProps {
-    theme: Partial<Theme>;
-    headerProps: HeaderProps;
+  theme: Partial<Theme>
+  headerProps: HeaderProps
 };
 
-const Master = (props : MasterProps) => {
-    return (
-        <div>
-            <ThemeProvider theme={props.theme}>
-                <Header {...props.headerProps}/>
-                <main>
-                    <section>
-                        <Outlet />
-                    </section>
-                </main>
-            </ThemeProvider>
-        </div>
-    );
-};
+function Master(props: MasterProps) {
+  return (
+    <div>
+      <ThemeProvider theme={props.theme}>
+        <Header {...props.headerProps} />
+        <main>
+          <section>
+            <Outlet />
+          </section>
+        </main>
+      </ThemeProvider>
+    </div>
+  )
+}
 
-export default Master;
+export default Master

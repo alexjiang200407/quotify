@@ -1,17 +1,18 @@
-import React, { useState, KeyboardEvent } from "react";
-import { Box, Pagination, PaginationItem, TextField } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { KeyboardEvent } from 'react'
 import {
   faChevronLeft,
   faChevronRight,
   faCircleLeft,
   faCircleRight,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Pagination, PaginationItem, TextField } from '@mui/material'
+import React, { useState } from 'react'
 
 interface PaginationSystemProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (newPage: number) => void;
+  currentPage: number
+  totalPages: number
+  onPageChange: (newPage: number) => void
 }
 
 export const PaginationSystem: React.FC<PaginationSystemProps> = ({
@@ -19,20 +20,20 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
   totalPages,
   onPageChange,
 }) => {
-  const [pageInput, setPageInput] = useState("");
+  const [pageInput, setPageInput] = useState('')
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      const newPage = Math.min(Math.max(1, parseInt(pageInput)), totalPages);
-      if (!isNaN(newPage)) {
-        onPageChange(newPage);
-        setPageInput("");
+    if (e.key === 'Enter') {
+      const newPage = Math.min(Math.max(1, Number.parseInt(pageInput)), totalPages)
+      if (!Number.isNaN(newPage)) {
+        onPageChange(newPage)
+        setPageInput('')
       }
     }
-  };
+  }
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 3, mt: 4 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 4 }}>
       <Pagination
         count={totalPages}
         page={currentPage}
@@ -41,13 +42,13 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
         boundaryCount={1}
         shape="rounded"
         sx={{
-          "& .Mui-selected": {
-            bgcolor: "primary.main",
-            color: "white",
-            "&:hover": { bgcolor: "primary.dark" },
+          '& .Mui-selected': {
+            'bgcolor': 'primary.main',
+            'color': 'white',
+            '&:hover': { bgcolor: 'primary.dark' },
           },
         }}
-        renderItem={(item) => (
+        renderItem={item => (
           <PaginationItem
             slots={{
               previous: () => <FontAwesomeIcon icon={faChevronLeft} />,
@@ -63,7 +64,7 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
       <TextField
         label="Go to page"
         value={pageInput}
-        onChange={(e) => setPageInput(e.target.value.replace(/\D/, ""))}
+        onChange={e => setPageInput(e.target.value.replace(/\D/, ''))}
         onKeyPress={handleKeyPress}
         type="number"
         size="small"
@@ -71,9 +72,9 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
         inputProps={{
           min: 1,
           max: totalPages,
-          style: { textAlign: "center" },
+          style: { textAlign: 'center' },
         }}
       />
     </Box>
-  );
-};
+  )
+}

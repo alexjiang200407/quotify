@@ -1,20 +1,23 @@
-import "../css/app.css";
+import React from 'react'
 
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./Router"
-import { BrowserRouter } from "react-router-dom";
+import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import store from './Datastore/store'
+import App from './Router'
+import '../css/app.css'
 
-let app = document.getElementById("app");
+const app = document.getElementById('app')
 
-if (app !== null)
-{
-    const root = ReactDOM.createRoot(app);
-    root.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </React.StrictMode>
-    );
+if (app !== null) {
+  const root = ReactDOM.createRoot(app)
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </React.StrictMode>,
+  )
 }
