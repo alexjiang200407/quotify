@@ -10,7 +10,7 @@ use \Illuminate\Http\Request;
 class QuoteController extends Controller
 {
     function getQuote(Request $request) {
-        $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
+        $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         $quote = Quote::where("quotes.id", "=", $data["quoteID"])
             ->with(['author', 'tags'])
@@ -41,7 +41,7 @@ class QuoteController extends Controller
 
     function likeQuote(Request $request) {
         $user = $this->getUser($request);
-        $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
+        $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         try {
             
@@ -68,7 +68,7 @@ class QuoteController extends Controller
 
     function unlikeQuote(Request $request) {
         $user = $this->getUser($request);
-        $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
+        $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         try {
             
@@ -95,7 +95,7 @@ class QuoteController extends Controller
 
     function saveQuote(Request $request) {
         $user = $this->getUser($request);
-        $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
+        $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         try {
             
@@ -123,7 +123,7 @@ class QuoteController extends Controller
 
     function unsaveQuote(Request $request) {
         $user = $this->getUser($request);
-        $data = $this->validateRequest($request, ["quoteID" => "required|integer"]);
+        $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         try {
             
