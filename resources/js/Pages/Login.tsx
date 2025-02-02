@@ -20,13 +20,14 @@ import { loginUser } from '../Datastore/authSlice';
 import { useAppDispatch } from '../Datastore/hooks';
 import { useNotification } from '../Components/NotificationProvider';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function AuthPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useAppDispatch();
-  const {handleHttpError} = useNotification();
+  const {handleHttpError, addNotification} = useNotification();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -44,11 +45,20 @@ function AuthPage() {
     if (activeTab === 0) {
       // console.log('Logging in:', { email: formData.email, password: formData.password })
       dispatch(loginUser(formData.email, formData.password))
-      .then(() => navigate('/spa'))
+      .then(() => { navigate('/spa'); addNotification({label: 'Logged in successfully', alert: 'success'}) })
       .catch((e) => handleHttpError(e))
     }
     else {
       if (formData.password !== formData.confirmPassword) {
+        addNotification({label: 'Passwords does not match', alert: 'error'})
+      } else {
+        axios.post('/api/user/register', {
+          email: formData.email,
+          username: formData.name,
+          password: formData.password
+        })
+        .then(() => addNotification({label: 'Registration successful please login', alert: 'success'}))
+        .catch((e) => handleHttpError(e))
       }
     }
   }
