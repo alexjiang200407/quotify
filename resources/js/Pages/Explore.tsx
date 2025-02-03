@@ -39,7 +39,7 @@ function Explore() {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
-  const [search, setSearch] = useState<SearchResult|null>(null)
+  const [search, setSearch] = useState<SearchResult | null>(null)
   const { handleHttpError, addNotification } = useNotification()
   const token = useAppSelector(state => state.auth.token)
 
@@ -63,36 +63,36 @@ function Explore() {
       }${author ? `&author=${author}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
       auth,
     )
-    .then(res => res.data as SearchResult)
-    .then(res => setSearch(res))
-    .catch((e) => {
-      handleHttpError(e)
-      setSearch(null)
-    })
-  }, [searchParams])
-
-  const updateQuote = (quote: Quote) => {
-    setSearch(search? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q)} : null)
-  }
-
-  const changePage = (page: number) => {
-    let i = search?.links.find(link => Number(link.label) == page);
-    const auth = { headers: { Authorization: `Bearer ${token}` } }
-    if (i && i.url) {
-      axios.get(
-        i.url,
-        auth,
-      )
       .then(res => res.data as SearchResult)
       .then(res => setSearch(res))
       .catch((e) => {
         handleHttpError(e)
         setSearch(null)
       })
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [searchParams])
+
+  const updateQuote = (quote: Quote) => {
+    setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)
+  }
+
+  const changePage = (page: number) => {
+    const i = search?.links.find(link => Number(link.label) === page)
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    if (i && i.url) {
+      axios.get(
+        i.url,
+        auth,
+      )
+        .then(res => res.data as SearchResult)
+        .then(res => setSearch(res))
+        .catch((e) => {
+          handleHttpError(e)
+          setSearch(null)
+        })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     else {
-      addNotification({ label: 'Cannot go to page ' + page, alert: 'error' })
+      addNotification({ label: `Cannot go to page ${page}`, alert: 'error' })
     }
   }
 

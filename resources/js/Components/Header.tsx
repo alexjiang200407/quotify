@@ -77,10 +77,10 @@ function Header(props: HeaderProps) {
             label="Search Quotes or Authors"
             onSearch={(searchTags, keyword) => {
               const author = searchTags.find(t => t.type === 'author')
-              const authorQueryStr = author? `author=${author.id}&` : ''
-              const tags = searchTags.flatMap(t => t.type === 'tag'? t.id : [])
-              const tagQueryStr = tags.length? "tags=" + tags.join(',') + '&' : ''
-              const keywordQueryStr = keyword !== ''? 'keyword=' + keyword : ''
+              const authorQueryStr = author ? `author=${author.id}&` : ''
+              const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
+              const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
+              const keywordQueryStr = keyword !== '' ? `keyword=${keyword}` : ''
               navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
             }}
           />
