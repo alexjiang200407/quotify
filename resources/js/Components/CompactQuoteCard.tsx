@@ -7,7 +7,7 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Chip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
