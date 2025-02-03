@@ -10,6 +10,14 @@ export interface Tag {
   id: number
   label: string
 }
+
+export interface Topics {
+  id: number
+  popularity: number
+  label: string
+  type: string
+}
+
 export interface Quote {
   id: number
   quote: string

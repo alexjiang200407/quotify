@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Models\Quote;
+use App\Models\Tag;
+use DB;
 use \Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -69,7 +71,7 @@ class SearchController extends Controller
     public function searchQuery(string|null $author, array|null $tags, string|null $keyword, string|null $user) {
         $user = $user ? $user : '-1';
         return Quote::join('authors', 'authors.id', 'quotes.author_id')
-        ->when(!empty($authors), function ($query) use ($author) {
+        ->when(!empty($author), function ($query) use ($author) {
             $query->where('quotes.author_id', '=', $author);
         })
         ->join('quote_tags', 'quote_tags.quote_id', '=', 'quotes.id')
@@ -103,6 +105,34 @@ class SearchController extends Controller
         ->with(['author', 'tags'])
         ->withCount(['likes as upvotes', 'saves as saves'])
         ->orderByRaw('upvotes + saves DESC');
+    }
+
+
+    public function getTopics() {
+        $authors = DB::table("authors")->selectRaw("
+            authors.id as id, authors.full_name as label, 'author' as type, count(quote_likes.id) + count(quote_saves.id) as popularity
+        ")
+        ->join('quotes', 'quotes.author_id', '=', 'authors.id')
+        ->join('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
+        ->join('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
+        ->groupBy('id')
+        ->orderByDesc('popularity');
+
+        
+        $tags = Tag::selectRaw("
+            tags.id as id, tags.label, 'tag' as type, count(quote_likes.id) + count(quote_saves.id) as popularity
+        ")
+        ->join('quote_tags', 'quote_tags.tag_id', '=', 'tags.id')
+        ->join('quotes', 'quotes.id', '=', 'quote_tags.tag_id')
+        ->join('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
+        ->join('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
+        ->groupBy('id')
+        ->orderByDesc('popularity')
+        ->unionAll($authors)
+        ->get();
+
+        
+        return response()->json($tags);
     }
 
 }

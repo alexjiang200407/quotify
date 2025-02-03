@@ -16,7 +16,7 @@ export function useQuoteActions(quoteProps: Quote): QuoteActions {
 
   const onLike = (_e: React.MouseEvent, isActive: boolean) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const prevState = quoteProps
+    const prevState = structuredClone(quoteProps)
     quoteProps.user_upvoted = !quoteProps.user_upvoted
 
     if (isActive) {
@@ -36,7 +36,7 @@ export function useQuoteActions(quoteProps: Quote): QuoteActions {
 
   const onSave = (_e: React.MouseEvent, isActive: boolean) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const prevState = quoteProps
+    const prevState = structuredClone(quoteProps)
     quoteProps.user_saved = !quoteProps.user_saved
 
     if (isActive) {

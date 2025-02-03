@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material'
 import axios from 'axios'
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
@@ -38,12 +38,9 @@ export const useExplore = () => useContext(ExploreContext)
 function Explore() {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
   const [searchParams] = useSearchParams()
-  const itemsPerPage = 10
-  const [quotes, setQuotes] = useState<Quote[]>([])
-  const { handleHttpError } = useNotification()
-  const totalPages = Math.ceil(quotes.length / itemsPerPage)
+  const [search, setSearch] = useState<SearchResult|null>(null)
+  const { handleHttpError, addNotification } = useNotification()
   const token = useAppSelector(state => state.auth.token)
 
   const handleCardClick = (index: number) => {
@@ -51,7 +48,7 @@ function Explore() {
     setIsAnimatingOut(false)
   }
 
-  useState(() => {
+  useEffect(() => {
     const tags = searchParams.get('tags')?.split(',')
     const author = searchParams.get('author')
     const keyword = searchParams.get('keyword')
@@ -66,16 +63,37 @@ function Explore() {
       }${author ? `&author=${author}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
       auth,
     )
-      .then(res => res.data as SearchResult)
-      .then(res => setQuotes(res.data))
-      .catch((e) => {
-        handleHttpError(e)
-        setQuotes([])
-      })
-  })
+    .then(res => res.data as SearchResult)
+    .then(res => setSearch(res))
+    .catch((e) => {
+      handleHttpError(e)
+      setSearch(null)
+    })
+  }, [searchParams])
 
   const updateQuote = (quote: Quote) => {
-    setQuotes(quotes.map(q => q.id === quote.id ? quote : q))
+    setSearch(search? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q)} : null)
+  }
+
+  const changePage = (page: number) => {
+    let i = search?.links.find(link => Number(link.label) == page);
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    if (i && i.url) {
+      axios.get(
+        i.url,
+        auth,
+      )
+      .then(res => res.data as SearchResult)
+      .then(res => setSearch(res))
+      .catch((e) => {
+        handleHttpError(e)
+        setSearch(null)
+      })
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    else {
+      addNotification({ label: 'Cannot go to page ' + page, alert: 'error' })
+    }
   }
 
   const closeExpandedView = () => {
@@ -85,7 +103,7 @@ function Explore() {
       setIsAnimatingOut(false)
     }, 300)
   }
-  if (!quotes.length) {
+  if (!search?.data.length) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
         <Typography>Please Enter a Search Query</Typography>
@@ -97,7 +115,7 @@ function Explore() {
     <ExploreContext.Provider value={{ updateQuote }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
-          {quotes.map((quote, index) => (
+          {search?.data.map((quote, index) => (
             <CompactCard
               key={index}
               index={index}
@@ -141,15 +159,15 @@ function Explore() {
             </Box>
 
             <ExpandedQuoteCard
-              quote={quotes[selectedQuoteIndex]}
+              quote={search.data[selectedQuoteIndex]}
             />
           </Box>
         )}
 
         <PaginationSystem
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          currentPage={search.current_page}
+          totalPages={Math.ceil(search.total / search.per_page)}
+          onPageChange={changePage}
         />
       </Box>
     </ExploreContext.Provider>

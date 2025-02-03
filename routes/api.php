@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get("/quotes/daily", [QuoteController::class, "getDaily"]);
 Route::get("/quotes/get", [QuoteController::class, "getQuote"]);
 Route::post("/user/register", [UserController::class, "registerUser"]);
+Route::get("/tags", [TagController::class, "getAllTags"]);
 
 
 Route::get("/search/quotes", [SearchController::class, "searchQuotes"]);
 Route::get("/search/authors", [SearchController::class, "searchAuthors"]);
+Route::get("/search/topics", [SearchController::class, "getTopics"]);
 
