@@ -11,6 +11,7 @@ import { Box, Card, CardContent, Chip, Divider, Typography } from '@mui/material
 import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
+import TagComponent from './Tag'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -51,14 +52,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
 
         {/* Tags */}
         <Box sx={{ display: 'flex', gap: 1, marginTop: 1 }}>
-          {quote.tags.map((tag, index) => (
-            <Chip
-              key={index}
-              label={tag.label}
-              size="small"
-              sx={{ fontSize: '0.75rem', cursor: 'pointer' }}
-            />
-          ))}
+          {quote.tags.map((tag, index) => <TagComponent key={index} {...tag} />)}
         </Box>
 
         {/* Author Name */}

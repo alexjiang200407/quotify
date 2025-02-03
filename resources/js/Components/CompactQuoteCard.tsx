@@ -11,6 +11,7 @@ import { Box, Card, CardContent, Chip, Typography } from '@mui/material'
 import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
+import TagComponent from './Tag'
 
 interface CompactCardProps {
   quote: Quote
@@ -52,15 +53,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick 
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
-          {quote.tags.map((tag, tagIndex) => (
-            <Chip
-              key={tagIndex}
-              label={tag.label}
-              size="small"
-              sx={{ fontSize: '0.75rem', cursor: 'pointer', pointerEvents: 'auto' }}
-              onClick={e => e.stopPropagation()}
-            />
-          ))}
+          {quote.tags.map((tag, tagIndex) => <TagComponent key={tagIndex} {...tag} />)}
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, pointerEvents: 'auto' }}>
