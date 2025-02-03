@@ -1,7 +1,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, createFilterOptions, Divider, FilterOptionsState, IconButton, InputBase, Paper, Popper, styled, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Topics as Topic, Tag } from '../types/httpResponseTypes'
 import axios from 'axios'
 import { useNotification } from './NotificationProvider'
@@ -23,7 +23,7 @@ function SearchBar(props: SearchBarProps) {
   const [selectedTags, setSelectedTags] = useState<Topic[]>([])
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
   const {handleHttpError} = useNotification();
-  const [keyword, setKeyword] = useState('');
+  const keywordRef = useRef<HTMLInputElement|undefined>(undefined)
   const GROUP_OPTION_COUNT = 3
 
   useState(() => {
@@ -53,6 +53,7 @@ function SearchBar(props: SearchBarProps) {
 
       return (!authorSelected && authorsChosen < GROUP_OPTION_COUNT) && ++authorsChosen
     })
+    
   }
 
   return (
@@ -61,7 +62,7 @@ function SearchBar(props: SearchBarProps) {
       sx={{ display: 'inline-flex', alignItems: 'center', borderRadius: 10, flex: 1 }}
     >
       <Autocomplete
-        // freeSolo
+        clearOnBlur={false}
         fullWidth
         multiple
         filterSelectedOptions={true}
@@ -80,7 +81,7 @@ function SearchBar(props: SearchBarProps) {
             {...params}
             placeholder={props.label}
             variant='standard'
-            onChange={e => setKeyword(e.target.value)}
+            inputRef={keywordRef}
             sx={{
               paddingBlock: 1,
               "& .MuiInput-underline:before, & .MuiInput-underline:after": {
@@ -92,7 +93,7 @@ function SearchBar(props: SearchBarProps) {
       />
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton sx={{ mr: 1 }} onClick={() => props.onSearch(selectedTags, keyword)}>
+      <IconButton sx={{ mr: 1 }} onClick={() => props.onSearch(selectedTags, keywordRef.current?.value ?? '') }>
         <FontAwesomeIcon icon={faSearch} />
       </IconButton>
     </Paper>
