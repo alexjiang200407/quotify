@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("/user/upvoted", [UserController::class, "getUpvoted"]);
     Route::post("/logout", [UserController::class, "logout"]);
     Route::get("/user", [UserController::class, "getUser"]);
+    Route::get("/search/auth/quotes", [SearchController::class, "searchQuotesAuth"]);
 });
 
 Route::get("/quotes/daily", [QuoteController::class, "getDaily"]);

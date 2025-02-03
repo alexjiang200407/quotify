@@ -2,14 +2,15 @@ import type { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconButton as MuiIconButton } from '@mui/material'
 // IconButton.tsx
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface IconButtonProps {
   icon: IconProp
   solidIcon: IconProp
   activeColor?: string
   defaultColor?: string
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  startingActive?: boolean
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>, active: boolean) => void
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -17,14 +18,19 @@ export const IconButton: React.FC<IconButtonProps> = ({
   solidIcon,
   activeColor = 'red',
   defaultColor = 'black',
+  startingActive = false,
   onClick,
 }) => {
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(startingActive)
+
+  useEffect(() => {
+    setIsActive(startingActive)
+  }, [startingActive])
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     setIsActive(prev => !prev)
-    onClick?.(e)
+    onClick?.(e, isActive)
   }
 
   return (
