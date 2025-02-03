@@ -1,6 +1,6 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Autocomplete, createFilterOptions, Divider, IconButton, InputBase, Paper, Popper, styled, TextField } from '@mui/material'
+import { Autocomplete, createFilterOptions, Divider, FilterOptionsState, IconButton, InputBase, Paper, Popper, styled, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { Topics as Topic, Tag } from '../types/httpResponseTypes'
 import axios from 'axios'
@@ -24,6 +24,7 @@ function SearchBar(props: SearchBarProps) {
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
   const {handleHttpError} = useNotification();
   const [keyword, setKeyword] = useState('');
+  const GROUP_OPTION_COUNT = 3
 
   useState(() => {
     axios.get('/api/search/topics')
@@ -32,11 +33,26 @@ function SearchBar(props: SearchBarProps) {
   })
 
   const setSelectedTopics = (topics: Topic[]) => {
-    setAuthorSelected(false);
+    let temp: boolean = false;
     setSelectedTags(topics.map(t => {
-      setAuthorSelected(authorSelected || t.type == 'author')
+      temp = temp || t.type === 'author'
       return t
     }))
+    setAuthorSelected(temp)
+  }
+
+  const filterTopics = (topics: Topic[], state: FilterOptionsState<Topic>): Topic[] => {
+    let authorsChosen = 0;
+    let tagsChosen = 0;
+    return topics.filter(topic => {
+      if (!topic.label.includes(state.inputValue))
+        return false;
+
+      if (topic.type === 'tag')
+        return (tagsChosen < GROUP_OPTION_COUNT * (Number(authorSelected) + 1)) && ++tagsChosen
+
+      return (!authorSelected && authorsChosen < GROUP_OPTION_COUNT) && ++authorsChosen
+    })
   }
 
   return (
@@ -49,7 +65,7 @@ function SearchBar(props: SearchBarProps) {
         fullWidth
         multiple
         filterSelectedOptions={true}
-        // filterOptions={options => authorSelected && options.filter === 'author'}
+        filterOptions={filterTopics}
         slots={{popper: CustomPopper}}
         limitTags={2}
         id="multiple-limit-tags"
