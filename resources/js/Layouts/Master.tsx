@@ -21,11 +21,11 @@ function Master(props: MasterProps) {
         <SearchBarProvider>
           <Header {...props.headerProps} />
           <main>
-            <NotificationProvider>
+            {/* <NotificationProvider> */}
               <section>
                 <Outlet />
               </section>
-            </NotificationProvider>
+            {/* </NotificationProvider> */}
           </main>
         </SearchBarProvider>
       </ThemeProvider>

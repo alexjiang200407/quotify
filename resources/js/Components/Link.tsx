@@ -5,11 +5,18 @@ import { Link as RouterLink } from 'react-router-dom'
 export interface LinkProps {
   label: string
   link: string
+  onClick?: (e: React.MouseEvent) => void
 };
 
 function Link(props: LinkProps) {
   return (
-    <MuiLink component={RouterLink} to={props.link}><Typography>{props.label}</Typography></MuiLink>
+    <MuiLink
+      component={RouterLink}
+      to={props.link}
+      onClick={ props.onClick }
+    >
+      <Typography>{props.label}</Typography>
+    </MuiLink>
   )
 }
 

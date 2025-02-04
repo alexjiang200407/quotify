@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
-import { useAppSelector } from './Datastore/hooks'
+import { useAppDispatch, useAppSelector } from './Datastore/hooks'
 import Master from './Layouts/Master'
 import Explore from './Pages/Explore'
 import Home from './Pages/Home'
@@ -9,8 +9,10 @@ import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
+import { logout } from './Datastore/authSlice'
+import { useNotification } from './Components/NotificationProvider'
 
-const headerPropsLoggedIn = {
+const headerPropsCommon = {
   pages: [
     {
       label: 'Home',
@@ -31,18 +33,35 @@ const headerPropsLoggedIn = {
   ],
 }
 
-const headerProps = {
-  pages: [
-    ...headerPropsLoggedIn.pages,
-    {
-      label: 'Login',
-      link: '/spa/login',
-    },
-  ],
-}
-
 function App() {
   const token = useAppSelector(state => state.auth.token)
+  const dispatch = useAppDispatch()
+  const {addNotification} = useNotification()
+  const headerPropsLoggedIn = {
+    pages: [
+      ...headerPropsCommon.pages,
+      {
+        label: 'Logout',
+        link: '/spa/login',
+        onClick: (_: React.MouseEvent) => {
+          dispatch(logout())
+          addNotification({label: 'Successfully logged out', alert: 'success'})
+        }
+      },
+    ],
+  }
+  
+  const headerProps = {
+    pages: [
+      ...headerPropsCommon.pages,
+      {
+        label: 'Login',
+        link: '/spa/login'
+      },
+    ],
+  }
+
+
   const [header, setHeader] = useState(headerProps)
 
   useEffect(() => {
