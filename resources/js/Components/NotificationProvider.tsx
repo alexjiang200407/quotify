@@ -2,6 +2,9 @@ import type { NotificationProps } from './Notification'
 import axios from 'axios'
 import React, { createContext, useContext, useState } from 'react'
 import Notification from './Notification'
+import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
+import { logout } from '../Datastore/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 interface NotificationContextType {
   addNotification: (notificationProps: NotificationProps) => void
@@ -21,6 +24,7 @@ export const useNotification = () => useContext(NotificationContext)
 
 function NotificationProvider({ children }: NotificationProviderProps) {
   const [notifications, setNotifications] = useState<React.JSX.Element[]>([])
+  const dispatch = useAppDispatch()
 
   const addNotification = (notificationProps: NotificationProps) => {
     setNotifications(prevNotifications => [
@@ -31,6 +35,11 @@ function NotificationProvider({ children }: NotificationProviderProps) {
 
   const handleHttpError = (err: Error) => {
     if (axios.isAxiosError(err) && err.status !== 500 && err.response) {
+      if (err.status === 401) {
+        addNotification({ label: "Please Login to access feature", alert: 'error' })
+        dispatch(logout())
+        return
+      }
       addNotification({ label: err.response.data.error, alert: 'error' })
       return
     }
