@@ -85,6 +85,7 @@ class SearchController extends Controller
         ->when($keyword, function ($query) use ($keyword) {
             $query->whereRaw("quotes.quote LIKE '%$keyword%' OR authors.full_name LIKE '%$keyword%'");
         })
+        ->groupBy('quotes.id')
         ->selectRaw("
             quotes.*,
             CASE
