@@ -7,7 +7,7 @@ import Notification from './Notification'
 
 interface NotificationContextType {
   addNotification: (notificationProps: NotificationProps) => void
-  handleHttpError: (err: Error) => void
+  handleHttpError: (err: Error, logoutIfUnauthorized?: boolean) => void
 }
 
 interface NotificationProviderProps {
@@ -32,11 +32,11 @@ function NotificationProvider({ children }: NotificationProviderProps) {
     ])
   }
 
-  const handleHttpError = (err: Error) => {
+  const handleHttpError = (err: Error, logoutIfUnauthorized: boolean = true) => {
     if (axios.isAxiosError(err) && err.status !== 500 && err.response) {
       if (err.status === 401) {
         addNotification({ label: 'Please Login to access feature', alert: 'error' })
-        dispatch(logout())
+        if (logoutIfUnauthorized) dispatch(logout())
         return
       }
       addNotification({ label: err.response.data.error, alert: 'error' })

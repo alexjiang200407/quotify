@@ -46,3 +46,10 @@ export const loginUser = (email: string, password: string) => {
     dispatch(loginSuccess(response.data.token))
   }
 }
+
+export const logoutUser = (token: string) => {
+  return async (dispatch: Dispatch) => {
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    return axios.delete('/api/logout', auth).then(() => { dispatch(logout()); return; })
+  }
+}

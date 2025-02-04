@@ -9,7 +9,7 @@ import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
-import { logout } from './Datastore/authSlice'
+import { logout, logoutUser } from './Datastore/authSlice'
 import { useNotification } from './Components/NotificationProvider'
 
 const headerPropsCommon = {
@@ -36,7 +36,7 @@ const headerPropsCommon = {
 function App() {
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
-  const {addNotification} = useNotification()
+  const {handleHttpError, addNotification} = useNotification()
   const headerPropsLoggedIn = {
     pages: [
       ...headerPropsCommon.pages,
@@ -44,8 +44,10 @@ function App() {
         label: 'Logout',
         link: '/spa/login',
         onClick: (_: React.MouseEvent) => {
-          dispatch(logout())
-          addNotification({label: 'Successfully logged out', alert: 'success'})
+          if (token)
+            dispatch(logoutUser(token))
+            .then(() => addNotification({label: 'Successfully logged out', alert: 'success'}))
+            .catch(e => handleHttpError(e, false))
         }
       },
     ],
