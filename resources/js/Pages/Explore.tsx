@@ -6,15 +6,15 @@ import {
   keyframes,
   Typography,
 } from '@mui/material'
-import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
-import { useAppSelector } from '../Datastore/hooks'
+import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { useSearchBar } from '../Components/SearchBar'
+import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -40,42 +40,37 @@ function Explore() {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
-  const [search, setSearch] = useState<SearchResult | null>(null)
+  const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const topics = useAppSelector(state => state.search.topics)
   const {addTopic} = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
+  const dispatch = useAppDispatch()
 
   const handleCardClick = (index: number) => {
     setSelectedQuoteIndex(index)
     setIsAnimatingOut(false)
   }
 
+  const setSearch = (result: SearchResult | null) => {
+    dispatch(setSearchResult(result))
+  }
+
   useEffect(() => {
     const tags = searchParams.get('tags')?.split(',')
+    const topics : [number, string][] = tags?.map(t => [Number(t), 'tag']) ?? []
     const author = searchParams.get('author')
     const keyword = searchParams.get('keyword')
 
-    if (!tags && !author && !keyword) {
+    if (author) topics.push([Number(author), 'author'])
+    
+    if (!topics.length && !keyword)
       return
-    }
-    tags?.forEach(t =>  {addTopic(Number(t), 'tag')})
-    addTopic(Number(author), 'author')
 
-    const auth = { headers: { Authorization: `Bearer ${token}` } }
-    axios.get(
-      `/api/search/${token ? 'auth/' : ''}quotes/?${
-        tags?.map(tag => `tags[]=${tag}`).join('&')
-      }${author ? `&author=${author}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
-      auth,
-    )
-      .then(res => res.data as SearchResult)
-      .then(res => {
-        setSearch(res)
-      })
+    addTopic(topics, true)
+
+    dispatch(searchQuotes(tags, author, keyword, token))
       .catch((e) => {
         handleHttpError(e)
-        setSearch(null)
       })
   }, [searchParams])
 
@@ -85,14 +80,8 @@ function Explore() {
 
   const changePage = (page: number) => {
     const i = search?.links.find(link => Number(link.label) === page)
-    const auth = { headers: { Authorization: `Bearer ${token}` } }
     if (i && i.url) {
-      axios.get(
-        i.url,
-        auth,
-      )
-        .then(res => res.data as SearchResult)
-        .then(res => setSearch(res))
+      dispatch(searchQuotesUrl(i.url, token))
         .catch((e) => {
           handleHttpError(e)
           setSearch(null)

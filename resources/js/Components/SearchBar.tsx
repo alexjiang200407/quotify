@@ -21,7 +21,7 @@ interface SearchBarContextType {
   authorSelected: boolean
   selectedTags: Map<string, Topic>
   tagCount: number
-  addTopic: (id: number, type: string, clear?: boolean) => void
+  addTopic: (idAndType: [number, string][], clear?: boolean) => void
 }
 
 interface SearchBarProviderProps {
@@ -33,7 +33,7 @@ const SearchBarContext = createContext<SearchBarContextType>({
   authorSelected: false,
   selectedTags: new Map(),
   tagCount: 0,
-  addTopic: (_1: number, _2: string) => console.warn('SearchBar Provider not setup'),
+  addTopic: (_1: [number, string][], _2?: boolean) => console.warn('SearchBar Provider not setup'),
 })
 
 export const useSearchBar = () => useContext(SearchBarContext)
@@ -44,33 +44,30 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   const [tagCount, setTagCount] = useState(0)
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
 
+  const makeTopicID = (t: Topic) => {
+    return `${t.type}---${t.id}`
+  }
+
   const setSelectedTopics = (topics: Topic[], append: boolean = false) => {
     const temp = topics.some((t) => t.type === 'author');
     if (append) {
-      setSelectedTags(prev => new Map([...prev, ...(topics.map(t => [`${t.type}---${t.id}`, t]) as [string, Topic][])]));
+      setSelectedTags(prev => new Map([...prev, ...(topics.map(t => [makeTopicID(t), t]) as [string, Topic][])]));
       setAuthorSelected(prev => prev || temp);
       setTagCount(prev => prev + topics.filter(t => t.type === 'tag').length)
     }
     else {
-      setSelectedTags(new Map(topics.map(t => [`${t.type}---${t.id}`, t])));
+      setSelectedTags(new Map(topics.map(t => [makeTopicID(t), t])));
       setAuthorSelected(temp);
       setTagCount(topics.filter(t => t.type === 'tag').length)
     }
   }
 
-  const addTopic = (id: number, type: string, clear: boolean = false) => {
-    const topic = topics.find(t => t.id === id && t.type === type)
-    if (topic) {
-      if (selectedTags.has(`${topic.type}---${topic.id}`))
-        return
-
-      if (!clear)
-        setSelectedTopics([topic], true)
-      else
-        setSelectedTopics([topic])
-    }
+  const addTopic = (idAndType: [number, string][], clear: boolean = false) => {
+    if (!clear)
+      setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []), true)
     else
-      console.warn(`Topic with id ${id} of type ${type} not found`)
+      setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []))
+    
   }
 
   return (
@@ -95,7 +92,6 @@ export function SearchBar(props: SearchBarProps) {
         return false
 
       if (topic.type === 'tag') {
-        console.log(tagCount)
         return tagCount < 4 && tagsChosen < GROUP_OPTION_COUNT * (Number(authorSelected) + 1) && tagsChosen <= 4 && ++tagsChosen
       }
 
@@ -123,7 +119,7 @@ export function SearchBar(props: SearchBarProps) {
         groupBy={tag => tag.type}
         options={topics}
         getOptionLabel={tag => tag.label}
-        onChange={(_, newValue) => setSelectedTopics(newValue)}
+        onChange={(_, newValue) => { props.onSearch(newValue, keywordRef.current?.value ?? '') }}
         renderInput={params => (
           <TextField
             {...params}

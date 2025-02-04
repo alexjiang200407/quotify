@@ -26,7 +26,7 @@ const searchSlice = createSlice({
   },
 })
 
-export const { setTopics } = searchSlice.actions
+export const { setTopics, setSearchResult } = searchSlice.actions
 export default searchSlice.reducer
 
 export const initSearchSlice = () => {
@@ -34,5 +34,24 @@ export const initSearchSlice = () => {
     return axios.get('/api/search/topics')
       .then(res => dispatch(setTopics(res.data)))
       .then(() => console.log('Finished loading topics'))
+  }
+}
+
+export const searchQuotes = (tagIDs?: string[] | null, authorID?: string | null, keyword?: string | null, token?: string | null) => {
+  return searchQuotesUrl(
+    `/api/search/${token ? 'auth/' : ''}quotes/?${
+      tagIDs?.map(tag => `tags[]=${tag}`).join('&')
+    }${authorID ? `&author=${authorID}` : ''}${keyword ? `&keyword=${keyword}` : ''}`, token
+  )
+}
+
+export const searchQuotesUrl = (url: string, token?: string | null) => {
+  return async (dispatch: Dispatch) => {
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    return axios.get(url, auth)
+      .then(res => res.data as SearchResult)
+      .then(res => {
+        dispatch(setSearchResult(res))
+      })
   }
 }
