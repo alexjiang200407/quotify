@@ -13,43 +13,40 @@ export function useQuoteActions(quoteProps: Quote): QuoteActions {
   const { handleHttpError } = useNotification()
   const token = useAppSelector(state => state.auth.token)
   const { updateQuote } = useExplore()
+  let prevState: Quote | null = null;
 
   const onLike = (_e: React.MouseEvent, isActive: boolean) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const prevState = structuredClone(quoteProps)
-    quoteProps.user_upvoted = !quoteProps.user_upvoted
+    prevState = prevState ? null : structuredClone(quoteProps)
+    let user_upvoted = !quoteProps.user_upvoted
+    let upvotes = quoteProps.upvotes
 
-    if (isActive) {
-      quoteProps.upvotes--
-    }
-    else {
-      quoteProps.upvotes++
-    }
-    updateQuote(quoteProps)
+    if (isActive) upvotes--
+    else upvotes++
+    
+    updateQuote({...quoteProps, upvotes, user_upvoted})
 
     axios.post(`/api/quotes/${isActive ? 'un' : ''}like`, { quoteID: quoteProps.id }, auth)
       .catch((e) => {
         handleHttpError(e)
-        updateQuote(prevState)
+        if (prevState) updateQuote(prevState)
       })
   }
 
   const onSave = (_e: React.MouseEvent, isActive: boolean) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const prevState = structuredClone(quoteProps)
-    quoteProps.user_saved = !quoteProps.user_saved
+    prevState = prevState ? null : structuredClone(quoteProps)
+    let user_saved = !quoteProps.user_saved
+    let saves = quoteProps.saves
 
-    if (isActive) {
-      quoteProps.saves--
-    }
-    else {
-      quoteProps.saves++
-    }
-    updateQuote(quoteProps)
+    if (isActive) saves--
+    else saves++
+    
+    updateQuote({...quoteProps, user_saved, saves})
     axios.post(`/api/quotes/${isActive ? 'un' : ''}save`, { quoteID: quoteProps.id }, auth)
       .catch((e) => {
         handleHttpError(e)
-        updateQuote(prevState)
+        if (prevState) updateQuote(prevState)
       })
   }
 

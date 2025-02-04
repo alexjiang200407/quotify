@@ -36,7 +36,7 @@ const authSlice = createSlice({
 export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
 export default authSlice.reducer
 
-export function loginUser(email: string, password: string) {
+export const loginUser = (email: string, password: string) => {
   return async (dispatch: Dispatch) => {
     dispatch(loginStart())
     const response = await axios.post('/api/login', {
@@ -44,5 +44,12 @@ export function loginUser(email: string, password: string) {
       password,
     })
     dispatch(loginSuccess(response.data.token))
+  }
+}
+
+export const logoutUser = (token: string) => {
+  return async (dispatch: Dispatch) => {
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    return axios.delete('/api/logout', auth).then(() => { dispatch(logout()); return; })
   }
 }

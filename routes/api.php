@@ -16,7 +16,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post("/quotes/unsave", [QuoteController::class, "unsaveQuote"]);
     Route::get("/user/saved", [UserController::class, "getSaved"]);
     Route::get("/user/upvoted", [UserController::class, "getUpvoted"]);
-    Route::post("/logout", [UserController::class, "logout"]);
+    Route::delete("/logout", [UserController::class, "logout"]);
     Route::get("/user", [UserController::class, "getUser"]);
     Route::get("/search/auth/quotes", [SearchController::class, "searchQuotesAuth"]);
 });

@@ -1,11 +1,10 @@
 import type { FilterOptionsState } from '@mui/material'
-import type { Topics as Topic } from '../types/httpResponseTypes'
+import type { Topic as Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
-import axios from 'axios'
-import React, { createContext, useContext, useRef, useState } from 'react'
-import { useNotification } from './NotificationProvider'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useAppSelector } from '../Datastore/hooks'
 
 export interface SearchBarProps {
   label: string
@@ -20,9 +19,9 @@ const CustomPopper = styled(Popper)({
 interface SearchBarContextType {
   setSelectedTopics: (topics: Topic[]) => void
   authorSelected: boolean
-  selectedTags: Topic[]
-  topics: Topic[]
-  addTopic: (id: number, type: string) => void
+  selectedTags: Map<string, Topic>
+  tagCount: number
+  addTopic: (idAndType: [number, string][], clear?: boolean) => void
 }
 
 interface SearchBarProviderProps {
@@ -32,42 +31,47 @@ interface SearchBarProviderProps {
 const SearchBarContext = createContext<SearchBarContextType>({
   setSelectedTopics: (_: Topic[]) => { console.warn('SearchBar Provider not setup') },
   authorSelected: false,
-  selectedTags: [],
-  topics: [],
-  addTopic: (_1: number, _2: string) => console.warn('SearchBar Provider not setup'),
+  selectedTags: new Map(),
+  tagCount: 0,
+  addTopic: (_1: [number, string][], _2?: boolean) => console.warn('SearchBar Provider not setup'),
 })
 
 export const useSearchBar = () => useContext(SearchBarContext)
 
 export function SearchBarProvider({ children }: SearchBarProviderProps) {
-  const [topics, setTopics] = useState<Topic[]>([])
-  const [selectedTags, setSelectedTags] = useState<Topic[]>([])
+  const topics = useAppSelector(state => state.search.topics)
+  const [selectedTags, setSelectedTags] = useState<Map<string, Topic>>(new Map())
+  const [tagCount, setTagCount] = useState(0)
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
-  const { handleHttpError } = useNotification()
 
-  const setSelectedTopics = (topics: Topic[]) => {
-    let temp: boolean = false
-    setSelectedTags(topics.map((t) => {
-      temp = temp || t.type === 'author'
-      return t
-    }))
-    setAuthorSelected(temp)
+  const makeTopicID = (t: Topic) => {
+    return `${t.type}---${t.id}`
   }
 
-  const addTopic = (id: number, type: string) => {
-    const topic = topics.find(t => t.id === id && t.type === type)
-    if (topic)
-      setSelectedTopics([topic])
+  const setSelectedTopics = (topics: Topic[], append: boolean = false) => {
+    const temp = topics.some((t) => t.type === 'author');
+    if (append) {
+      setSelectedTags(prev => new Map([...prev, ...(topics.map(t => [makeTopicID(t), t]) as [string, Topic][])]));
+      setAuthorSelected(prev => prev || temp);
+      setTagCount(prev => prev + topics.filter(t => t.type === 'tag').length)
+    }
+    else {
+      setSelectedTags(new Map(topics.map(t => [makeTopicID(t), t])));
+      setAuthorSelected(temp);
+      setTagCount(topics.filter(t => t.type === 'tag').length)
+    }
   }
 
-  useState(() => {
-    axios.get('/api/search/topics')
-      .then(res => setTopics(res.data))
-      .catch(handleHttpError)
-  })
+  const addTopic = (idAndType: [number, string][], clear: boolean = false) => {
+    if (!clear)
+      setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []), true)
+    else
+      setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []))
+    
+  }
 
   return (
-    <SearchBarContext.Provider value={{ setSelectedTopics, authorSelected, selectedTags, topics, addTopic }}>
+    <SearchBarContext.Provider value={{ setSelectedTopics, authorSelected, selectedTags, addTopic, tagCount }}>
       {children}
     </SearchBarContext.Provider>
   )
@@ -76,7 +80,8 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
 export function SearchBar(props: SearchBarProps) {
   const keywordRef = useRef<HTMLInputElement | undefined>(undefined)
   const GROUP_OPTION_COUNT = 3
-  const { authorSelected, selectedTags, setSelectedTopics, topics } = useSearchBar()
+  const topics = useAppSelector(state => state.search.topics)
+  const { authorSelected, selectedTags, setSelectedTopics, tagCount } = useSearchBar()
 
   const filterTopics = (topics: Topic[], state: FilterOptionsState<Topic>): Topic[] => {
     let authorsChosen = 0
@@ -86,13 +91,13 @@ export function SearchBar(props: SearchBarProps) {
       if (!topic.label.includes(state.inputValue))
         return false
 
-      if (topic.type === 'tag')
-        return (tagsChosen < GROUP_OPTION_COUNT * (Number(authorSelected) + 1)) && ++tagsChosen
+      if (topic.type === 'tag') {
+        return tagCount < 4 && tagsChosen < GROUP_OPTION_COUNT * (Number(authorSelected) + 1) && tagsChosen <= 4 && ++tagsChosen
+      }
 
       return (!authorSelected && authorsChosen < GROUP_OPTION_COUNT) && ++authorsChosen
     })
   }
-
   return (
     <Paper
       component="form"
@@ -109,11 +114,12 @@ export function SearchBar(props: SearchBarProps) {
         id="multiple-limit-tags"
         sx={{ flex: 1, paddingInline: 2 }}
         openOnFocus
-        value={selectedTags}
+        value={[...selectedTags.values()]}
+        isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
         groupBy={tag => tag.type}
         options={topics}
         getOptionLabel={tag => tag.label}
-        onChange={(_, newValue) => setSelectedTopics(newValue)}
+        onChange={(_, newValue) => { props.onSearch(newValue, keywordRef.current?.value ?? '') }}
         renderInput={params => (
           <TextField
             {...params}
@@ -131,7 +137,7 @@ export function SearchBar(props: SearchBarProps) {
       />
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton sx={{ mr: 1 }} onClick={() => props.onSearch(selectedTags, keywordRef.current?.value ?? '')}>
+      <IconButton sx={{ mr: 1 }} onClick={() => props.onSearch([...selectedTags.values()], keywordRef.current?.value ?? '')}>
         <FontAwesomeIcon icon={faSearch} />
       </IconButton>
     </Paper>
