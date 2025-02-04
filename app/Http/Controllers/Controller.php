@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 
 abstract class Controller
@@ -28,7 +29,7 @@ abstract class Controller
             return $user;
         } catch (Exception $e) {
             abort(response()->json([
-                'error' => "Unauthorized user",
+                'error' => $e->getMessage(),
             ], 401));
         }
     }
