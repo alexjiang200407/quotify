@@ -9,8 +9,9 @@ import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
-import { logout, logoutUser } from './Datastore/authSlice'
+import { logoutUser } from './Datastore/authSlice'
 import { useNotification } from './Components/NotificationProvider'
+import { setSearchResult } from './Datastore/searchSlice'
 
 const headerPropsCommon = {
   pages: [
@@ -37,18 +38,22 @@ function App() {
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
   const {handleHttpError, addNotification} = useNotification()
+
+  const tryLogOut = () => {
+    if (token)
+      dispatch(logoutUser(token))
+        .then(() => dispatch(setSearchResult(null)))
+        .then(() => addNotification({label: 'Successfully logged out', alert: 'success'}))
+        .catch(e => handleHttpError(e, false))
+  }
+
   const headerPropsLoggedIn = {
     pages: [
       ...headerPropsCommon.pages,
       {
         label: 'Logout',
         link: '/spa/login',
-        onClick: (_: React.MouseEvent) => {
-          if (token)
-            dispatch(logoutUser(token))
-            .then(() => addNotification({label: 'Successfully logged out', alert: 'success'}))
-            .catch(e => handleHttpError(e, false))
-        }
+        onClick: tryLogOut
       },
     ],
   }
@@ -67,11 +72,9 @@ function App() {
   const [header, setHeader] = useState(headerProps)
 
   useEffect(() => {
-    // Update header whenever token changes
     if (token) {
       setHeader(headerPropsLoggedIn)
-    }
-    else {
+    } else {
       setHeader(headerProps)
     }
   }, [token])
