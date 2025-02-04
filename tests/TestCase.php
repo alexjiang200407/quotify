@@ -18,8 +18,6 @@ abstract class TestCase extends BaseTestCase
             "email" => $email,
             "password" => $password,
         ]);
-        // $response->assertStatus(302);
-        // $response = $this->followRedirects($response);
         $response->assertOk();
 
         $response->assertJsonIsObject();
