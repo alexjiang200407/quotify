@@ -7,18 +7,21 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Chip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
+import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
+import TagComponent from './Tag'
 
 interface CompactCardProps {
   quote: Quote
   index: number
   onClick: (index: number) => void
-
 }
 
 export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick }) => {
+  const { onLike, onSave } = useQuoteActions(quote)
+
   return (
     <Card
       onClick={() => onClick(index)}
@@ -46,19 +49,11 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick 
         </Typography>
 
         <Typography variant="caption" sx={{ fontStyle: 'italic', display: 'block', marginBottom: 1.5 }}>
-          {quote.author.fullName}
+          {quote.author.full_name}
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
-          {quote.tags.map((tag, tagIndex) => (
-            <Chip
-              key={tagIndex}
-              label={tag.label}
-              size="small"
-              sx={{ fontSize: '0.75rem', cursor: 'pointer', pointerEvents: 'auto' }}
-              onClick={e => e.stopPropagation()}
-            />
-          ))}
+          {quote.tags.map((tag, tagIndex) => <TagComponent key={tagIndex} {...tag} />)}
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, pointerEvents: 'auto' }}>
@@ -68,6 +63,8 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick 
               solidIcon={solidHeart}
               activeColor="red"
               defaultColor="black"
+              onClick={onLike}
+              startingActive={quote.user_upvoted}
             />
             <Typography variant="caption">{quote.upvotes}</Typography>
           </Box>
@@ -77,11 +74,14 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick 
               solidIcon={solidBookmark}
               activeColor="blue"
               defaultColor="black"
+              onClick={onSave}
+              startingActive={quote.user_saved}
             />
             <Typography variant="caption">{quote.saves}</Typography>
           </Box>
         </Box>
       </CardContent>
+
     </Card>
   )
 }

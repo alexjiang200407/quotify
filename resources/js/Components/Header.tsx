@@ -6,7 +6,7 @@ import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
 
@@ -43,6 +43,7 @@ function Header(props: HeaderProps) {
     const position = window.pageYOffset
     setScrollPosition(position)
   }
+  const navigate = useNavigate()
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -72,7 +73,17 @@ function Header(props: HeaderProps) {
           spacing={10}
         >
           <Logo />
-          <SearchBar label="Search Quotes or Authors" />
+          <SearchBar
+            label="Search Quotes or Authors"
+            onSearch={(searchTags, keyword) => {
+              const author = searchTags.find(t => t.type === 'author')
+              const authorQueryStr = author ? `author=${author.id}&` : ''
+              const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
+              const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
+              const keywordQueryStr = keyword !== '' ? `keyword=${keyword}` : ''
+              navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
+            }}
+          />
         </Stack>
         <Toolbar>
           <Stack

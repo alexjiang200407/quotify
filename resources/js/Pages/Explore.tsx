@@ -1,14 +1,19 @@
-import type { Quote } from '../types/httpResponseTypes'
+import type { Quote, SearchResult } from '../types/httpResponseTypes'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Box,
   keyframes,
+  Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
+import { useAppSelector } from '../Datastore/hooks'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -19,100 +24,76 @@ const collapseAnimation = keyframes`
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0; transform: scale(0.95); }
 `
-const quotes: Quote[] = [
-  {
-    id: 1,
-    quote: 'To be, or not to be, that is the question:\n Whether \'tis nobler in the mind to suffer\n the slings and arrows of outrageous fortune,\n or to take arms against a sea of troubles,\n and by opposing end them? To die—to sleep, no more;',
-    author: {
-      id: 1,
-      fullName: 'William Shakespeare',
-      wikiPage: 'https://en.wikipedia.org/wiki/William_Shakespeare',
-      description: 'English playwright, poet, and actor, widely regarded as the greatest writer in the English language.',
-    },
-    tags: [
-      { id: 1, label: 'Philosophy' },
-      { id: 2, label: 'Drama' },
-    ],
-    upvotes: 120,
-    saves: 45,
-  },
-  {
-    id: 2,
-    quote: 'The only thing we have to fear is fear itself—\na nameless, unreasoning, unjustified terror\n which paralyzes needed efforts to convert retreat into advance.\n In every dark hour of our national life,\n leadership has met with that refusal to panic,\n and with courage, we shall endure.',
-    author: {
-      id: 2,
-      fullName: 'Franklin D. Roosevelt',
-      wikiPage: 'https://en.wikipedia.org/wiki/Franklin_D._Roosevelt',
-      description: '32nd president of the United States, serving from 1933 until 1945.',
-    },
-    tags: [
-      { id: 3, label: 'Motivation' },
-      { id: 4, label: 'Politics' },
-    ],
-    upvotes: 90,
-    saves: 30,
-  },
-  {
-    id: 3,
-    quote: 'In the middle of difficulty lies opportunity. Great spirits have always encountered violent opposition from mediocre minds. Weakness of attitude becomes weakness of character. A person who never made a mistake never tried anything new.',
-    author: {
-      id: 3,
-      fullName: 'Albert Einstein',
-      wikiPage: 'https://en.wikipedia.org/wiki/Albert_Einstein',
-      description: 'Theoretical physicist who developed the theory of relativity.',
-    },
-    tags: [
-      { id: 5, label: 'Inspiration' },
-      { id: 6, label: 'Science' },
-    ],
-    upvotes: 200,
-    saves: 75,
-  },
-  {
-    id: 4,
-    quote: 'Happiness depends upon ourselves. It is not something ready-made. It comes from your own actions. We are what we repeatedly do. Excellence, then, is not an act, but a habit. The secret of happiness is freedom, and the secret of freedom is courage.',
-    author: {
-      id: 4,
-      fullName: 'Aristotle',
-      wikiPage: 'https://en.wikipedia.org/wiki/Aristotle',
-      description: 'Ancient Greek philosopher and polymath during the Classical period in Greece.',
-    },
-    tags: [
-      { id: 1, label: 'Philosophy' },
-      { id: 7, label: 'Happiness' },
-    ],
-    upvotes: 140,
-    saves: 60,
-  },
-  {
-    id: 5,
-    quote: 'The greatest glory in living lies not in never falling, but in rising every time we fall. Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment. Life is what happens when you\'re busy making other plans.',
-    author: {
-      id: 5,
-      fullName: 'Nelson Mandela',
-      wikiPage: 'https://en.wikipedia.org/wiki/Nelson_Mandela',
-      description: 'South African anti-apartheid revolutionary, political leader, and philanthropist.',
-    },
-    tags: [
-      { id: 8, label: 'Perseverance' },
-      { id: 9, label: 'Leadership' },
-    ],
-    upvotes: 180,
-    saves: 90,
-  },
-]
+
+interface ExploreContextType {
+  updateQuote: (_: Quote) => void
+}
+
+const ExploreContext = createContext<ExploreContextType>({
+  updateQuote: (_: Quote) => console.error('ExplorePage not setup'),
+})
+
+export const useExplore = () => useContext(ExploreContext)
 
 function Explore() {
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const itemsPerPage = 10
-  const totalPages = Math.ceil(quotes.length / itemsPerPage)
+  const [searchParams] = useSearchParams()
+  const [search, setSearch] = useState<SearchResult | null>(null)
+  const { handleHttpError, addNotification } = useNotification()
+  const token = useAppSelector(state => state.auth.token)
 
   const handleCardClick = (index: number) => {
     setSelectedQuoteIndex(index)
     setIsAnimatingOut(false)
+  }
+
+  useEffect(() => {
+    const tags = searchParams.get('tags')?.split(',')
+    const author = searchParams.get('author')
+    const keyword = searchParams.get('keyword')
+
+    if (!tags && !author && !keyword) {
+      return
+    }
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    axios.get(
+      `/api/search/${token ? 'auth/' : ''}quotes/?${
+        tags?.map(tag => `tags[]=${tag}`).join('&')
+      }${author ? `&author=${author}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
+      auth,
+    )
+      .then(res => res.data as SearchResult)
+      .then(res => setSearch(res))
+      .catch((e) => {
+        handleHttpError(e)
+        setSearch(null)
+      })
+  }, [searchParams])
+
+  const updateQuote = (quote: Quote) => {
+    setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)
+  }
+
+  const changePage = (page: number) => {
+    const i = search?.links.find(link => Number(link.label) === page)
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    if (i && i.url) {
+      axios.get(
+        i.url,
+        auth,
+      )
+        .then(res => res.data as SearchResult)
+        .then(res => setSearch(res))
+        .catch((e) => {
+          handleHttpError(e)
+          setSearch(null)
+        })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    else {
+      addNotification({ label: `Cannot go to page ${page}`, alert: 'error' })
+    }
   }
 
   const closeExpandedView = () => {
@@ -122,66 +103,74 @@ function Explore() {
       setIsAnimatingOut(false)
     }, 300)
   }
+  if (!search?.data.length) {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
+        <Typography>Please Enter a Search Query</Typography>
+      </Box>
+    )
+  }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
+    <ExploreContext.Provider value={{ updateQuote }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
+          {search?.data.map((quote, index) => (
+            <CompactCard
+              key={index}
+              index={index}
+              quote={quote}
+              onClick={handleCardClick}
+            />
+          ))}
+        </Box>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
-        {quotes.map((quote, index) => (
-          <CompactCard
-            key={index}
-            index={index}
-            quote={quote}
-            onClick={handleCardClick}
-          />
-        ))}
-      </Box>
-
-      {selectedQuoteIndex !== null && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            bgcolor: 'background.paper',
-            zIndex: 1300,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 4,
-            animation: `${isAnimatingOut ? collapseAnimation : expandAnimation} 0.3s ease-out`,
-            pointerEvents: isAnimatingOut ? 'none' : 'auto',
-          }}
-        >
+        {selectedQuoteIndex !== null && (
           <Box
-            onClick={closeExpandedView}
             sx={{
-              'position': 'absolute',
-              'top': 16,
-              'left': 16,
-              'cursor': 'pointer',
-              'zIndex': 1,
-              'padding': 1,
-              '&:hover': { bgcolor: 'action.hover', borderRadius: '50%' },
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              bgcolor: 'background.paper',
+              zIndex: 1300,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 4,
+              animation: `${isAnimatingOut ? collapseAnimation : expandAnimation} 0.3s ease-out`,
+              pointerEvents: isAnimatingOut ? 'none' : 'auto',
             }}
           >
-            <FontAwesomeIcon icon={faTimes} size="lg" />
+            <Box
+              onClick={closeExpandedView}
+              sx={{
+                'position': 'absolute',
+                'top': 16,
+                'left': 16,
+                'cursor': 'pointer',
+                'zIndex': 1,
+                'padding': 1,
+                '&:hover': { bgcolor: 'action.hover', borderRadius: '50%' },
+              }}
+            >
+              <FontAwesomeIcon icon={faTimes} size="lg" />
+            </Box>
+
+            <ExpandedQuoteCard
+              quote={search.data[selectedQuoteIndex]}
+            />
           </Box>
+        )}
 
-          <ExpandedQuoteCard
-            quote={quotes[selectedQuoteIndex]}
-          />
-        </Box>
-      )}
-
-      <PaginationSystem
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-    </Box>
+        <PaginationSystem
+          currentPage={search.current_page}
+          totalPages={Math.ceil(search.total / search.per_page)}
+          onPageChange={changePage}
+        />
+      </Box>
+    </ExploreContext.Provider>
   )
 }
 

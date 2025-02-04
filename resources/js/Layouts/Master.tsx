@@ -7,6 +7,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../Components/Header'
 import NotificationProvider from '../Components/NotificationProvider'
+import { SearchBarProvider } from '../Components/SearchBar'
 
 export interface MasterProps {
   theme: Partial<Theme>
@@ -17,14 +18,16 @@ function Master(props: MasterProps) {
   return (
     <div>
       <ThemeProvider theme={props.theme}>
-        <Header {...props.headerProps} />
-        <main>
-          <NotificationProvider>
-            <section>
-              <Outlet />
-            </section>
-          </NotificationProvider>
-        </main>
+        <SearchBarProvider>
+          <Header {...props.headerProps} />
+          <main>
+            <NotificationProvider>
+              <section>
+                <Outlet />
+              </section>
+            </NotificationProvider>
+          </main>
+        </SearchBarProvider>
       </ThemeProvider>
     </div>
   )
