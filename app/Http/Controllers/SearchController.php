@@ -74,8 +74,8 @@ class SearchController extends Controller
         ->when(!empty($author), function ($query) use ($author) {
             $query->where('quotes.author_id', '=', $author);
         })
-        ->join('quote_tags', 'quote_tags.quote_id', '=', 'quotes.id')
-        ->join('tags', 'tags.id', '=', 'quote_tags.tag_id')
+        ->leftJoin('quote_tags', 'quote_tags.quote_id', '=', 'quotes.id')
+        ->leftJoin('tags', 'tags.id', '=', 'quote_tags.tag_id')
         ->when(!empty($tags), function ($query) use ($tags) {
             $tag_count = count($tags);
             $query->whereIn('tags.id', $tags)
@@ -112,9 +112,9 @@ class SearchController extends Controller
         $authors = DB::table("authors")->selectRaw("
             authors.id as id, authors.full_name as label, 'author' as type, count(quote_likes.id) + count(quote_saves.id) as popularity
         ")
-        ->join('quotes', 'quotes.author_id', '=', 'authors.id')
-        ->join('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
-        ->join('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
+        ->leftJoin('quotes', 'quotes.author_id', '=', 'authors.id')
+        ->leftJoin('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
+        ->leftJoin('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
         ->groupBy('id')
         ->orderByDesc('popularity');
 
@@ -122,10 +122,10 @@ class SearchController extends Controller
         $tags = Tag::selectRaw("
             tags.id as id, tags.label, 'tag' as type, count(quote_likes.id) + count(quote_saves.id) as popularity
         ")
-        ->join('quote_tags', 'quote_tags.tag_id', '=', 'tags.id')
-        ->join('quotes', 'quotes.id', '=', 'quote_tags.tag_id')
-        ->join('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
-        ->join('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
+        ->leftJoin('quote_tags', 'quote_tags.tag_id', '=', 'tags.id')
+        ->leftJoin('quotes', 'quotes.id', '=', 'quote_tags.tag_id')
+        ->leftJoin('quote_likes', 'quote_likes.quote_id', '=', 'quotes.id')
+        ->leftJoin('quote_saves', 'quote_saves.quote_id', '=', 'quotes.id')
         ->groupBy('id')
         ->orderByDesc('popularity')
         ->unionAll($authors)
