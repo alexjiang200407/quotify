@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
+import { Topic } from '../types/httpResponseTypes'
 
 export interface HeaderProps {
   pages: LinkProps[]
@@ -53,6 +54,15 @@ function Header(props: HeaderProps) {
     }
   }, [])
 
+  const onSearch = (searchTags: Topic[], keyword: string) => {
+    const author = searchTags.find(t => t.type === 'author')
+    const authorQueryStr = author ? `author=${author.id}&` : ''
+    const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
+    const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
+    const keywordQueryStr = keyword !== '' ? `keyword=${keyword}` : ''
+    navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -75,14 +85,7 @@ function Header(props: HeaderProps) {
           <Logo />
           <SearchBar
             label="Search Quotes or Authors"
-            onSearch={(searchTags, keyword) => {
-              const author = searchTags.find(t => t.type === 'author')
-              const authorQueryStr = author ? `author=${author.id}&` : ''
-              const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
-              const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
-              const keywordQueryStr = keyword !== '' ? `keyword=${keyword}` : ''
-              navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
-            }}
+            onSearch={onSearch}
           />
         </Stack>
         <Toolbar>
