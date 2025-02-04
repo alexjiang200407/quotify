@@ -14,6 +14,7 @@ import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
 import { useAppSelector } from '../Datastore/hooks'
+import { useSearchBar } from '../Components/SearchBar'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -41,6 +42,7 @@ function Explore() {
   const [searchParams] = useSearchParams()
   const [search, setSearch] = useState<SearchResult | null>(null)
   const { handleHttpError, addNotification } = useNotification()
+  const {setSelectedTopics, addTopic, topics} = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
 
   const handleCardClick = (index: number) => {
@@ -64,12 +66,21 @@ function Explore() {
       auth,
     )
       .then(res => res.data as SearchResult)
-      .then(res => setSearch(res))
+      .then(res => {
+        setSearch(res)
+      })
       .catch((e) => {
         handleHttpError(e)
         setSearch(null)
       })
   }, [searchParams])
+
+  useEffect(() => {
+    if (topics.length === 0)
+      return
+    const tags = searchParams.get('tags')?.split(',')
+    tags?.forEach(t =>  addTopic(Number(t), 'tag'))
+  }, [topics])
 
   const updateQuote = (quote: Quote) => {
     setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)

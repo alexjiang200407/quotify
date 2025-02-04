@@ -56,8 +56,11 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
 
   const addTopic = (id: number, type: string) => {
     const topic = topics.find(t => t.id === id && t.type === type)
-    if (topic)
-      setSelectedTopics([topic])
+    if (topic && !selectedTags.find(t => t.id === id && t.type === type)) {
+      setSelectedTopics([...selectedTags, topic])
+    }
+    else
+      console.warn(`Topic with id ${id} of type ${type} not found`)
   }
 
   useState(() => {
@@ -110,6 +113,7 @@ export function SearchBar(props: SearchBarProps) {
         sx={{ flex: 1, paddingInline: 2 }}
         openOnFocus
         value={selectedTags}
+        isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
         groupBy={tag => tag.type}
         options={topics}
         getOptionLabel={tag => tag.label}
