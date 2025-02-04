@@ -63,10 +63,13 @@ function Explore() {
 
     if (author) topics.push([Number(author), 'author'])
     
-    if (!topics.length && !keyword)
-      return
-
+      
     addTopic(topics, true)
+
+    if (!topics.length && !keyword) {
+      setSearch(null)
+      return
+    }
 
     dispatch(searchQuotes(tags, author, keyword, token))
       .catch((e) => {
