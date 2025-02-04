@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post("login", [UserController::class, "login"]); //->middleware('guest:sanctum');
 
-
-Route::middleware('auth:sanctum')->group(function () {
+    
+Route::middleware('auth:api')->group(function () {
     Route::post("/quotes/like", [QuoteController::class, "likeQuote"]);
     Route::post("/quotes/unlike", [QuoteController::class, "unlikeQuote"]);
     Route::post("/quotes/save", [QuoteController::class, "saveQuote"]);

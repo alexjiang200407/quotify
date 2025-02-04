@@ -138,8 +138,7 @@ class UserTest extends TestCase
 
     public function test_user_get_saved(): void
     {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
 
         $response = $this->getJson("api/user/saved");
         
@@ -199,12 +198,12 @@ class UserTest extends TestCase
 
     public function test_user_get_saved_multiple_users(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
         
         $response = $this->postJson("api/quotes/save?quoteID=1");
         $response->assertOk();
 
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
         $response = $this->getJson("api/user/saved");
         $response->assertOk();
         $response->assertJsonCount(0);
@@ -219,7 +218,7 @@ class UserTest extends TestCase
 
     public function test_user_get_liked(): void
     {
-        $user = User::factory()->create();
+        $user = Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
         Sanctum::actingAs($user);
 
         $response = $this->getJson("api/user/upvoted");
@@ -285,12 +284,12 @@ class UserTest extends TestCase
 
     public function test_user_get_liked_multiple_users(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
         
         $response = $this->postJson("api/quotes/like?quoteID=1");
         $response->assertOk();
 
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*'], 'api');
         $response = $this->getJson("api/user/upvoted");
         $response->assertOk();
         $response->assertJsonCount(0);

@@ -52,15 +52,14 @@ class UserController extends Controller
             "email" => "required|email"
         ]);
         
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', '=', $request->email)->first();
         
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Email password combination is incorrect, try again'], 401);
         }
-        
+
         $user->tokens()->delete();
-        Auth::login($user);
-        $token = $user->createToken("AppUserToken")->plainTextToken;
+        $token = $user->createToken("AppUserToken", ['*'], now()->addMonth())->plainTextToken;
         return response()->json(["token" => $token]);
     }
 

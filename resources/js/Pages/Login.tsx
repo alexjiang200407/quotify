@@ -58,7 +58,10 @@ function AuthPage() {
         username: formData.name,
         password: formData.password,
       })
-        .then(() => addNotification({ label: 'Registration successful please login', alert: 'success' }))
+        .then(() => {
+          addNotification({ label: 'Registration successful please login', alert: 'success' })
+          setActiveTab(0)
+        })
         .catch(e => handleHttpError(e))
     }
   }
