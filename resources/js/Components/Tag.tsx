@@ -14,10 +14,9 @@ function TagComponent({ label, id }: Tag) {
       sx={{ fontSize: '0.75rem', cursor: 'pointer' }}
       onClick={(e) => {
         e.stopPropagation()
-
         navigate(`/spa/explore?tags=${id}`)
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        addTopic(id, 'tag')
+        addTopic(id, 'tag', true)
       }}
     />
   )

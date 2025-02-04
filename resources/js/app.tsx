@@ -7,13 +7,18 @@ import store from './Datastore/store'
 import App from './Router'
 import '../css/app.css'
 import NotificationProvider from './Components/NotificationProvider'
+import { initSearchSlice } from './Datastore/searchSlice'
 
-const app = document.getElementById('app')
 
-if (app !== null) {
-  const root = ReactDOM.createRoot(app)
-  root.render(
-    <React.StrictMode>
+const initializeApp = async () => {
+  const app = document.getElementById('app')
+  if (app !== null) {
+    const root = ReactDOM.createRoot(app);
+    
+    await store.dispatch(initSearchSlice()); // Wait for the store to initialize
+    
+    root.render(
+      <React.StrictMode>
         <Provider store={store}>
           <NotificationProvider>
             <BrowserRouter>
@@ -21,6 +26,9 @@ if (app !== null) {
             </BrowserRouter>
           </NotificationProvider>
         </Provider>
-    </React.StrictMode>,
-  )
-}
+      </React.StrictMode>
+    );
+  }
+};
+
+initializeApp();

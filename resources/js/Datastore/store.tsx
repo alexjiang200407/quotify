@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { thunk } from 'redux-thunk'
 import authReducer from './authSlice'
+import searchReducer from './searchSlice'
 
 const store = configureStore({
-  reducer: { auth: authReducer },
+  reducer: {
+    auth: authReducer,
+    search: searchReducer,
+  },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(thunk),
 })
 

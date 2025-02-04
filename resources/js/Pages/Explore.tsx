@@ -42,7 +42,8 @@ function Explore() {
   const [searchParams] = useSearchParams()
   const [search, setSearch] = useState<SearchResult | null>(null)
   const { handleHttpError, addNotification } = useNotification()
-  const {setSelectedTopics, addTopic, topics} = useSearchBar()
+  const topics = useAppSelector(state => state.search.topics)
+  const {addTopic} = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
 
   const handleCardClick = (index: number) => {
@@ -58,6 +59,9 @@ function Explore() {
     if (!tags && !author && !keyword) {
       return
     }
+    tags?.forEach(t =>  {addTopic(Number(t), 'tag')})
+    addTopic(Number(author), 'author')
+
     const auth = { headers: { Authorization: `Bearer ${token}` } }
     axios.get(
       `/api/search/${token ? 'auth/' : ''}quotes/?${
@@ -74,13 +78,6 @@ function Explore() {
         setSearch(null)
       })
   }, [searchParams])
-
-  useEffect(() => {
-    if (topics.length === 0)
-      return
-    const tags = searchParams.get('tags')?.split(',')
-    tags?.forEach(t =>  addTopic(Number(t), 'tag'))
-  }, [topics])
 
   const updateQuote = (quote: Quote) => {
     setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)

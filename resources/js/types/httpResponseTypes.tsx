@@ -11,7 +11,7 @@ export interface Tag {
   label: string
 }
 
-export interface Topics {
+export interface Topic {
   id: number
   popularity: number
   label: string
