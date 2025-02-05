@@ -19,6 +19,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete("/logout", [UserController::class, "logout"]);
     Route::get("/user", [UserController::class, "getUser"]);
     Route::get("/search/auth/quotes", [SearchController::class, "searchQuotesAuth"]);
+    Route::get("/quotes/auth/daily", [QuoteController::class, "getDailyAuth"]);
 });
 
 Route::get("/quotes/daily", [QuoteController::class, "getDaily"]);

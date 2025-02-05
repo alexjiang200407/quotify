@@ -1,30 +1,27 @@
 import { Box, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import axios from 'axios'
+import { useNotification } from '../Components/NotificationProvider'
 import { Quote } from '../types/httpResponseTypes'
+import { useAppSelector } from '../Datastore/hooks'
 
 function Home() {
-  const _quote : Quote = {
-    id: 1,
-    quote: 'All the world\'s a stage,\nAnd all the men and women merely players;\nThey have their exits and their entrances;\nAnd one man in his time plays many parts,\nHis acts being seven ages.',
-    author: {
-      id: 1,
-      full_name: 'William Shakespeare',
-      wiki_page: 'https://en.wikipedia.org/wiki/William_Shakespeare',
-      description: 'English playwright, poet, and actor, widely regarded as the greatest writer in the English language.',
-    },
-    tags: [
-      { id: 1, label: 'Philosophy' },
-      { id: 2, label: 'Poetry' },
-      { id: 3, label: 'Renaissance' },
-    ],
-    user_upvoted: false,
-    user_saved: false,
-    upvotes: 120,
-    saves: 45,
-  }
+  const {handleHttpError} = useNotification()
+  const [quote, setQuote] = useState<Quote|null>(null);
+  const token = useAppSelector(state => state.auth.token)
+  useState(() => {
+    let req;
+    if (token) {
+      const auth = { headers: { Authorization: `Bearer ${token}` } }
+      req = axios.get(`/api/quotes/auth/daily`, auth)
+    } else {
+      req = axios.get(`/api/quotes/daily`)
+    }
 
-  const [quote, updateQuote] = useState(_quote)
+    req.then(res => setQuote(res.data))
+    .catch(e => handleHttpError(e))
+  });
 
   return (
     <Box
@@ -36,12 +33,17 @@ function Home() {
         height: '100vh',
       }}
     >
-      <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', zIndex: 2 }}>
-        Quote of the Day
-      </Typography>
+      {/* Add a container with 800px width */}
+      <Box sx={{ width: 800 }}>
+        <Typography variant="h3" sx={{ textAlign: 'center', zIndex: 2 }}>
+          Quote of the Day
+        </Typography>
 
-      <Box sx={{ position: 'relative', zIndex: 1 }}>
-        <ExpandedQuoteCard quote={quote} updateQuote={updateQuote} />
+        {quote && (
+          <Box sx={{ position: 'relative', zIndex: 1 }}>
+            <ExpandedQuoteCard quote={quote} updateQuote = {setQuote} />
+          </Box>
+        )}
       </Box>
     </Box>
   )
