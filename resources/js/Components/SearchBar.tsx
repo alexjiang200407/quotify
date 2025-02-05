@@ -1,9 +1,9 @@
 import type { FilterOptionsState } from '@mui/material'
-import type { Topic as Topic } from '../types/httpResponseTypes'
+import type { Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useRef, useState } from 'react'
 import { useAppSelector } from '../Datastore/hooks'
 
 export interface SearchBarProps {
@@ -49,15 +49,15 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   }
 
   const setSelectedTopics = (topics: Topic[], append: boolean = false) => {
-    const temp = topics.some((t) => t.type === 'author');
+    const temp = topics.some(t => t.type === 'author')
     if (append) {
-      setSelectedTags(prev => new Map([...prev, ...(topics.map(t => [makeTopicID(t), t]) as [string, Topic][])]));
-      setAuthorSelected(prev => prev || temp);
+      setSelectedTags(prev => new Map([...prev, ...(topics.map(t => [makeTopicID(t), t]) as [string, Topic][])]))
+      setAuthorSelected(prev => prev || temp)
       setTagCount(prev => prev + topics.filter(t => t.type === 'tag').length)
     }
     else {
-      setSelectedTags(new Map(topics.map(t => [makeTopicID(t), t])));
-      setAuthorSelected(temp);
+      setSelectedTags(new Map(topics.map(t => [makeTopicID(t), t])))
+      setAuthorSelected(temp)
       setTagCount(topics.filter(t => t.type === 'tag').length)
     }
   }
@@ -67,7 +67,6 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
       setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []), true)
     else
       setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []))
-    
   }
 
   return (
@@ -81,7 +80,7 @@ export function SearchBar(props: SearchBarProps) {
   const keywordRef = useRef<HTMLInputElement | undefined>(undefined)
   const GROUP_OPTION_COUNT = 3
   const topics = useAppSelector(state => state.search.topics)
-  const { authorSelected, selectedTags, setSelectedTopics, tagCount } = useSearchBar()
+  const { authorSelected, selectedTags, tagCount } = useSearchBar()
 
   const filterTopics = (topics: Topic[], state: FilterOptionsState<Topic>): Topic[] => {
     let authorsChosen = 0

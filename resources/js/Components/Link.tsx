@@ -13,7 +13,7 @@ function Link(props: LinkProps) {
     <MuiLink
       component={RouterLink}
       to={props.link}
-      onClick={ props.onClick }
+      onClick={props.onClick}
     >
       <Typography>{props.label}</Typography>
     </MuiLink>

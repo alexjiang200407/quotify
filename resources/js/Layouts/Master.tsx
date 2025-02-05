@@ -6,7 +6,6 @@ import { ThemeProvider } from '@emotion/react'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../Components/Header'
-import NotificationProvider from '../Components/NotificationProvider'
 import { SearchBarProvider } from '../Components/SearchBar'
 
 export interface MasterProps {
@@ -22,9 +21,9 @@ function Master(props: MasterProps) {
           <Header {...props.headerProps} />
           <main>
             {/* <NotificationProvider> */}
-              <section>
-                <Outlet />
-              </section>
+            <section>
+              <Outlet />
+            </section>
             {/* </NotificationProvider> */}
           </main>
         </SearchBarProvider>

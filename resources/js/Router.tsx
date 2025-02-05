@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
+import { useNotification } from './Components/NotificationProvider'
+import { logoutUser } from './Datastore/authSlice'
 import { useAppDispatch, useAppSelector } from './Datastore/hooks'
+import { setSearchResult } from './Datastore/searchSlice'
 import Master from './Layouts/Master'
 import Explore from './Pages/Explore'
 import Home from './Pages/Home'
@@ -9,9 +12,6 @@ import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
-import { logoutUser } from './Datastore/authSlice'
-import { useNotification } from './Components/NotificationProvider'
-import { setSearchResult } from './Datastore/searchSlice'
 
 const headerPropsCommon = {
   pages: [
@@ -37,14 +37,15 @@ const headerPropsCommon = {
 function App() {
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
-  const {handleHttpError, addNotification} = useNotification()
+  const { handleHttpError, addNotification } = useNotification()
 
   const tryLogOut = () => {
-    if (token)
+    if (token) {
       dispatch(logoutUser(token))
         .then(() => dispatch(setSearchResult(null)))
-        .then(() => addNotification({label: 'Successfully logged out', alert: 'success'}))
+        .then(() => addNotification({ label: 'Successfully logged out', alert: 'success' }))
         .catch(e => handleHttpError(e, false))
+    }
   }
 
   const headerPropsLoggedIn = {
@@ -53,28 +54,28 @@ function App() {
       {
         label: 'Logout',
         link: '/spa/login',
-        onClick: tryLogOut
+        onClick: tryLogOut,
       },
     ],
   }
-  
+
   const headerProps = {
     pages: [
       ...headerPropsCommon.pages,
       {
         label: 'Login',
-        link: '/spa/login'
+        link: '/spa/login',
       },
     ],
   }
-
 
   const [header, setHeader] = useState(headerProps)
 
   useEffect(() => {
     if (token) {
       setHeader(headerPropsLoggedIn)
-    } else {
+    }
+    else {
       setHeader(headerProps)
     }
   }, [token])
