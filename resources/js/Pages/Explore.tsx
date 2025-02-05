@@ -12,8 +12,8 @@ import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
-import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { useSearchBar } from '../Components/SearchBar'
+import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
 
 const expandAnimation = keyframes`
@@ -42,7 +42,7 @@ function Explore() {
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const {addTopic} = useSearchBar()
+  const { addTopic } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
 
@@ -57,13 +57,13 @@ function Explore() {
 
   useEffect(() => {
     const tags = searchParams.get('tags')?.split(',')
-    const topics : [number, string][] = tags?.map(t => [Number(t), 'tag']) ?? []
+    const topics: [number, string][] = tags?.map(t => [Number(t), 'tag']) ?? []
     const author = searchParams.get('author')
     const keyword = searchParams.get('keyword')
 
-    if (author) topics.push([Number(author), 'author'])
-    
-      
+    if (author)
+      topics.push([Number(author), 'author'])
+
     addTopic(topics, true)
 
     if (!topics.length && !keyword) {

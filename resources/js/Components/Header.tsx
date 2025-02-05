@@ -1,3 +1,4 @@
+import type { Topic } from '../types/httpResponseTypes'
 import type { LinkProps } from './Link'
 import { Stack, Tooltip } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -9,7 +10,6 @@ import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
-import { Topic } from '../types/httpResponseTypes'
 
 export interface HeaderProps {
   pages: LinkProps[]
