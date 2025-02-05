@@ -7,22 +7,42 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Card, CardContent, colors, Divider, Typography } from '@mui/material'
+import React, { useEffect, useRef, useState } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
+import Vara, { VaraType } from '../../vara/Vara'
+import font from '../../vara/PacificoSLO.json'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
   isMobile?: boolean
+  updateQuote: (q: Quote) => void
 }
 
 export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   quote,
+  updateQuote,
   isMobile = true,
 }) => {
-  const { onLike, onSave } = useQuoteActions(quote)
+  const { onLike, onSave } = useQuoteActions(quote, updateQuote)
+  const varaRef = useRef<VaraType | null>(null);
+  useEffect(() => {
+    if (varaRef.current !== null) return
+    varaRef.current = new Vara("#vara-container", font, [
+      {
+        text: quote.author.full_name, // String, text to be shown
+        fontSize:17, // Number, size of the text
+        strokeWidth:1, // Width / Thickness of the stroke
+        color:"black", // Color of the text
+        duration:2000, // Number, Duration of the animation in milliseconds
+        autoAnimation:true, // Boolean, Whether to animate the text automatically
+        queued:true, // Boolean, Whether the animation should be in a queue
+        delay:0,     // Delay before the animation starts in milliseconds
+      }],{
+      })
+  });
 
   return (
     <Box sx={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', width: '100%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
@@ -54,11 +74,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         <Box sx={{ display: 'flex', gap: 1, marginTop: 1 }}>
           {quote.tags.map((tag, index) => <TagComponent key={index} {...tag} />)}
         </Box>
-
-        {/* Author Name */}
-        <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
-          {quote.author.full_name}
-        </Typography>
+        <div id="vara-container"></div>
       </Box>
     </Box>
   )

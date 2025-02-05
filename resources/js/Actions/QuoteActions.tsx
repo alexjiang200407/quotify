@@ -9,10 +9,9 @@ export interface QuoteActions {
   onSave: (e: React.MouseEvent, isActive: boolean) => void
 }
 
-export function useQuoteActions(quoteProps: Quote): QuoteActions {
+export function useQuoteActions(quoteProps: Quote, updateQuote: (q: Quote) => void): QuoteActions {
   const { handleHttpError } = useNotification()
   const token = useAppSelector(state => state.auth.token)
-  const { updateQuote } = useExplore()
   let prevState: Quote | null = null
 
   const onLike = (_e: React.MouseEvent, isActive: boolean) => {

@@ -121,6 +121,7 @@ function Explore() {
               index={index}
               quote={quote}
               onClick={handleCardClick}
+              updateQuote={updateQuote}
             />
           ))}
         </Box>
@@ -160,6 +161,7 @@ function Explore() {
 
             <ExpandedQuoteCard
               quote={search.data[selectedQuoteIndex]}
+              updateQuote={updateQuote}
             />
           </Box>
         )}

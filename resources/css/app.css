@@ -78,3 +78,11 @@
   src: url(../fonts/body-font.ttf) format("truetype");
   size-adjust: 100%;
 }
+
+
+#vara-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}

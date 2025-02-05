@@ -12,15 +12,17 @@ import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
+import { useExplore } from '../Pages/Explore'
 
 interface CompactCardProps {
   quote: Quote
   index: number
   onClick: (index: number) => void
+  updateQuote: (q: Quote) => void
 }
 
-export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick }) => {
-  const { onLike, onSave } = useQuoteActions(quote)
+export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote }) => {
+  const { onLike, onSave } = useQuoteActions(quote, updateQuote)
 
   return (
     <Card
