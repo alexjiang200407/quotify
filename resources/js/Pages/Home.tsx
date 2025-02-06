@@ -12,6 +12,14 @@ function Home() {
       full_name: 'William Shakespeare',
       wiki_page: 'https://en.wikipedia.org/wiki/William_Shakespeare',
       description: 'English playwright, poet, and actor, widely regarded as the greatest writer in the English language.',
+      signature: {
+        id: 1,
+        font_size: 20,
+        duration: 2000,
+        color: "black",
+        type: "default",
+        stroke_width: 0.5
+      }
     },
     tags: [
       { id: 1, label: 'Philosophy' },
