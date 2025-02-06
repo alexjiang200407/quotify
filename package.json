@@ -7,7 +7,8 @@
     "watch": "node ./node_modules/vite/bin/vite.js build --watch",
     "dev": "node ./node_modules/vite/bin/vite.js --host",
     "lint": "node ./node_modules/eslint/bin/eslint.js .",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint.js . --fix"
+    "lint-fix": "node ./node_modules/eslint/bin/eslint.js . --fix",
+    "tsc": "node ./node_modules/typescript/bin/tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
