@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('signatures', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('type');
+            $table->string('type')->unique();
             $table->unsignedInteger('font_size')->default(15);
             $table->unsignedInteger('stroke_width')->default(1);
             $table->unsignedInteger('duration')->default(2000);
