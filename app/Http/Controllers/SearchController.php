@@ -103,7 +103,7 @@ class SearchController extends Controller
                 ELSE FALSE
             END AS user_saved
         ")
-        ->with(['author', 'tags'])
+        ->with(['author', 'tags', 'author.signature'])
         ->withCount(['likes as upvotes', 'saves as saves'])
         ->orderByRaw('upvotes + saves DESC');
     }

@@ -13,7 +13,7 @@ class QuoteController extends Controller
         $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);
 
         $quote = Quote::where("quotes.id", "=", $data["quoteID"])
-            ->with(['author', 'tags'])
+            ->with(['author', 'tags', 'author.signature'])
             ->withCount(['likes as upvotes', 'saves as saves'])
             ->get();
 
@@ -32,7 +32,7 @@ class QuoteController extends Controller
         }
 
         $quote = Quote::where("quotes.id", "=", $daily[0]->quote_id)
-            ->with(['author', 'tags'])
+            ->with(['author', 'tags', 'author.signature'])
             ->withCount(['likes as upvotes', 'saves as saves'])
             ->get();
 
