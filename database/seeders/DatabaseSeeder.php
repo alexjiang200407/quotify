@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Quote;
+use App\Models\Signature;
 use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Signature::factory(5)->create();
         User::factory(10)->create();
         Author::factory(10)->create();
         Tag::factory(10)->create();

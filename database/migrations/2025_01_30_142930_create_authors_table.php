@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string("full_name", 512);
             $table->text("description");
             $table->string("wiki_page", 512);
+            $table->foreignId("signature_id");
+
+            $table->foreign("signature_id")
+                ->references("id")
+                ->on("signatures")
+                ->cascadeOnDelete();
         });
     }
 
