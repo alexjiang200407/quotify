@@ -39,6 +39,39 @@ class QuoteController extends Controller
         return response()->json($quote[0]);
     }
 
+    function getDailyAuth(Request $request) {
+        $daily = DB::select("SELECT quote_id from daily_quote");
+        
+        if (!$daily || !property_exists($daily[0], 'quote_id')) {
+            return response()->json(["error" => "No daily quote"], 500);
+        }
+        $user = $this->getUser($request)->id;
+
+        $quote1 = Quote::selectRaw("
+                quotes.*,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM quote_likes 
+                        WHERE quote_likes.quote_id = quotes.id AND quote_likes.user_id = $user
+                    ) THEN TRUE
+                    ELSE FALSE
+                END AS user_upvoted,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM quote_saves 
+                        WHERE quote_saves.quote_id = quotes.id AND quote_saves.user_id = $user
+                    ) THEN TRUE
+                    ELSE FALSE
+                END AS user_saved
+            ")
+            ->where("quotes.id", "=", $daily[0]->quote_id)
+            ->with(['author', 'tags'])
+            ->withCount(['likes as upvotes', 'saves as saves'])
+            ->get();
+
+        return response()->json($quote1[0]);
+    }
+
     function likeQuote(Request $request) {
         $user = $this->getUser($request);
         $data = $this->validateRequest($request, ["quoteID" => "required|numeric"]);

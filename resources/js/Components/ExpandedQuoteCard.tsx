@@ -28,6 +28,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
 }) => {
   const { onLike, onSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | null>(null);
+  
   useEffect(() => {
     if (varaRef.current !== null) return
     varaRef.current = new Vara("#vara-container", font, [
