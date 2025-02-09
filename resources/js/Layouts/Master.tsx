@@ -5,7 +5,7 @@ import type { HeaderProps } from '../Components/Header'
 import { ThemeProvider } from '@emotion/react'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from '../Components/Header'
+import Header, { HeaderProvider } from '../Components/Header'
 import { SearchBarProvider } from '../Components/SearchBar'
 
 export interface MasterProps {
@@ -18,14 +18,14 @@ function Master(props: MasterProps) {
     <div>
       <ThemeProvider theme={props.theme}>
         <SearchBarProvider>
-          <Header {...props.headerProps} />
-          <main>
-            {/* <NotificationProvider> */}
-            <section>
-              <Outlet />
-            </section>
-            {/* </NotificationProvider> */}
-          </main>
+          <HeaderProvider>
+            <Header {...props.headerProps} />
+            <main>
+              <section>
+                <Outlet />
+              </section>
+            </main>
+          </HeaderProvider>
         </SearchBarProvider>
       </ThemeProvider>
     </div>

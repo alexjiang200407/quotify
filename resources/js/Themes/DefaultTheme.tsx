@@ -4,8 +4,12 @@ import { createTheme, responsiveFontSizes } from '@mui/material'
 const defaultColorTheme = createTheme({
   palette: {
     primary: {
-      main: 'rgb(255,0,0)',
+      main: '#f04720',
     },
+    background: {
+      default: '#BFCCB8',
+      paper: '#F1EFE2'
+    }
   },
 })
 
@@ -19,6 +23,13 @@ export function createDefaultTheme(colorTheme: Theme = defaultColorTheme): Theme
       },
     },
     components: {
+      Box: {
+        styleOverrides: {
+          root: {
+            backgroundColor: ''
+          },
+        },
+      },
       MuiLink: {
         styleOverrides: {
           root: {
