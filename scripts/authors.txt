@@ -473,7 +473,7 @@ Jose Marti|https://en.wikipedia.org/wiki/Jose_Marti|Cuban airport serving Havana
 Robert Orben|https://en.wikipedia.org/wiki/Robert_Orben|Italian actor, comedian, screenwriter and director (born 1952)
 West Lee|https://en.wikipedia.org/wiki/West_Leederville,_Western_Australia|Town in Indiana, United States
 Dora Russell|https://en.wikipedia.org/wiki/Dora_Russell|British writer, feminist and socialist campaigner (1894–1986)
-Pelé|https://en.wikipedia.org/wiki/Pel%C3%A9|Brazilian footballer (1940–2022)
+Pele|https://en.wikipedia.org/wiki/Pel%C3%A9|Brazilian footballer (1940–2022)
 Wael Khairy||
 Cecelia Ahern|https://en.wikipedia.org/wiki/Cecelia_Ahern|Irish novelist (born 1981)
 Dwight Morrow|https://en.wikipedia.org/wiki/Dwight_Morrow|American politician and diplomat (1873–1931)
@@ -673,7 +673,6 @@ Dennis Miller|https://en.wikipedia.org/wiki/Dennis_Miller|American comedian and 
 Samuel Taylor Coleridge|https://en.wikipedia.org/wiki/Samuel_Taylor_Coleridge|English poet, literary critic and philosopher (1772–1834)
 Lupita Nyong'o|https://en.wikipedia.org/wiki/Lupita_Nyong%27o|Actress (born 1983)
 Jean Chatzky|https://en.wikipedia.org/wiki/Jean_Chatzky|American journalist (born 1964)
-André Gide|https://en.wikipedia.org/wiki/Andr%C3%A9_Gide|French author and Nobel laureate (1869–1951)
 Josh Billings|https://en.wikipedia.org/wiki/Josh_Billings|American humorist (1818–1885)
 Yasmin Mogahed|https://en.wikipedia.org/wiki/Yasmin_Mogahed|American Muslim Speaker
 Phil Pastoret||
@@ -809,7 +808,6 @@ Haile Gebrselassie|https://en.wikipedia.org/wiki/Haile_Gebrselassie|Ethiopian lo
 Frank Long|https://en.wikipedia.org/wiki/Frank_Long|British politician and social reformer
 John Ciardi|https://en.wikipedia.org/wiki/John_Ciardi|English cleric and cardinal (1801–1890)
 Stephen Vizinczey|https://en.wikipedia.org/wiki/Stephen_Vizinczey|Hungarian-Canadian writer (1933–2021)
-Pele|https://en.wikipedia.org/wiki/Pel%C3%A9|War between Athens and Sparta (431–404 BC)
 Michael J. Fox|https://en.wikipedia.org/wiki/Michael_J._Fox|Canadian and American actor (born 1961)
 Claude McDonald|https://en.wikipedia.org/wiki/Claude_McDonald|British Army officer and diplomat (1852–1915)
 The Office|https://en.wikipedia.org/wiki/The_Office|International series of mockumentary sitcoms

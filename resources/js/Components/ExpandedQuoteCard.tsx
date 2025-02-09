@@ -39,7 +39,8 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         autoAnimation:true, // Boolean, Whether to animate the text automatically
         queued:true, // Boolean, Whether the animation should be in a queue
         delay:0,     // Delay before the animation starts in milliseconds
-        x: 5
+        x: 5,
+        y: 5
       }],{
       })
   });

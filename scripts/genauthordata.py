@@ -10,7 +10,6 @@ import ssl
 
 API_URL = "https://en.wikipedia.org/w/api.php"
 
-# Must setup Quotify DB migrations with `php artisan migrate:fresh` before running this script
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--in-file', type=argparse.FileType('r', encoding="utf8"), required=True)
 parser.add_argument('-o', '--out-file', type=argparse.FileType('r+', encoding="utf8"), required=True)

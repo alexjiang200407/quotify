@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text("quote");
+            $table->string("quote", 512)->unique();
             $table->foreignId("author_id");
             
             $table->foreign("author_id")

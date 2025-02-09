@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("full_name", 512);
+            $table->string("full_name", 512)->unique();
             $table->text("description");
             $table->string("wiki_page", 512);
             $table->foreignId("signature_id");
