@@ -10,6 +10,7 @@ interface IconButtonProps {
   activeColor?: string
   defaultColor?: string
   startingActive?: boolean
+  size?: number
   onClick?: (e: React.MouseEvent<HTMLButtonElement>, active: boolean) => void
 }
 
@@ -18,6 +19,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   solidIcon,
   activeColor = 'red',
   defaultColor = 'black',
+  size = 24,
   startingActive = false,
   onClick,
 }) => {
@@ -45,7 +47,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
     >
       <FontAwesomeIcon
         icon={isActive ? solidIcon : icon}
-        style={{ color: isActive ? activeColor : defaultColor }}
+        style={{ color: isActive ? activeColor : defaultColor, fontSize: size}}
         className={`${isActive ? 'icon-pulse' : ''} icon-inactive`}
       />
     </MuiIconButton>
