@@ -11,10 +11,15 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = ["full_name", "description", "wiki_page"];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at', 'signature_id'];
 
     public function quotes()
     {
         return $this->hasMany(Quote::class);
+    }
+
+    public function signature()
+    {
+        return $this->belongsTo(Signature::class);
     }
 }

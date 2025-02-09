@@ -1,9 +1,19 @@
 import type { AxiosError } from 'axios'
 
+export interface Signature {
+  id: number,
+  font_size: number
+  duration: number
+  stroke_width: number
+  color: string
+  type: string
+}
+
 export interface Author {
   id: number
   full_name: string
   wiki_page: string
+  signature: Signature
   description: string
 }
 export interface Tag {

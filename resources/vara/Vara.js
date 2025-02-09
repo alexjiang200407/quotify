@@ -130,7 +130,6 @@ Vara.prototype.preCreate = function () {
   };
   // analyseWidth() will return an object containing breakPoints (positions where new line occurs)
   var widthAnalysis = this.analyseWidth();
-  this.svg.setAttribute("width", widthAnalysis.width)
 
   for (var k = 0; k < this.texts.length; k++) {
     var alteredText = [];
@@ -393,6 +392,7 @@ Vara.prototype.createText = function () {
     "height",
     this.svg.getBBox().height + this.svg.getBBox().y + 10
   );
+  this.svg.setAttribute("width", this.svg.getBBox().width + this.svg.getBBox().x + 10)
   if (this.readyF) this.readyF();
 };
 

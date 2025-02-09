@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Signature;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,10 @@ class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            "full_name" => $this->faker->name,
+            "full_name" => $this->faker->unique()->name,
             "description" => $this->faker->sentences(asText: true),
-            "wiki_page" => $this->faker->url
+            "wiki_page" => $this->faker->url,
+            "signature_id" => Signature::inRandomOrder()->first()
         ];
     }
 }

@@ -13,7 +13,7 @@ import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
 import Vara, { VaraType } from '../../vara/Vara'
-import font from '../../vara/PacificoSLO.json'
+import font from '../../vara/signatures/SatisfySL.json'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -34,15 +34,16 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
     varaRef.current = new Vara("#vara-container", font, [
       {
         text: quote.author.full_name, // String, text to be shown
-        fontSize: 30, // Number, size of the text
-        strokeWidth: 1, // Width / Thickness of the stroke
-        color: "black", // Color of the text
-        duration: 2000, // Number, Duration of the animation in milliseconds
-        autoAnimation: true, // Boolean, Whether to animate the text automatically
-        queued: true, // Boolean, Whether the animation should be in a queue
-        delay: 0,     // Delay before the animation starts in milliseconds
-      }], {
-    })
+        ...quote.author.signature,
+        strokeWidth: quote.author.signature.stroke_width,
+        fontSize: quote.author.signature.font_size,
+        autoAnimation:true, // Boolean, Whether to animate the text automatically
+        queued:true, // Boolean, Whether the animation should be in a queue
+        delay:0,     // Delay before the animation starts in milliseconds
+        x: 5,
+        y: 5
+      }],{
+      })
   });
 
   return (

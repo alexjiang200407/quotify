@@ -16,7 +16,7 @@ function TagComponent({ label, id }: Tag) {
         e.stopPropagation()
         navigate(`/spa/explore?tags=${id}`)
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        addTopic(id, 'tag', true)
+        addTopic([[id, 'tag']], true)
       }}
     />
   )

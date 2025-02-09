@@ -10,6 +10,7 @@ function Home() {
   const {handleHttpError} = useNotification()
   const [quote, setQuote] = useState<Quote|null>(null);
   const token = useAppSelector(state => state.auth.token)
+  
   useState(() => {
     let req;
     if (token) {
