@@ -1,12 +1,10 @@
 import type { Tag } from '../types/httpResponseTypes'
 import { Chip } from '@mui/material'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useExplore } from '../Pages/Explore'
+import { useSearchBar } from './SearchBar'
 
 function TagComponent({ label, id }: Tag) {
-  const navigate = useNavigate()
-  const { goToPage } = useExplore()
+  const { goToPage } = useSearchBar()
   return (
     <Chip
       label={label}

@@ -28,30 +28,30 @@ const collapseAnimation = keyframes`
 `
 
 interface ExploreContextType {
+  onExplorePage: boolean,
   updateQuote: (_: Quote) => void
-  goToPage: (tags: number[], author: number|null, keyword: string|null) => void
 }
 
 const ExploreContext = createContext<ExploreContextType>({
+  onExplorePage: false,
   updateQuote: (_: Quote) => console.error('ExplorePage not setup'),
-  goToPage: (_, _1, _2) => console.error('ExplorePage not setup')
 })
 
 export const useExplore = () => useContext(ExploreContext)
 
 function Explore() {
-  const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
+  const [] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const { addTopic } = useSearchBar()
+  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
   const { headerRef } = useHeader()
-  const navigate = useNavigate()
+  const [onExplorePage] = useState(true)
 
-  const handleCardClick = (index: number) => {
+  const handleCardClick = (index: number|null) => {
     setSelectedQuoteIndex(index)
     setIsAnimatingOut(false)
   }
@@ -88,24 +88,6 @@ function Explore() {
     setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)
   }
 
-  const goToPage = (tags: number[], author: number|null, keyword: string|null) => {
-    setSelectedQuoteIndex(null)
-
-    const authorQueryStr = author ? `author=${author}&` : ''
-    const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
-    const keywordQueryStr = keyword !== null ? `keyword=${keyword}` : ''
-
-    navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-
-    const topics = [...tags.map(t => [t, 'tag'] as [number, string])]
-    
-    if (author)
-      topics.push([author, 'author'])
-
-    addTopic(topics, true)
-  }
-
   const changePage = (page: number) => {
     const i = search?.links.find(link => Number(link.label) === page)
     if (i && i.url) {
@@ -137,7 +119,7 @@ function Explore() {
   }
 
   return (
-    <ExploreContext.Provider value={{ updateQuote, goToPage }}>
+    <ExploreContext.Provider value={{ onExplorePage, updateQuote }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
           {search?.data.map((quote, index) => (

@@ -36,9 +36,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | boolean>(false)
   const { addNotification } = useNotification()
-  const { addTopic } = useSearchBar()
-  const { goToPage } = useExplore()
-  const navigate = useNavigate()
+  const { goToPage } = useSearchBar()
 
   const getFont = (type: string) => {
     return import(`../../vara/signatures/${type}`)
