@@ -2,6 +2,7 @@ import type { Quote } from '../types/httpResponseTypes'
 import {
   faBookmark as regularBookmark,
   faHeart as regularHeart,
+  faClipboard,
 } from '@fortawesome/free-regular-svg-icons'
 import {
   faBookmark as solidBookmark,
@@ -15,7 +16,8 @@ import TagComponent from './Tag'
 import Vara, { VaraType } from '../../vara/Vara'
 import font from '../../vara/signatures/SatisfySL.json'
 import WikiPortrait from './WikiPortrait'
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
+import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
+import { useNotification } from './NotificationProvider'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -30,6 +32,25 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
 }) => {
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | null>(null);
+  const { addNotification } = useNotification()
+
+  const copyToClipboard = () => {
+    if (!window.isSecureContext) {
+      addNotification({ label: "Couldn't copy quote to clipboard", alert: 'error' })
+      return
+    }
+    
+    navigator.clipboard?.writeText(`${quote.quote} - ${quote.author.full_name}`)
+    .then(() => addNotification({ label: "Copied to clipboard", alert: 'success' }))
+    .catch(() => addNotification({ label: "Couldn't copy quote to clipboard", alert: 'error' }))
+  }
+
+  const openXPage = () => {
+    const authorUrl = quote.author.full_name.replace(/ /g, '').replaceAll('.',"")
+    const quoteUrl = quote.quote.replace(/ /g, '%20')
+    const tagsUrl = quote.tags.map(t => '%20%23' + t.label).join('')
+    window.open(`https://twitter.com/intent/tweet?text=“${quoteUrl}”%0a%0a%23${authorUrl}%20%23quotes${tagsUrl}`, '_blank')?.focus()
+  }
 
   useEffect(() => {
     if (varaRef.current !== null) return
@@ -97,10 +118,17 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         }}></Box>
         </Tooltip>
         </div>
-        <Box className="button-container" sx={{ display: 'flex', flexDirection: 'row', gap: 1, justifyContent: 'right', opacity: 0, transition: 'opacity 0.2s ease-in' }}>
+        <Box className="button-container" sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
+          justifyContent: 'right',
+          opacity: 0,
+          transition: 'opacity 0.2s ease-in'
+        }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
-              tooltip={"Like Quote"}
+              tooltip={canLikeSave()? "Like Quote" : "Please Login"}
               disabled={!canLikeSave()}
               icon={regularHeart}
               solidIcon={solidHeart}
@@ -113,7 +141,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
-              tooltip={"Save Quote"}
+              tooltip={canLikeSave()? "Save Quote" : "Please Login"}
               disabled={!canLikeSave()}
               icon={regularBookmark}
               solidIcon={solidBookmark}
@@ -134,6 +162,24 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
             defaultColor="#292929"
             size={30} 
             onClick={() => window.open(quote.author.wiki_page, '_blank')?.focus()} 
+          />
+          <IconButton
+            tooltip={'Copy Quote to Clipboard'}
+            toggle={false}
+            icon={faClipboard}
+            solidIcon={faClipboard}
+            defaultColor="#292929"
+            size={30} 
+            onClick={copyToClipboard} 
+          />
+          <IconButton
+            tooltip={'Post to X'}
+            toggle={false}
+            icon={faXTwitter}
+            solidIcon={faXTwitter}
+            defaultColor="#292929"
+            size={30} 
+            onClick={openXPage} 
           />
         </Box>
       </Box>
