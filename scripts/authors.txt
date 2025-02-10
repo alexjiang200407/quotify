@@ -817,3 +817,10 @@ Frank Semyon||
 Albert Camus|https://en.wikipedia.org/wiki/Albert_Camus|French philosopher and writer (1913–1960)
 Stephen Fry|https://en.wikipedia.org/wiki/Stephen_Fry|English actor, comedian and presenter (born 1957)
 Chuck Swindoll|https://en.wikipedia.org/wiki/Chuck_Swindoll|American pastor and writer
+Thomas Aquinas|https://en.wikipedia.org/wiki/Thomas_Aquinas|Influential Italian Dominican friar and priest (1225 - 1274)
+Geoffrey Chaucer|https://en.wikipedia.org/wiki/Geoffrey_Chaucer|English poet and author (c. 1340s – 1400)
+Roger Bacon|https://en.wikipedia.org/wiki/Roger_Bacon|English polymath, philosopher and friar (c.1219/20–c.1292)
+Diogenes|https://en.wikipedia.org/wiki/Diogenes|Diogenes of Sinope, was a Greek philosopher and one of the founders of Cynicism.
+Heraclitus|https://en.wikipedia.org/wiki/Heraclitus|Greek philosopher (late 6th/early 5th-century BC)
+Odyssey|https://en.wikipedia.org/wiki/Odyssey|Epic poem attributed to Homer
+Iliad|https://en.wikipedia.org/wiki/Iliad|Epic poem attributed to Homer

@@ -14,7 +14,6 @@ import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
 import Vara, { VaraType } from '../../vara/Vara'
-import font from '../../vara/signatures/SatisfySL.json'
 import WikiPortrait from './WikiPortrait'
 import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 import { useNotification } from './NotificationProvider'
@@ -33,10 +32,15 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   isMobile = true,
 }) => {
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
-  const varaRef = useRef<VaraType | null>(null);
+  const varaRef = useRef<VaraType | boolean>(false);
   const { addNotification } = useNotification()
   const { addTopic } = useSearchBar()
   const navigate = useNavigate()
+
+  const getFont = (type: string) => { 
+    console.log(type)
+    return import('../../vara/signatures/' + type)
+  }
 
   const authorSearch = () => {
     navigate(`/spa/explore?author=${quote.author.id}`)
@@ -63,20 +67,28 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   }
 
   useEffect(() => {
-    if (varaRef.current !== null) return
-    varaRef.current = new Vara("#vara-container", font, [
-      {
-        text: quote.author.full_name, // String, text to be shown
-        ...quote.author.signature,
-        strokeWidth: quote.author.signature.stroke_width,
-        fontSize: quote.author.signature.font_size,
-        autoAnimation:true, // Boolean, Whether to animate the text automatically
-        queued:true, // Boolean, Whether the animation should be in a queue
-        x: 5,
-        y: 5
-      }],{
-        textAlign: 'center'
-      }) 
+    if (varaRef.current !== false) return
+    
+    varaRef.current = true
+
+    getFont(quote.author.signature.type)
+    .then(font => {
+      varaRef.current = new Vara("#vara-container", font, [
+        {
+          text: quote.author.full_name, // String, text to be shown
+          color: quote.author.signature.color,
+          duration: quote.author.signature.duration * quote.author.full_name.length,
+          strokeWidth: quote.author.signature.stroke_width,
+          fontSize: quote.author.signature.font_size,
+          letterSpacing: quote.author.signature.letter_spacing,
+          autoAnimation:true, // Boolean, Whether to animate the text automatically
+          queued:true, // Boolean, Whether the animation should be in a queue
+          x: 5,
+          y: 5
+        }],{
+          textAlign: 'center'
+        }) 
+    })
   });
 
   return (

@@ -128,7 +128,7 @@ I'll either find a way or make one.|Latin Proverb|Roman,Proverbs,Determination
 From the errors of others a wise man corrects his own.|Publilius Syrus|Roman,Wisdom
 There's no coming to consciousness without pain.|Carl Gustav Jung|Psychology,Self-Reflection
 If you want to fly, you have to give up what weighs you down.|Roy T. Bennett|Motivational,Life
-All hope abandon, ye who enter here.|Dante Alighieri|Poetry,Despair
+All hope abandon, ye who enter here.|Dante Alighieri|Poetry,Despair,Medieval
 If you really look closely, most overnight successes took a long time.|Steve Jobs|Entrepreneur,Motivational,Success
 Life really does begin at 40; up until then you are just doing research.|Carl Gustav Jung|Psychology,Life
 If you are patient in a moment of anger, you will escape hundred days of sorrow.|English Proverb|Proverbs,Patience
@@ -142,7 +142,7 @@ A man should never be ashamed to own that he has been in the wrong, which is but
 Beat the 5 o’clock rush, leave work at noon.|Anonymous|Unknown Author,Funny,Humor
 That best portion of a good man's life, — His little, nameless, unremembered acts of kindness and of love.|William Wordsworth|Victorian,Romanticism,Poetry,Kindness
 Do the hard jobs first. The easy jobs will take care of themselves.|Dale Carnegie|Motivational,Productivity
-Into the eternal darkness, into fire and into ice.|Dante Alighieri|Poetry,Despair
+Into the eternal darkness, into fire and into ice.|Dante Alighieri|Poetry,Despair,Medieval
 All people are equal, it is not birth, it is virtue alone that makes the difference.|Voltaire|France,Equality
 What is adequacy? Adequacy is no standard at all.|Winston Churchill|Funny,Standards
 Only the wisest and stupidest of men never change.|Confucius|China,Change
@@ -380,7 +380,7 @@ Never let the fear of striking out keep you from playing the game.|Babe Ruth|Spo
 You do not fatten a pig by weighing it.|English Proverb|Proverbs,Action
 Although the world is full of suffering, it is also full of the overcoming of it.|Helen Keller|Motivational,Resilience
 All generalizations are false, including this one.|Mark Twain|Funny,Humor
-There is no greater sorrow than to recall a happy time when miserable.|Dante Alighieri|Poetry,Sorrow
+There is no greater sorrow than to recall a happy time when miserable.|Dante Alighieri|Poetry,Sorrow,Medieval
 Luck is a matter of preparation meeting opportunity.|Seneca|Roman,Opportunity
 My mission in life is not merely to survive, but to thrive.|Maya Angelou|Civil Rights,Life
 Either you run the day or the day runs you.|Jim Rohn|Motivational,Time Management
@@ -568,10 +568,10 @@ Live as if you were to die tomorrow. Learn as if you were to live forever.|Mahat
 Give me a lever long enough and a fulcrum on which to place it, and I shall move the world.|Archimedes|Ancient Greece,Science
 Wisdom outweighs any wealth.|Sophocles|Ancient Greece,Playwright,Wisdom
 For everything that lives is holy, life delights in life.|William Blake|Victorian,Romanticism,Life
-My course is set for an uncharted sea.|Dante Alighieri|Poetry,Adventure
+My course is set for an uncharted sea.|Dante Alighieri|Poetry,Adventure,Medieval
 You are what you do, not what you say you'll do.|Carl Gustav Jung|Psychology,Action
 Cinema is the most beautiful fraud in the world.|Jean Luc Godard|France,Film,Art
-In the middle of the journey of our life I found myself within a dark woods where the straight way was lost.|Dante Alighieri|Poetry,Journey
+In the middle of the journey of our life I found myself within a dark woods where the straight way was lost.|Dante Alighieri|Poetry,Journey,Medieval
 I've learned that no matter what happens, or how bad it seems today, life does go on, and it will be better tomorrow.|Maya Angelou|Civil Rights,Optimism
 A classic is a book which people praise and don't read.|Mark Twain|Funny,Humor
 So long as men can breathe or eyes can see, So long lives this, and this gives life to thee.|William Shakespeare|Renaissance,Love
@@ -610,8 +610,8 @@ Hard times arouse an instinctive desire for authenticity.|Coco Chanel|France,Lif
 My wish was to see a king, not corpses.|Augustus|Roman,History
 You will never do anything in this world without courage. It is the greatest quality of the mind next to honor.|Aristotle|Ancient Greece,Courage
 The word 'happy' would lose its meaning if it were not balanced by sadness.|Carl Gustav Jung|Psychology,Philosophy
-Do not be afraid; our fate cannot be taken from us; it is a gift.|Dante Alighieri|Poetry,Fate
-Lost are we, and are only so far punished, that without hope we live on in desire.|Dante Alighieri|Poetry,Despair
+Do not be afraid; our fate cannot be taken from us; it is a gift.|Dante Alighieri|Poetry,Fate,Medieval
+Lost are we, and are only so far punished, that without hope we live on in desire.|Dante Alighieri|Poetry,Despair,Medieval
 Nothing is impossible. The word itself says “I’m possible!|Audrey Hepburn|Hollywood,Motivational
 Nothing great in the world was accomplished without passion.|Georg Wilhelm Friedrich Hegel|Germany,Passion
 And one has to understand that braveness is not the absence of fear but rather the strength to keep on going forward despite the fear.|Paulo Coelho|Motivational,Courage
@@ -624,7 +624,7 @@ Show me a sane man and I will cure him for you.|Carl Gustav Jung|Psychology,Humo
 Life always has an unhappy ending, but you can have a lot of fun along the way, and everything doesn't have to be dripping in deep significance.|Roger Ebert|Film,Life
 Everything yields to diligence.|Antiphanes|Ancient Greece,Work
 It takes two to make a quarrel.|English Proverb|Proverbs,Conflict
-Justice does not descend from its own pinnacle.|Dante Alighieri|Poetry,Justice
+Justice does not descend from its own pinnacle.|Dante Alighieri|Poetry,Justice,Medieval
 After victory, tighten your helmet chord.|English Proverb|Proverbs,Preparation
 Life is an unfoldment, and the further we travel the more truth we can comprehend.|Hypatia|Roman,Truth,Philosophy
 I haven't understood a bar of music in my life, but I have felt it.|Igor Stravinsky|Russia,Music
@@ -858,7 +858,7 @@ Fade far away, dissolve, and quite forget, What thou among the leaves hast never
 If your actions inspire others to dream more, learn more, do more and become more, you are a leader.|John Quincy Adams|Founding Fathers,US President,Leadership
 Even the darkest night will end and the sun will rise.|Victor Hugo|France,Romanticism,Hope
 The grass is greener on the other side of fence.|English Proverb|Proverbs,Perspective
-For pride and avarice and envy are the three fierce sparks that set all hearts ablaze.|Dante Alighieri|Poetry,Philosophy
+For pride and avarice and envy are the three fierce sparks that set all hearts ablaze.|Dante Alighieri|Poetry,Philosophy,Medieval
 If you want a wise answer, ask a reasonable question.|Johann Wolfgang von Goethe|Germany,Wisdom
 What you get by achieving your goals is not as important as what you become by achieving your goals.|Zig Ziglar|Motivational,Goals
 Before you marry a person, you should first make them use a computer with slow internet to see who they really are.|Will Ferrell|Funny,Humor
@@ -932,7 +932,7 @@ Mostly it is loss which teaches us about the worth of things.|Arthur Schopenhaue
 If I cannot move heaven, I will raise hell.|Virgil|Roman,Determination
 Laughter is timeless, imagination has no age, dreams are forever.|Walt Disney|Hollywood,Imagination
 When you know what you want, and want it bad enough, you'll find a way to get it.|Jim Rohn|Motivational,Determination
-A mighty flame follows a tiny spark.|Dante Alighieri|Poetry,Inspiration
+A mighty flame follows a tiny spark.|Dante Alighieri|Poetry,Inspiration,Medieval
 Half a loaf is better than none.|English Proverb|Proverbs,Wisdom
 The wise man does not grow old, but ripens.|Victor Hugo|France,Romanticism,Wisdom
 Often it does seem a pity that Noah and his party did not miss the boat.|Mark Twain|Funny,Humor
@@ -969,7 +969,7 @@ Give every man thy ear, but few thy voice.|William Shakespeare|Renaissance,Wisdo
 Curiosity is insubordination in its purest form.|Vladimir Nabokov|Russia,Curiosity
 All the great utterances of man have to be judged not by the letter but by the spirit — the spirit which unfolds itself with the growth of life in history.|Rabindranath Tagore|India,Philosophy
 Necessity is the mother of invention.|English Proverb|Proverbs,Innovation
-The hottest places in hell are reserved for those who, in times of great moral crisis, maintain their neutrality.|Dante Alighieri|Poetry,Ethics
+The hottest places in hell are reserved for those who, in times of great moral crisis, maintain their neutrality.|Dante Alighieri|Poetry,Ethics,Medieval
 The fellow who never makes a mistake takes his orders from one who does.|Anonymous|Unknown Author,Humor
 Fortune is not on the side of the faint-hearted.|Sophocles|Ancient Greece,Playwright,Courage
 A good listener is a silent flatterer.|English Proverb|Proverbs,Listening
@@ -1024,7 +1024,7 @@ Folks are usually about as happy as they make their minds up to be.|Abraham Linc
 Pay attention to your enemies, for they are the first to discover your mistakes.|Antisthenes|Ancient Greece,Philosophy
 Only those who will risk going too far can possibly find out how far one can go.|T.S. Eliot|Modernism,Perseverance
 Most people work just hard enough not to get fired and get paid just enough money not to quit.|George Carlin|Funny,Humor
-You did thirst for blood, and with blood I fill you.|Dante Alighieri|Poetry,Philosophy
+You did thirst for blood, and with blood I fill you.|Dante Alighieri|Poetry,Philosophy,Medieval
 People rarely succeed unless they have fun in what they are doing.|Dale Carnegie|Motivational,Success
 All authority is in the throne; and what is the throne? This wooden frame covered with velvet? No, I am the throne.|Napoleon Bonaparte|France,Conquerors,Power
 History Doesn't Repeat Itself, but It Often Rhymes.|Mark Twain|Funny,History
@@ -1053,7 +1053,7 @@ At dawn, when you have trouble getting out of bed, tell yourself: 'I have to go 
 The measure of a man is what he does with power.|Plato|Ancient Greece,Philosophy
 Happiness is an allegory, unhappiness is a story.|Leo Tolstoy|Russia,Philosophy
 You will face many defeats in life, but never let yourself be defeated.|Maya Angelou|Civil Rights,Resilience
-So bitter is it, death is little more;|Dante Alighieri|Poetry,Philosophy
+So bitter is it, death is little more;|Dante Alighieri|Poetry,Philosophy,Medieval
 Which death is preferable to every other? The unexpected.|Julius Caesar|Conquerors,Roman,Philosophy
 I did not have sexual relations with that woman.|Bill Clinton|Funny,US President,Humor
 Motivation gets you going and habit gets you there.|Zig Ziglar|Motivational,Success
@@ -1086,7 +1086,7 @@ The only free cheese is in the mousetrap.|English Proverb|Proverbs,Cynical
 Common sense is instinct. Enough of it is genius.|George Bernard Shaw|Playwright,Wisdom
 It's hard to beat a person who never gives up.|Babe Ruth|Sports,Perseverance
 Happiness is not by chance, but by choice.|Jim Rohn|Motivational,Happiness
-Fate's arrow, when expected, travels slow.|Dante Alighieri|Poetry,Philosophy
+Fate's arrow, when expected, travels slow.|Dante Alighieri|Poetry,Philosophy,Medieval
 Your pain is the breaking of the shell that encloses your understanding.|Kahlil Gibran|Poetry,Philosophy
 Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma - which is living with the results of other people's thinking.|Steve Jobs|Entrepreneur,Motivational,Life
 One thing I know, that I know nothing. This is the source of my wisdom.|Socrates|Ancient Greece,Philosophy
@@ -1115,7 +1115,7 @@ A man wearing a funny hat is not funny. But if the man doesn't know he's wearing
 Doubt is the origin of wisdom.|Rene Descartes|Renaissance,Philosophy
 Everything is funny as long as it is happening to somebody else.|Will Rogers|Funny,Humor
 Deep calls to deep.|Latin Proverb|Roman,Proverbs,Philosophy
-As phantoms frighten beasts when shadows fall.|Dante Alighieri|Poetry,Philosophy
+As phantoms frighten beasts when shadows fall.|Dante Alighieri|Poetry,Philosophy,Medieval
 I will not steal my victory.|Alexander the Great|Conquerors,Ancient Greece
 Life isn’t about finding yourself. Life is about creating yourself.|George Bernard Shaw|Playwright,Life
 Concision in style, precision in thought, the decision in life.|Victor Hugo|France,Romanticism,Philosophy
@@ -1426,7 +1426,7 @@ I have no regrets in my life. I think that everything happens to you for a reaso
 There's nothing greater than a challenge.|Terry Bradshaw|Inspiration,Challenge
 No one understands and appreciates the American Dream of hard work leading to material rewards better than a non-American.|Anthony Bourdain|Hard Work,Success
 You do not find the happy life. You make it.|Camilla Eyring Kimball|Happiness,Life
-All battles are first won or lost, in the mind.|Joan of Arc|Mindset,Success
+All battles are first won or lost, in the mind.|Joan of Arc|Mindset,Success,Medieval,France
 Sometimes I’ll start a sentence, and I don’t even know where it’s going. I just hope I find it along the way.|Michael Scott|Humor,Life
 The future belongs to those who prepare for it today.|Malcolm X|Preparation,Future
 Don't sit down and wait for the opportunities to come. Get up and make them.|Madam C.J Walker|Opportunity,Action
@@ -2024,3 +2024,37 @@ If you are going to try, go all the way, otherwise don't even start.|Charles Buk
 We are all faced with a series of great opportunities brilliantly disguised as impossible situations.|Chuck Swindoll|Opportunity,Perseverance
 In three words I can sum up everything I've learned about life: it goes on.|Robert Frost|Life,Resilience
 Ingenuity, plus courage, plus work, equals miracles.|Bob Richards|Ingenuity,Courage
+Carthago delenda est (Carthage must be destroyed).|Cato the Elder|Roman,War
+Ad astra per aspera (Through hardship to the stars).|Latin Proverb|Roman,Resilience,Hardship
+Memento mori (Remember that you will die).|Latin Proverb|Roman,Death
+The things that we love tell us what we are.|Thomas Aquinas|Medieval,Love
+The Study of philosophy is not that we may know what men have thought, but what the truth of things is.|Thomas Aquinas|Medieval,Truth,Philosophy
+Rarely affirm, seldom deny, always distinguish.|Thomas Aquinas|Medieval,Philosophy,Skepticism,Critical Thinking
+Patience is a conquering virtue.|Geoffrey Chaucer|Medieval,Patience
+The life so short, the craft so long to learn.|Geoffrey Chaucer|Medieval,Education
+What is better than wisdom? A woman. And what is better than a good woman? Nothing.|Geoffrey Chaucer|Medieval,Love,Wisdom
+Nothing Ventured, Nothing Gained|Geoffrey Chaucer|Medieval,Risk Taking
+Life is short. Art long. Opportunity is fleeting. Experience treacherous. Judgement difficult.|Geoffrey Chaucer|Medieval,Life
+How potent is the fancy! People are so impressionable, they can die of imagination.|Geoffrey Chaucer|Medieval,Overthinking
+Time and Tide wait for no man|Geoffrey Chaucer|Medieval,Death
+Youth may outrun the old, but not outwit.|Geoffrey Chaucer|Medieval
+By God, if women had written stories!|Geoffrey Chaucer|Medieval
+It seems to me that poverty is an eyeglass through which one may see his true friends.|Geoffrey Chaucer|Medieval,Poverty,Friendship
+Reasoning draws a conclusion, but does not make the conclusion certain, unless the mind discovers it by the path of experience.|Roger Bacon|Medieval,Experience
+It is not that I am mad, it is only that my head is different from yours.|Diogenes|Ancient Greece
+Alexander the Great found the philosopher looking attentively at a pile of human bones. Diogenes explained, "I am searching for the bones of your father but cannot distinguish them from those of a slave.|Diogenes|Ancient Greece,Death
+Of what use is a philosopher who doesn't hurt anybody's feelings?|Diogenes|Ancient Greece,Philosophy
+In a rich man's house there is no place to spit but his face.|Diogenes|Ancient Greece,Roast,Funny,Humor
+I am a citizen of the world.|Diogenes|Ancient Greece
+The foundation of every state is the education of its youth.|Diogenes|Ancient Greece,Education
+It takes a wise man to discover a wise man.|Diogenes|Ancient Greece
+Dogs and philosophers do the greatest good and get the fewest rewards.|Diogenes|Ancient Greece
+I have nothing to ask but that you would remove to the other side, that you may not, by intercepting the sunshine, take from me what you cannot give. (To Alexander the Great)|Diogenes|Ancient Greece,Knowledge
+Poverty is a virtue which one can teach oneself.|Diogenes|Ancient Greece,Poverty
+No man is hurt but by himself|Diogenes|Ancient Greece
+What I like to drink most is wine that belongs to others.|Diogenes|Ancient Greece,Funny,Humor
+I am Diogenes the Dog. I nuzzle the kind, bark at the greedy and bite scoundrels.|Diogenes|Ancient Greece
+If I gained one thing from philosophy is that at the very least, I am well prepared to confront any change in fortune.|Diogenes|Ancient Greece,Change,Philosophy
+Everything flows and nothing abides.|Heraclitus|Ancient Greece,Change
+Stay strong, heart, for you have seen worse sights than this.|Odyssey|Ancient Greece,Poetry,Resilience
+Be both a speaker of words and a doer of deeds.|Iliad|Ancient Greece,Poetry,Action

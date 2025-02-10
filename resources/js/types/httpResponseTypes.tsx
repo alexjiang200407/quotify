@@ -7,6 +7,7 @@ export interface Signature {
   stroke_width: number
   color: string
   type: string
+  letter_spacing: number
 }
 
 export interface Author {

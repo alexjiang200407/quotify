@@ -1,0 +1,6 @@
+greek|30|0.55|1|225|#362322|Plato,Greek Proverb,Socrates,Epicurus,Aeschylus,Pericles,Agesilaus,Aristotle,Alexander the Great,Sophocles,Archimedes,Aesop,Hippocrates,Antiphanes,Euripides,Diogenes,Heraclitus,Homer
+roman|30|0.7|1|300|#D32929|Latin Proverb,Ovid,Pompey,Seneca,Marcus Aurelius,Publilius Syrus,Julius Caesar,Augustus,Marcus Tullius Cicero,Titus Maccius Plautus,Publius Vergilius Maro,Hypatia,Cato the Elder,Virgil,Scipio Africanus,Quintus Horatius Flaccus
+russian|30|1|1|225|black|Maxim Gorky,Vladimir Ilyich Lenin,Aleksandr Solzhenitsyn,Anton Chekhov,Joseph Stalin,Dmitri Shostakovich,Fyodor Dostoevsky,Mikhail Zadornov,Leo Tolstoy
+disney|25|0.45|1|300|black|Walt Disney
+picasso|30|0.55|1|225|black|Pablo Picasso
+medieval|20|1|2|225|#292929|Dante Alighieri,Thomas Aquinas,Geoffrey Chaucer,Joan of Arc
