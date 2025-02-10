@@ -12,7 +12,6 @@ import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
-import { useExplore } from '../Pages/Explore'
 
 interface CompactCardProps {
   quote: Quote
@@ -33,6 +32,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
         'cursor': 'pointer',
         'transition': 'transform 0.2s',
         '&:hover': { transform: 'scale(1.01)' },
+        backgroundColor: '#f5f5f5'
       }}
     >
       <CardContent sx={{ 'flexGrow': 1, 'overflow': 'hidden', 'padding': 0, '&:last-child': { pb: 0 } }}>
@@ -74,7 +74,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
             <IconButton
               icon={regularBookmark}
               solidIcon={solidBookmark}
-              activeColor="blue"
+              activeColor="teal"
               defaultColor="black"
               onClick={onSave}
               startingActive={quote.user_saved}

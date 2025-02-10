@@ -50,10 +50,11 @@ class SearchController extends Controller
         if (!$tags && !$author && $keyword == "") {
             return response()->json(["error" => "Search query must include at least one tag, author, or keyword"], 400);
         } 
-      
-        return response()->json($this->searchQuery($author, $tags, $keyword, $this->getUser($request)->id)
-            ->paginate(10)
-            ->appends(request()->query())
+        
+        $page = $this->searchQuery($author, $tags, $keyword, $this->getUser($request)->id)
+            ->paginate(10)->appends(request()->query());
+        return response()->json(
+            $page
         );
     }
 
@@ -71,16 +72,16 @@ class SearchController extends Controller
     public function searchQuery(string|null $author, array|null $tags, string|null $keyword, string|null $user) {
         $user = $user ? $user : '-1';
         return Quote::join('authors', 'authors.id', 'quotes.author_id')
-        ->when(!empty($author), function ($query) use ($author) {
-            $query->where('quotes.author_id', '=', $author);
-        })
         ->leftJoin('quote_tags', 'quote_tags.quote_id', '=', 'quotes.id')
         ->leftJoin('tags', 'tags.id', '=', 'quote_tags.tag_id')
         ->when(!empty($tags), function ($query) use ($tags) {
             $tag_count = count($tags);
             $query->whereIn('tags.id', $tags)
-                ->groupBy('quotes.id')
-                ->havingRaw("count(*) = $tag_count");
+            ->groupBy('quotes.id')
+            ->havingRaw("count(*) = $tag_count");
+        })
+        ->when(!empty($author), function ($query) use ($author) {
+            $query->where('quotes.author_id', '=', $author);
         })
         ->when($keyword, function ($query) use ($keyword) {
             $query->whereRaw("quotes.quote LIKE '%$keyword%' OR authors.full_name LIKE '%$keyword%'");
@@ -104,8 +105,7 @@ class SearchController extends Controller
             END AS user_saved
         ")
         ->with(['author', 'tags', 'author.signature'])
-        ->withCount(['likes as upvotes', 'saves as saves'])
-        ->orderByRaw('upvotes + saves DESC');
+        ->withCount(['likes as upvotes', 'saves as saves']);
     }
 
 

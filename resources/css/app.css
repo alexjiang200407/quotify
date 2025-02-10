@@ -69,20 +69,28 @@
 
 @font-face {
   font-family: 'logo-font';
-  src: url(../fonts/logo-font.ttf) format("truetype");
+  src: url(./logo-font.ttf) format("truetype");
   size-adjust: 140%;
 }
 
 @font-face {
   font-family: 'body-font';
-  src: url(../fonts/body-font.ttf) format("truetype");
+  src: url(./body-font.ttf) format("truetype");
   size-adjust: 100%;
 }
 
+main {
+  background-color: #F1EFE2;
+  min-height: 100vh;
+}
 
 #vara-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  width: 100%;
+}
+
+#vara-svg {
+  width: 100%;
 }

@@ -58,9 +58,6 @@ const WikiPortrait = ({ personName, width = 200, height = 200 }: WikiPortraitPro
     fetchImage();
   }, [personName, width, height]);
 
-  if (error) return <div>{error}</div>;
-  if (!imageUrl) return <div>Loading...</div>;
-
   return (
     <div style={{ 
       width: `${width}px`, 
@@ -70,8 +67,7 @@ const WikiPortrait = ({ personName, width = 200, height = 200 }: WikiPortraitPro
       boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
     }}>
       <img
-        src={imageUrl}
-        alt={`Portrait of ${personName}`}
+        src={!imageUrl || error ? undefined : imageUrl}
         style={{
           width: '100%',
           height: '100%',

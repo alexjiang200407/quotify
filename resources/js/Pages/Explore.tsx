@@ -15,6 +15,7 @@ import { PaginationSystem } from '../Components/PaginationSystem'
 import { useSearchBar } from '../Components/SearchBar'
 import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
+import { useHeader } from '../Components/Header'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -45,6 +46,7 @@ function Explore() {
   const { addTopic } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
+  const {headerRef} = useHeader()
 
   const handleCardClick = (index: number) => {
     setSelectedQuoteIndex(index)
@@ -56,6 +58,8 @@ function Explore() {
   }
 
   useEffect(() => {
+    setSelectedQuoteIndex(null)
+
     const tags = searchParams.get('tags')?.split(',')
     const topics: [number, string][] = tags?.map(t => [Number(t), 'tag']) ?? []
     const author = searchParams.get('author')
@@ -105,7 +109,7 @@ function Explore() {
   }
   if (!search?.data.length) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
         <Typography>Please Enter a Search Query</Typography>
       </Box>
     )
@@ -113,7 +117,7 @@ function Explore() {
 
   return (
     <ExploreContext.Provider value={{ updateQuote }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '200px', padding: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
           {search?.data.map((quote, index) => (
             <CompactCard

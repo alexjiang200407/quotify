@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
@@ -38,8 +38,33 @@ function Logo() {
   )
 }
 
+interface HeaderContextType {
+  headerRef: React.RefObject<HTMLElement|null>|undefined
+}
+
+const HeaderContext = createContext<HeaderContextType>({
+  headerRef: undefined
+})
+
+interface HeaderProviderProps {
+  children: React.ReactNode
+}
+
+export const HeaderProvider = ({children} : HeaderProviderProps) => {
+  const headerRef = useRef(null)
+
+  return (
+    <HeaderContext.Provider value={{ headerRef }}>
+      {children}
+    </HeaderContext.Provider>
+  )
+}
+
+export const useHeader = () => useContext(HeaderContext)
+
 function Header(props: HeaderProps) {
   const [scrollPosition, setScrollPosition] = useState(window.screenY)
+  const {headerRef} = useHeader()
   const handleScroll = () => {
     const position = window.pageYOffset
     setScrollPosition(position)
@@ -73,6 +98,7 @@ function Header(props: HeaderProps) {
         boxShadow: 'none',
         overflow: 'visible',
       }}
+      ref={headerRef}
     >
       <Container>
         <Stack

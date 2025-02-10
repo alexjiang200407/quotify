@@ -35,17 +35,9 @@ function Home() {
       }}
     >
       {/* Add a container with 800px width */}
-      <Box sx={{ width: 800 }}>
-        <Typography variant="h3" sx={{ textAlign: 'center', zIndex: 2 }}>
-          Quote of the Day
-        </Typography>
-
-        {quote && (
-          <Box sx={{ position: 'relative', zIndex: 1 }}>
-            <ExpandedQuoteCard quote={quote} updateQuote = {setQuote} />
-          </Box>
-        )}
-      </Box>
+      {quote && (
+        <ExpandedQuoteCard quote={quote} updateQuote = {setQuote} />
+      )}
     </Box>
   )
 }
