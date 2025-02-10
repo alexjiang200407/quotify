@@ -58,6 +58,8 @@ function Explore() {
   }
 
   useEffect(() => {
+    setSelectedQuoteIndex(null)
+
     const tags = searchParams.get('tags')?.split(',')
     const topics: [number, string][] = tags?.map(t => [Number(t), 'tag']) ?? []
     const author = searchParams.get('author')
