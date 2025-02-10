@@ -45,23 +45,25 @@ export const IconButton: React.FC<IconButtonProps> = ({
 
   return (
     <Tooltip title={tooltip} arrow>
-      <MuiIconButton
-        disabled={disabled}
-        sx={{
-          'backgroundColor': 'transparent',
-          '&:hover': { backgroundColor: 'transparent' },
-          '&:active': { backgroundColor: 'transparent' },
-          '&:focus': { backgroundColor: 'transparent' },
-          'opacity': disabled ? 0.3 : 1,
-        }}
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon
-          icon={isActive && toggle ? solidIcon : icon}
-          style={{ color: isActive && toggle ? activeColor : defaultColor, fontSize: size }}
-          className={`${isActive ? 'icon-pulse' : ''} icon-inactive`}
-        />
-      </MuiIconButton>
+      <span>
+        <MuiIconButton
+          disabled={disabled}
+          sx={{
+            'backgroundColor': 'transparent',
+            '&:hover': { backgroundColor: 'transparent' },
+            '&:active': { backgroundColor: 'transparent' },
+            '&:focus': { backgroundColor: 'transparent' },
+            'opacity': disabled ? 0.3 : 1,
+          }}
+          onClick={handleClick}
+        >
+          <FontAwesomeIcon
+            icon={isActive && toggle ? solidIcon : icon}
+            style={{ color: isActive && toggle ? activeColor : defaultColor, fontSize: size }}
+            className={`${isActive ? 'icon-pulse' : ''} icon-inactive`}
+          />
+        </MuiIconButton>
+      </span>
     </Tooltip>
   )
 }
