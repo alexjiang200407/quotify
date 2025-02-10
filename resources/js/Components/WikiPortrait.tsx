@@ -62,8 +62,8 @@ function WikiPortrait({ personName, width = 200, height = 200 }: WikiPortraitPro
 
   return (
     <Box sx={{
-      width: width,
-      height: height,
+      width,
+      height,
       overflow: 'visible',
     }}
     >

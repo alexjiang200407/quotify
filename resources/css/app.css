@@ -26,6 +26,7 @@
   
 .expanded-view {
   animation: fadeIn 0.3s ease;
+  /* color: #327f92, */
 }
 
 @keyframes fadeIn {

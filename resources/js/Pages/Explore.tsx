@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useHeader } from '../Components/Header'
@@ -28,7 +28,7 @@ const collapseAnimation = keyframes`
 `
 
 interface ExploreContextType {
-  onExplorePage: boolean,
+  onExplorePage: boolean
   updateQuote: (_: Quote) => void
 }
 
@@ -40,7 +40,6 @@ const ExploreContext = createContext<ExploreContextType>({
 export const useExplore = () => useContext(ExploreContext)
 
 function Explore() {
-  const [] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
@@ -51,7 +50,7 @@ function Explore() {
   const { headerRef } = useHeader()
   const [onExplorePage] = useState(true)
 
-  const handleCardClick = (index: number|null) => {
+  const handleCardClick = (index: number | null) => {
     setSelectedQuoteIndex(index)
     setIsAnimatingOut(false)
   }

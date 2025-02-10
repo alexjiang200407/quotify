@@ -4,9 +4,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
 import React, { createContext, useContext, useRef, useState } from 'react'
-import { useAppSelector } from '../Datastore/hooks'
-import { useExplore } from '../Pages/Explore'
 import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../Datastore/hooks'
 
 export interface SearchBarProps {
   label: string
@@ -23,9 +22,9 @@ interface SearchBarContextType {
   selectedTags: Map<string, Topic>
   tagCount: number
   addTopic: (idAndType: [number, string][], clear?: boolean) => void
-  goToPage: (tags: number[], author: number|null, keyword: string|null) => void
-  selectedQuoteIndex: number|null
-  setSelectedQuoteIndex: (idx: number|null) => void
+  goToPage: (tags: number[], author: number | null, keyword: string | null) => void
+  selectedQuoteIndex: number | null
+  setSelectedQuoteIndex: (idx: number | null) => void
 }
 
 interface SearchBarProviderProps {
@@ -38,9 +37,9 @@ const SearchBarContext = createContext<SearchBarContextType>({
   selectedTags: new Map(),
   tagCount: 0,
   addTopic: (_1: [number, string][], _2?: boolean) => console.warn('SearchBar Provider not setup'),
-  goToPage: (_1: number[], _2: number|null, _3: string|null) => console.warn('SearchBar Provider not setup'),
+  goToPage: (_1: number[], _2: number | null, _3: string | null) => console.warn('SearchBar Provider not setup'),
   selectedQuoteIndex: null,
-  setSelectedQuoteIndex: (_: number|null) => console.warn('SearchBar Provider not setup')
+  setSelectedQuoteIndex: (_: number | null) => console.warn('SearchBar Provider not setup'),
 })
 
 export const useSearchBar = () => useContext(SearchBarContext)
@@ -50,7 +49,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   const [selectedTags, setSelectedTags] = useState<Map<string, Topic>>(new Map())
   const [tagCount, setTagCount] = useState(0)
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
-  const [ selectedQuoteIndex, setSelectedQuoteIndex ] = useState<number|null>(null)
+  const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const navigate = useNavigate()
 
   const makeTopicID = (t: Topic) => {
@@ -78,7 +77,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
       setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []))
   }
 
-  const goToPage = (tags: number[], author: number|null, keyword: string|null) => {
+  const goToPage = (tags: number[], author: number | null, keyword: string | null) => {
     setSelectedQuoteIndex(null)
 
     const authorQueryStr = author ? `author=${author}&` : ''
@@ -89,7 +88,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
 
     const topics = [...tags.map(t => [t, 'tag'] as [number, string])]
-    
+
     if (author)
       topics.push([author, 'author'])
 
@@ -108,7 +107,7 @@ export function SearchBar(props: SearchBarProps) {
   const GROUP_OPTION_COUNT = 3
   const topics = useAppSelector(state => state.search.topics)
   const { authorSelected, selectedTags, tagCount, goToPage } = useSearchBar()
-  const [ inputValue, setInputValue ] = useState("")
+  const [inputValue, setInputValue] = useState('')
 
   const filterTopics = (topics: Topic[], state: FilterOptionsState<Topic>): Topic[] => {
     let authorsChosen = 0
@@ -130,7 +129,7 @@ export function SearchBar(props: SearchBarProps) {
     const author = searchTags.find(t => t.type === 'author')
     const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
 
-    goToPage(tags, author?.id ?? null, keyword === ''? null : keyword)
+    goToPage(tags, author?.id ?? null, keyword === '' ? null : keyword)
   }
 
   return (
@@ -155,7 +154,7 @@ export function SearchBar(props: SearchBarProps) {
         options={topics}
         getOptionLabel={tag => tag.label}
         onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-        onChange={(_, newValue) => { onSearch(newValue, ""); }}
+        onChange={(_, newValue) => { onSearch(newValue, '') }}
         renderInput={params => (
           <TextField
             {...params}

@@ -2,17 +2,16 @@ import type { VaraType } from '../../vara/Vara'
 import type { Quote } from '../types/httpResponseTypes'
 import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 import {
-  faClipboard,
   faBookmark as regularBookmark,
   faHeart as regularHeart,
 } from '@fortawesome/free-regular-svg-icons'
 import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
+  faClipboard
 } from '@fortawesome/free-solid-svg-icons'
 import { Box, Card, CardContent, Link, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Vara from '../../vara/Vara'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
@@ -20,7 +19,6 @@ import { useNotification } from './NotificationProvider'
 import { useSearchBar } from './SearchBar'
 import TagComponent from './Tag'
 import WikiPortrait from './WikiPortrait'
-import { useExplore } from '../Pages/Explore'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -151,73 +149,79 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
             </Link>
           </Tooltip>
         </Box>
-        <Box
-          className="button-container"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 1,
-            justifyContent: 'right',
-            opacity: 0,
-            transition: 'opacity 0.2s ease-in',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'right',
+        }}>
+          <Box
+            className="button-container"
+            sx={{
+              display: 'inline-flex',
+              flexDirection: 'row',
+              gap: 1,
+              borderRadius: 2,
+              opacity: 0,
+              color: 'white',
+              transition: 'opacity 0.2s ease-in',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton
+                tooltip={canLikeSave() ? 'Like Quote' : 'Please Login'}
+                disabled={!canLikeSave()}
+                icon={solidHeart}
+                solidIcon={solidHeart}
+                activeColor="red"
+                defaultColor="white"
+                onClick={onLike}
+                startingActive={quote.user_upvoted}
+                size={30}
+              />
+              <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.upvotes}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <IconButton
+                tooltip={canLikeSave() ? 'Save Quote' : 'Please Login'}
+                disabled={!canLikeSave()}
+                icon={solidBookmark}
+                solidIcon={solidBookmark}
+                activeColor="teal"
+                defaultColor="white"
+                onClick={onSave}
+                startingActive={quote.user_saved}
+                size={30}
+              />
+              <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.saves}</Typography>
+            </Box>
             <IconButton
-              tooltip={canLikeSave() ? 'Like Quote' : 'Please Login'}
-              disabled={!canLikeSave()}
-              icon={regularHeart}
-              solidIcon={solidHeart}
-              activeColor="red"
-              defaultColor="#292929"
-              onClick={onLike}
-              startingActive={quote.user_upvoted}
+              tooltip={quote.author.wiki_page !== '' ? 'Open Wikipedia Page' : 'No Wikipedia Page'}
+              disabled={quote.author.wiki_page === ''}
+              toggle={false}
+              icon={faWikipediaW}
+              solidIcon={faWikipediaW}
+              defaultColor="white"
               size={30}
+              onClick={() => window.open(quote.author.wiki_page, '_blank')?.focus()}
             />
-            <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.upvotes}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
-              tooltip={canLikeSave() ? 'Save Quote' : 'Please Login'}
-              disabled={!canLikeSave()}
-              icon={regularBookmark}
-              solidIcon={solidBookmark}
-              activeColor="teal"
-              defaultColor="#292929"
-              onClick={onSave}
-              startingActive={quote.user_saved}
+              tooltip="Copy Quote to Clipboard"
+              toggle={false}
+              icon={faClipboard}
+              solidIcon={faClipboard}
+              defaultColor="white"
               size={30}
+              onClick={copyToClipboard}
             />
-            <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.saves}</Typography>
+            <IconButton
+              tooltip="Post to X"
+              toggle={false}
+              icon={faXTwitter}
+              solidIcon={faXTwitter}
+              defaultColor="white"
+              size={30}
+              onClick={openXPage}
+            />
           </Box>
-          <IconButton
-            tooltip={quote.author.wiki_page !== '' ? 'Open Wikipedia Page' : 'No Wikipedia Page'}
-            disabled={quote.author.wiki_page === ''}
-            toggle={false}
-            icon={faWikipediaW}
-            solidIcon={faWikipediaW}
-            defaultColor="#292929"
-            size={30}
-            onClick={() => window.open(quote.author.wiki_page, '_blank')?.focus()}
-          />
-          <IconButton
-            tooltip="Copy Quote to Clipboard"
-            toggle={false}
-            icon={faClipboard}
-            solidIcon={faClipboard}
-            defaultColor="#292929"
-            size={30}
-            onClick={copyToClipboard}
-          />
-          <IconButton
-            tooltip="Post to X"
-            toggle={false}
-            icon={faXTwitter}
-            solidIcon={faXTwitter}
-            defaultColor="#292929"
-            size={30}
-            onClick={openXPage}
-          />
         </Box>
       </Box>
 

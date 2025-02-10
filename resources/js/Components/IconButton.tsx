@@ -50,10 +50,11 @@ export const IconButton: React.FC<IconButtonProps> = ({
           disabled={disabled}
           sx={{
             'backgroundColor': 'transparent',
-            '&:hover': { backgroundColor: 'transparent' },
+            '&:hover': { backgroundColor: 'transparent', opacity: '0.5' },
             '&:active': { backgroundColor: 'transparent' },
             '&:focus': { backgroundColor: 'transparent' },
             'opacity': disabled ? 0.3 : 1,
+            transition: 'opacity 0.2s ease-in'
           }}
           onClick={handleClick}
         >

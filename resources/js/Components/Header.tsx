@@ -1,4 +1,3 @@
-import type { Topic } from '../types/httpResponseTypes'
 import type { LinkProps } from './Link'
 import { Stack, Tooltip } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -69,7 +68,6 @@ function Header(props: HeaderProps) {
     const position = window.pageYOffset
     setScrollPosition(position)
   }
-  const navigate = useNavigate()
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -78,7 +76,6 @@ function Header(props: HeaderProps) {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
-
 
   return (
     <AppBar

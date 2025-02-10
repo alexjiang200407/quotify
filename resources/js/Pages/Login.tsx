@@ -78,7 +78,7 @@ function AuthPage() {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', p: 2 }}>
-      <Card sx={{ p: 4, width: '100%', maxWidth: 450, boxShadow: 3, borderRadius: 2, backgroundColor: 'white' }}>
+      <Card sx={{ p: 4, width: '100%', maxWidth: 450, boxShadow: 3, borderRadius: 2, backgroundColor: 'white', animation: 'fadeIn 0.3s ease-in' }}>
         <Tabs value={activeTab} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 3 }}>
           <Tab label="Sign In" />
           <Tab label="Create Account" />
