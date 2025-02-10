@@ -8,7 +8,7 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Paper, Tooltip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Link, Paper, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
@@ -18,6 +18,8 @@ import font from '../../vara/signatures/SatisfySL.json'
 import WikiPortrait from './WikiPortrait'
 import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 import { useNotification } from './NotificationProvider'
+import { useSearchBar } from './SearchBar'
+import { useNavigate } from 'react-router-dom'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -33,6 +35,14 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | null>(null);
   const { addNotification } = useNotification()
+  const { addTopic } = useSearchBar()
+  const navigate = useNavigate()
+
+  const authorSearch = () => {
+    navigate(`/spa/explore?author=${quote.author.id}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    addTopic([[quote.author.id, 'author']], true)
+  }
 
   const copyToClipboard = () => {
     if (!window.isSecureContext) {
@@ -110,12 +120,17 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
           </Box>
         </Box>
         <Tooltip title={quote.author.description} arrow>
-          <Box id="vara-container" sx={{
-          "&:hover": {
-            opacity: 0.5,
-          },
-          transition: "opacity 0.2s ease-in"
-        }}></Box>
+          <Link width={"100%"}>
+            <Box id="vara-container" sx={{
+                "&:hover": {
+                  opacity: 0.5,
+                  cursor: 'pointer'
+                },
+                transition: "opacity 0.2s ease-in"
+              }}
+              onClick={authorSearch}
+            />
+          </Link>
         </Tooltip>
         </div>
         <Box className="button-container" sx={{
