@@ -7,7 +7,7 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, colors, Divider, Paper, Typography } from '@mui/material'
+import { Box, Card, CardContent, colors, Divider, Paper, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
@@ -84,7 +84,14 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
             </Box>
           </Box>
         </Box>
-        <div id="vara-container"></div>
+        <Tooltip title={quote.author.description} arrow>
+          <Box id="vara-container" sx={{
+          "&:hover": {
+            opacity: 0.5,
+          },
+          transition: "opacity 0.2s ease-in"
+        }}></Box>
+        </Tooltip>
         <Box className="button-container" sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', justifyContent: 'right', opacity: 0, transition: 'opacity 0.2s ease-in' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <IconButton icon={regularHeart} solidIcon={solidHeart} activeColor="red" defaultColor="black" onClick={onLike} startingActive={quote.user_upvoted} size={30} />

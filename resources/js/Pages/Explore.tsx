@@ -107,7 +107,7 @@ function Explore() {
   }
   if (!search?.data.length) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
         <Typography>Please Enter a Search Query</Typography>
       </Box>
     )
