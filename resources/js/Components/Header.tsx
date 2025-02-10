@@ -39,18 +39,18 @@ function Logo() {
 }
 
 interface HeaderContextType {
-  headerRef: React.RefObject<HTMLElement|null>|undefined
+  headerRef: React.RefObject<HTMLElement | null> | undefined
 }
 
 const HeaderContext = createContext<HeaderContextType>({
-  headerRef: undefined
+  headerRef: undefined,
 })
 
 interface HeaderProviderProps {
   children: React.ReactNode
 }
 
-export const HeaderProvider = ({children} : HeaderProviderProps) => {
+export function HeaderProvider({ children }: HeaderProviderProps) {
   const headerRef = useRef(null)
 
   return (
@@ -64,7 +64,7 @@ export const useHeader = () => useContext(HeaderContext)
 
 function Header(props: HeaderProps) {
   const [scrollPosition, setScrollPosition] = useState(window.screenY)
-  const {headerRef} = useHeader()
+  const { headerRef } = useHeader()
   const handleScroll = () => {
     const position = window.pageYOffset
     setScrollPosition(position)

@@ -7,15 +7,15 @@ import {
   Typography,
 } from '@mui/material'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import { useHeader } from '../Components/Header'
 import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
 import { useSearchBar } from '../Components/SearchBar'
 import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
-import { useHeader } from '../Components/Header'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -29,10 +29,12 @@ const collapseAnimation = keyframes`
 
 interface ExploreContextType {
   updateQuote: (_: Quote) => void
+  goToPage: (tags: number[], author: number|null, keyword: string|null) => void
 }
 
 const ExploreContext = createContext<ExploreContextType>({
   updateQuote: (_: Quote) => console.error('ExplorePage not setup'),
+  goToPage: (_, _1, _2) => console.error('ExplorePage not setup')
 })
 
 export const useExplore = () => useContext(ExploreContext)
@@ -46,7 +48,8 @@ function Explore() {
   const { addTopic } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
-  const {headerRef} = useHeader()
+  const { headerRef } = useHeader()
+  const navigate = useNavigate()
 
   const handleCardClick = (index: number) => {
     setSelectedQuoteIndex(index)
@@ -85,6 +88,24 @@ function Explore() {
     setSearch(search ? { ...search, data: search.data.map(q => q.id === quote.id ? quote : q) } : null)
   }
 
+  const goToPage = (tags: number[], author: number|null, keyword: string|null) => {
+    setSelectedQuoteIndex(null)
+
+    const authorQueryStr = author ? `author=${author}&` : ''
+    const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
+    const keywordQueryStr = keyword !== null ? `keyword=${keyword}` : ''
+
+    navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+
+    const topics = [...tags.map(t => [t, 'tag'] as [number, string])]
+    
+    if (author)
+      topics.push([author, 'author'])
+
+    addTopic(topics, true)
+  }
+
   const changePage = (page: number) => {
     const i = search?.links.find(link => Number(link.label) === page)
     if (i && i.url) {
@@ -116,7 +137,7 @@ function Explore() {
   }
 
   return (
-    <ExploreContext.Provider value={{ updateQuote }}>
+    <ExploreContext.Provider value={{ updateQuote, goToPage }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
           {search?.data.map((quote, index) => (

@@ -8,8 +8,8 @@ const defaultColorTheme = createTheme({
     },
     background: {
       default: '#BFCCB8',
-      paper: '#F1EFE2'
-    }
+      paper: '#F1EFE2',
+    },
   },
 })
 
@@ -26,7 +26,7 @@ export function createDefaultTheme(colorTheme: Theme = defaultColorTheme): Theme
       Box: {
         styleOverrides: {
           root: {
-            backgroundColor: ''
+            backgroundColor: '',
           },
         },
       },

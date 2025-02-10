@@ -1,7 +1,7 @@
 import type { AxiosError } from 'axios'
 
 export interface Signature {
-  id: number,
+  id: number
   font_size: number
   duration: number
   stroke_width: number

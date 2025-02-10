@@ -1,28 +1,29 @@
-import { Box, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import type { Quote } from '../types/httpResponseTypes'
+import { Box } from '@mui/material'
 import axios from 'axios'
+import React, { useState } from 'react'
+import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useNotification } from '../Components/NotificationProvider'
-import { Quote } from '../types/httpResponseTypes'
 import { useAppSelector } from '../Datastore/hooks'
 
 function Home() {
-  const {handleHttpError} = useNotification()
-  const [quote, setQuote] = useState<Quote|null>(null);
+  const { handleHttpError } = useNotification()
+  const [quote, setQuote] = useState<Quote | null>(null)
   const token = useAppSelector(state => state.auth.token)
-  
+
   useState(() => {
-    let req;
+    let req
     if (token) {
       const auth = { headers: { Authorization: `Bearer ${token}` } }
       req = axios.get(`/api/quotes/auth/daily`, auth)
-    } else {
+    }
+    else {
       req = axios.get(`/api/quotes/daily`)
     }
 
     req.then(res => setQuote(res.data))
-    .catch(e => handleHttpError(e))
-  });
+      .catch(e => handleHttpError(e))
+  })
 
   return (
     <Box
@@ -36,7 +37,7 @@ function Home() {
     >
       {/* Add a container with 800px width */}
       {quote && (
-        <ExpandedQuoteCard quote={quote} updateQuote = {setQuote} />
+        <ExpandedQuoteCard quote={quote} updateQuote={setQuote} />
       )}
     </Box>
   )

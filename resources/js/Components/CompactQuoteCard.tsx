@@ -32,7 +32,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
         'cursor': 'pointer',
         'transition': 'transform 0.2s',
         '&:hover': { transform: 'scale(1.01)' },
-        backgroundColor: '#f5f5f5'
+        'backgroundColor': '#f5f5f5',
       }}
     >
       <CardContent sx={{ 'flexGrow': 1, 'overflow': 'hidden', 'padding': 0, '&:last-child': { pb: 0 } }}>

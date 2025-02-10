@@ -3,23 +3,31 @@
 @tailwind utilities;
 
 @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
   }
-  
-  .icon-pulse {
-    animation: pulse 0.5s ease forwards;
+  50% {
+    transform: scale(1.2);
   }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(5px, -5px); }
+  50% { transform: translate(0, 5px); }
+  75% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+ 
+.icon-pulse {
+  animation: pulse 0.5s ease forwards;
+}
   
-  .expanded-view {
-    animation: fadeIn 0.3s ease;
+.expanded-view {
+  animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -30,39 +38,40 @@
         opacity: 1;
     }
 }
-  .icon-inactive {
-    transition: color 0.3s ease; 
-  }
 
-  .animated-divider {
-    position: relative;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(to right, transparent, black, transparent);
-    margin: 8px auto;
-    transform: scaleX(0);
-    transform-origin: center;
-    animation: growDivider 1s ease-out forwards;
+.icon-inactive {
+  transition: color 0.3s ease; 
+}
+
+.animated-divider {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, black, transparent);
+  margin: 8px auto;
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: growDivider 1s ease-out forwards;
 }
 
 @keyframes growDivider {
-    0% {
-        transform: scaleX(0);
-    }
-    100% {
-        transform: scaleX(1);
-    }
+  0% {
+      transform: scaleX(0);
+  }
+  100% {
+      transform: scaleX(1);
+  }
 }
 
 /* Optional: Add an ornament in the middle */
 .fancy-divider::after {
-    content: "✦";  /* Fancy Star Symbol */
-    position: absolute;
-    top: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    color: black;
+  content: "✦";  /* Fancy Star Symbol */
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: black;
 }
 
 
