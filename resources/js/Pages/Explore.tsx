@@ -121,7 +121,7 @@ function Explore() {
   return (
     <ExploreContext.Provider value={{ onExplorePage, updateQuote }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
           {search?.data.map((quote, index) => (
             <CompactCard
               key={index}
