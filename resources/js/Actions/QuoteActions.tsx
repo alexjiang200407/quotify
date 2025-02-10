@@ -7,6 +7,7 @@ import { useExplore } from '../Pages/Explore'
 export interface QuoteActions {
   onLike: (e: React.MouseEvent, isActive: boolean) => void
   onSave: (e: React.MouseEvent, isActive: boolean) => void
+  canLikeSave: () => boolean
 }
 
 export function useQuoteActions(quoteProps: Quote, updateQuote: (q: Quote) => void): QuoteActions {
@@ -53,8 +54,13 @@ export function useQuoteActions(quoteProps: Quote, updateQuote: (q: Quote) => vo
       })
   }
 
+  const canLikeSave = () => {
+    return !!token;
+  }
+
   return {
     onLike,
     onSave,
+    canLikeSave
   }
 }

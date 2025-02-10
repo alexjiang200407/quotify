@@ -7,13 +7,15 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, colors, Divider, Paper, Tooltip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Paper, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
 import Vara, { VaraType } from '../../vara/Vara'
 import font from '../../vara/signatures/SatisfySL.json'
+import WikiPortrait from './WikiPortrait'
+import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -26,7 +28,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   updateQuote,
   isMobile = true,
 }) => {
-  const { onLike, onSave } = useQuoteActions(quote, updateQuote)
+  const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | null>(null);
 
   useEffect(() => {
@@ -60,10 +62,12 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
           opacity: 1,
         },
       }}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+        <WikiPortrait personName={quote.author.full_name} width={100} height={100}/>
         <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
           {/* Content Box */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', width: '40vw', textAlign: 'center', padding: 2, }}>
-            <Card sx={{ boxShadow: 'none', marginTop: 2, backgroundColor: 'background.default' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '40vw', textAlign: 'center', padding: 2, paddingTop: 0 }}>
+            <Card sx={{ boxShadow: 'none', backgroundColor: 'background.default' }}>
               <CardContent>
                 {quote.quote.split('\n').map((line, index) => (
                   <Typography 
@@ -92,15 +96,45 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
           transition: "opacity 0.2s ease-in"
         }}></Box>
         </Tooltip>
-        <Box className="button-container" sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', justifyContent: 'right', opacity: 0, transition: 'opacity 0.2s ease-in' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <IconButton icon={regularHeart} solidIcon={solidHeart} activeColor="red" defaultColor="black" onClick={onLike} startingActive={quote.user_upvoted} size={30} />
+        </div>
+        <Box className="button-container" sx={{ display: 'flex', flexDirection: 'row', gap: 1, justifyContent: 'right', opacity: 0, transition: 'opacity 0.2s ease-in' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              tooltip={"Like Quote"}
+              disabled={!canLikeSave()}
+              icon={regularHeart}
+              solidIcon={solidHeart}
+              activeColor="red"
+              defaultColor="#292929"
+              onClick={onLike}
+              startingActive={quote.user_upvoted} size={30}
+            />
             <Typography variant="caption" fontSize={15} sx={{userSelect: 'none'}}>{quote.upvotes}</Typography>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-            <IconButton icon={regularBookmark} solidIcon={solidBookmark} activeColor="teal" defaultColor="black" onClick={onSave} startingActive={quote.user_saved} size={30} />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            <IconButton
+              tooltip={"Save Quote"}
+              disabled={!canLikeSave()}
+              icon={regularBookmark}
+              solidIcon={solidBookmark}
+              activeColor="teal"
+              defaultColor="#292929"
+              onClick={onSave}
+              startingActive={quote.user_saved}
+              size={30}
+            />
             <Typography variant="caption" fontSize={15} sx={{userSelect: 'none'}}>{quote.saves}</Typography>
           </Box>
+          <IconButton
+            tooltip={quote.author.wiki_page !== ''? 'Open Wikipedia Page' : 'No Wikipedia Page'}
+            disabled={quote.author.wiki_page === ''}
+            toggle={false}
+            icon={faWikipediaW}
+            solidIcon={faWikipediaW}
+            defaultColor="#292929"
+            size={30} 
+            onClick={() => window.open(quote.author.wiki_page, '_blank')?.focus()} 
+          />
         </Box>
       </Box>
 
