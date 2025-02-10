@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('type')->unique();
-            $table->unsignedInteger('font_size')->default(30);
-            $table->unsignedInteger('stroke_width')->default(1);
-            $table->unsignedInteger('duration')->default(2000);
+            $table->integer('font_size')->default(30);
+            $table->float('stroke_width')->default(1.2);
+            $table->integer('letter_spacing')->default(0);
+            $table->integer('duration')->default(225);
             $table->string('color')->default('black');
         });
     }

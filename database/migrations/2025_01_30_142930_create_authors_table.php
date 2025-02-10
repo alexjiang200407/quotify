@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign("signature_id")
                 ->references("id")
                 ->on("signatures")
-                ->cascadeOnDelete();
+                ->onDelete("CASCADE");
         });
     }
 
