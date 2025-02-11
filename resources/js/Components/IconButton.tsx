@@ -54,7 +54,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
             '&:active': { backgroundColor: 'transparent' },
             '&:focus': { backgroundColor: 'transparent' },
             'opacity': disabled ? 0.3 : 1,
-            transition: 'opacity 0.2s ease-in'
+            'transition': 'opacity 0.2s ease-in',
           }}
           onClick={handleClick}
         >

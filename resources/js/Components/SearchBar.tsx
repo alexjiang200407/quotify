@@ -3,7 +3,7 @@ import type { Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
-import React, { createContext, useContext, useRef, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../Datastore/hooks'
 
@@ -43,7 +43,7 @@ const SearchBarContext = createContext<SearchBarContextType>({
   selectedQuoteIndex: null,
   setSelectedQuoteIndex: (_: number | null) => console.warn('SearchBar Provider not setup'),
   setInputValue: (_: string) => console.warn('SearchBar Provider not setup'),
-  inputValue: ''
+  inputValue: '',
 })
 
 export const useSearchBar = () => useContext(SearchBarContext)
@@ -107,10 +107,18 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
 
   return (
     <SearchBarContext.Provider value={{
-      setSelectedTopics, authorSelected, selectedTags,
-      addTopic, tagCount, goToPage, setSelectedQuoteIndex,
-      selectedQuoteIndex, setInputValue, inputValue
-    }}>
+      setSelectedTopics,
+      authorSelected,
+      selectedTags,
+      addTopic,
+      tagCount,
+      goToPage,
+      setSelectedQuoteIndex,
+      selectedQuoteIndex,
+      setInputValue,
+      inputValue,
+    }}
+    >
       {children}
     </SearchBarContext.Provider>
   )
@@ -145,8 +153,8 @@ export function SearchBar(props: SearchBarProps) {
   }
 
   const keyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevents the default selection behavior
+    if (event.key === 'Enter') {
+      event.preventDefault() // Prevents the default selection behavior
       onSearch([...selectedTags.values()], inputValue)
     }
   }

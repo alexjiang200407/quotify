@@ -1,14 +1,11 @@
 import type { VaraType } from '../../vara/Vara'
 import type { Quote } from '../types/httpResponseTypes'
 import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
+
 import {
-  faBookmark as regularBookmark,
-  faHeart as regularHeart,
-} from '@fortawesome/free-regular-svg-icons'
-import {
+  faClipboard,
   faBookmark as solidBookmark,
   faHeart as solidHeart,
-  faClipboard
 } from '@fortawesome/free-solid-svg-icons'
 import { Box, Card, CardContent, Link, Tooltip, Typography } from '@mui/material'
 import React, { useEffect, useRef } from 'react'
@@ -152,7 +149,8 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         <Box sx={{
           display: 'flex',
           justifyContent: 'right',
-        }}>
+        }}
+        >
           <Box
             className="button-container"
             sx={{

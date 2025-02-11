@@ -1,8 +1,8 @@
 import type { Dispatch } from '@reduxjs/toolkit'
 import type { SearchResult, Topic } from '../types/httpResponseTypes'
+import type { RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { RootState } from './store'
 
 interface InitialState {
   topics: Topic[]
@@ -15,7 +15,7 @@ const initialState: InitialState = {
   topics: [],
   lastSearchResult: null,
   lastSearchUrl: '/spa/explore',
-  lastSearchApiRoute: ''
+  lastSearchApiRoute: '',
 }
 
 const searchSlice = createSlice({
@@ -69,7 +69,7 @@ export function searchQuotesUrl(url: string, token?: string | null) {
     return axios.get(url, auth)
       .then(res => res.data as SearchResult)
       .then((res) => {
-        dispatch(setSearchResult({res, url}))
+        dispatch(setSearchResult({ res, url }))
       })
   }
 }

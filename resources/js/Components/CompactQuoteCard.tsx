@@ -23,13 +23,13 @@ interface CompactCardProps {
 
 export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote, keyword }) => {
   const { onLike, onSave } = useQuoteActions(quote, updateQuote)
-  const quoteRef = useRef<HTMLElement|null>(null)
-  const authorRef = useRef<HTMLElement|null>(null)
+  const quoteRef = useRef<HTMLElement | null>(null)
+  const authorRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!keyword)
       return
-    let regEx = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "ig");
+    const regEx = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')
 
     if (quoteRef.current)
       quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
@@ -48,8 +48,8 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
         '&:hover': { transform: 'scale(1.01)' },
         'backgroundColor': '#f5f5f5',
         '& .search-keyword': {
-          color: 'primary.main'
-        }
+          color: 'primary.main',
+        },
       }}
     >
       <CardContent sx={{ 'flexGrow': 1, 'overflow': 'hidden', 'padding': 0, '&:last-child': { pb: 0 } }}>

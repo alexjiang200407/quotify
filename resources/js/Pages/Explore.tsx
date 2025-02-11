@@ -130,7 +130,7 @@ function Explore() {
               quote={quote}
               onClick={handleCardClick}
               updateQuote={updateQuote}
-              keyword={inputValue === ''? undefined : inputValue}
+              keyword={inputValue === '' ? undefined : inputValue}
             />
           ))}
         </Box>

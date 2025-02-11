@@ -29,25 +29,25 @@ function App() {
   }
 
   const headerPropsCommon = {
-  pages: [
-    {
-      label: 'Home',
-      link: '/spa/',
-    },
-    {
-      label: 'Profile',
-      link: '/spa/profile',
-    },
-    {
-      label: 'Suggest',
-      link: '/spa/suggest',
-    },
-    {
-      label: 'Explore',
-      link: explorePageUrl,
-    },
-  ],
-}
+    pages: [
+      {
+        label: 'Home',
+        link: '/spa/',
+      },
+      {
+        label: 'Profile',
+        link: '/spa/profile',
+      },
+      {
+        label: 'Suggest',
+        link: '/spa/suggest',
+      },
+      {
+        label: 'Explore',
+        link: explorePageUrl,
+      },
+    ],
+  }
 
   const headerPropsLoggedIn = {
     pages: [
