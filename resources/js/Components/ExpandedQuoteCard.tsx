@@ -37,7 +37,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   const { goToPage } = useSearchBar()
 
   const getFont = (type: string) => {
-    return import(`../../vara/signatures/${type}`)
+    return import(/* @vite-ignore */`../../vara/signatures/${type}`)
   }
 
   const authorSearch = () => {

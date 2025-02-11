@@ -7,7 +7,7 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
 import React from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
@@ -54,12 +54,12 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
           {quote.author.full_name}
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 1.5 }}>
           {quote.tags.map((tag, tagIndex) => <TagComponent key={tagIndex} {...tag} />)}
         </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, pointerEvents: 'auto' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Divider />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, pointerEvents: 'auto' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
               icon={regularHeart}
               solidIcon={solidHeart}
@@ -70,7 +70,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
             />
             <Typography variant="caption">{quote.upvotes}</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
               icon={regularBookmark}
               solidIcon={solidBookmark}
