@@ -1,16 +1,21 @@
 import type { Dispatch } from '@reduxjs/toolkit'
 import type { SearchResult, Topic } from '../types/httpResponseTypes'
+import type { RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 interface InitialState {
   topics: Topic[]
   lastSearchResult: SearchResult | null
+  lastSearchUrl: string
+  lastSearchApiRoute: string
 }
 
 const initialState: InitialState = {
   topics: [],
   lastSearchResult: null,
+  lastSearchUrl: '/spa/explore',
+  lastSearchApiRoute: '',
 }
 
 const searchSlice = createSlice({
@@ -21,7 +26,14 @@ const searchSlice = createSlice({
       state.topics = action.payload
     },
     setSearchResult: (state, action) => {
-      state.lastSearchResult = action.payload
+      if (!action.payload) {
+        state.lastSearchResult = null
+        return
+      }
+
+      state.lastSearchResult = action.payload.res
+      state.lastSearchApiRoute = action.payload.url
+      state.lastSearchUrl = window.location.href
     },
   },
 })
@@ -46,12 +58,18 @@ export function searchQuotes(tagIDs?: string[] | null, authorID?: string | null,
 }
 
 export function searchQuotesUrl(url: string, token?: string | null) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
+    const state = getState()
+
+    if (state.search.lastSearchApiRoute === url) {
+      return
+    }
+
     return axios.get(url, auth)
       .then(res => res.data as SearchResult)
       .then((res) => {
-        dispatch(setSearchResult(res))
+        dispatch(setSearchResult({ res, url }))
       })
   }
 }

@@ -7,8 +7,8 @@ import {
   faBookmark as solidBookmark,
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
-import { Box, Card, CardContent, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
+import React, { useEffect, useRef } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
@@ -18,10 +18,24 @@ interface CompactCardProps {
   index: number
   onClick: (index: number) => void
   updateQuote: (q: Quote) => void
+  keyword?: string
 }
 
-export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote }) => {
+export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote, keyword }) => {
   const { onLike, onSave } = useQuoteActions(quote, updateQuote)
+  const quoteRef = useRef<HTMLElement | null>(null)
+  const authorRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (!keyword)
+      return
+    const regEx = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')
+
+    if (quoteRef.current)
+      quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
+    if (authorRef.current)
+      authorRef.current.innerHTML = authorRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? authorRef.current.innerHTML
+  }, [quote])
 
   return (
     <Card
@@ -32,11 +46,15 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
         'cursor': 'pointer',
         'transition': 'transform 0.2s',
         '&:hover': { transform: 'scale(1.01)' },
-        backgroundColor: '#f5f5f5'
+        'backgroundColor': '#f5f5f5',
+        '& .search-keyword': {
+          color: 'primary.main',
+        },
       }}
     >
       <CardContent sx={{ 'flexGrow': 1, 'overflow': 'hidden', 'padding': 0, '&:last-child': { pb: 0 } }}>
         <Typography
+          ref={quoteRef}
           variant="body1"
           sx={{
             overflow: 'hidden',
@@ -50,16 +68,16 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
           {quote.quote}
         </Typography>
 
-        <Typography variant="caption" sx={{ fontStyle: 'italic', display: 'block', marginBottom: 1.5 }}>
+        <Typography variant="caption" sx={{ fontStyle: 'italic', display: 'block', marginBottom: 1.5 }} ref={authorRef}>
           {quote.author.full_name}
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 1.5 }}>
           {quote.tags.map((tag, tagIndex) => <TagComponent key={tagIndex} {...tag} />)}
         </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, pointerEvents: 'auto' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Divider />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, pointerEvents: 'auto' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
               icon={regularHeart}
               solidIcon={solidHeart}
@@ -70,7 +88,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
             />
             <Typography variant="caption">{quote.upvotes}</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <IconButton
               icon={regularBookmark}
               solidIcon={solidBookmark}

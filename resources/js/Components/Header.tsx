@@ -1,4 +1,3 @@
-import type { Topic } from '../types/httpResponseTypes'
 import type { LinkProps } from './Link'
 import { Stack, Tooltip } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -7,7 +6,7 @@ import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
 
@@ -39,18 +38,18 @@ function Logo() {
 }
 
 interface HeaderContextType {
-  headerRef: React.RefObject<HTMLElement|null>|undefined
+  headerRef: React.RefObject<HTMLElement | null> | undefined
 }
 
 const HeaderContext = createContext<HeaderContextType>({
-  headerRef: undefined
+  headerRef: undefined,
 })
 
 interface HeaderProviderProps {
   children: React.ReactNode
 }
 
-export const HeaderProvider = ({children} : HeaderProviderProps) => {
+export function HeaderProvider({ children }: HeaderProviderProps) {
   const headerRef = useRef(null)
 
   return (
@@ -64,12 +63,11 @@ export const useHeader = () => useContext(HeaderContext)
 
 function Header(props: HeaderProps) {
   const [scrollPosition, setScrollPosition] = useState(window.screenY)
-  const {headerRef} = useHeader()
+  const { headerRef } = useHeader()
   const handleScroll = () => {
     const position = window.pageYOffset
     setScrollPosition(position)
   }
-  const navigate = useNavigate()
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -78,15 +76,6 @@ function Header(props: HeaderProps) {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
-
-  const onSearch = (searchTags: Topic[], keyword: string) => {
-    const author = searchTags.find(t => t.type === 'author')
-    const authorQueryStr = author ? `author=${author.id}&` : ''
-    const tags = searchTags.flatMap(t => t.type === 'tag' ? t.id : [])
-    const tagQueryStr = tags.length ? `tags=${tags.join(',')}&` : ''
-    const keywordQueryStr = keyword !== '' ? `keyword=${keyword}` : ''
-    navigate(`/spa/explore?${tagQueryStr}${authorQueryStr}${keywordQueryStr}`)
-  }
 
   return (
     <AppBar
@@ -111,7 +100,6 @@ function Header(props: HeaderProps) {
           <Logo />
           <SearchBar
             label="Search Quotes or Authors"
-            onSearch={onSearch}
           />
         </Stack>
         <Toolbar>

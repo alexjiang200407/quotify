@@ -13,29 +13,9 @@ import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
 
-const headerPropsCommon = {
-  pages: [
-    {
-      label: 'Home',
-      link: '/spa/',
-    },
-    {
-      label: 'Profile',
-      link: '/spa/profile',
-    },
-    {
-      label: 'Suggest',
-      link: '/spa/suggest',
-    },
-    {
-      label: 'Explore',
-      link: '/spa/explore',
-    },
-  ],
-}
-
 function App() {
   const token = useAppSelector(state => state.auth.token)
+  const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()
   const { handleHttpError, addNotification } = useNotification()
 
@@ -46,6 +26,27 @@ function App() {
         .then(() => addNotification({ label: 'Successfully logged out', alert: 'success' }))
         .catch(e => handleHttpError(e, false))
     }
+  }
+
+  const headerPropsCommon = {
+    pages: [
+      {
+        label: 'Home',
+        link: '/spa/',
+      },
+      {
+        label: 'Profile',
+        link: '/spa/profile',
+      },
+      {
+        label: 'Suggest',
+        link: '/spa/suggest',
+      },
+      {
+        label: 'Explore',
+        link: explorePageUrl,
+      },
+    ],
   }
 
   const headerPropsLoggedIn = {
@@ -78,7 +79,7 @@ function App() {
     else {
       setHeader(headerProps)
     }
-  }, [token])
+  }, [token, explorePageUrl])
 
   return (
     <Routes>

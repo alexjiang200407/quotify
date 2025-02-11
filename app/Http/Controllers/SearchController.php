@@ -84,7 +84,10 @@ class SearchController extends Controller
             $query->where('quotes.author_id', '=', $author);
         })
         ->when($keyword, function ($query) use ($keyword) {
-            $query->whereRaw("quotes.quote LIKE '%$keyword%' OR authors.full_name LIKE '%$keyword%'");
+            $query->where(function ($q) use ($keyword) {
+                $q->whereLike('quotes.quote', "%$keyword%")
+                  ->orWhereLike('authors.full_name', "%$keyword%");
+            });
         })
         ->groupBy('quotes.id')
         ->selectRaw("

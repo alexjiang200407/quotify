@@ -10,12 +10,12 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CompactCard } from '../Components/CompactQuoteCard'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import { useHeader } from '../Components/Header'
 import { useNotification } from '../Components/NotificationProvider'
 import { PaginationSystem } from '../Components/PaginationSystem'
 import { useSearchBar } from '../Components/SearchBar'
 import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
-import { useHeader } from '../Components/Header'
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -28,27 +28,29 @@ const collapseAnimation = keyframes`
 `
 
 interface ExploreContextType {
+  onExplorePage: boolean
   updateQuote: (_: Quote) => void
 }
 
 const ExploreContext = createContext<ExploreContextType>({
+  onExplorePage: false,
   updateQuote: (_: Quote) => console.error('ExplorePage not setup'),
 })
 
 export const useExplore = () => useContext(ExploreContext)
 
 function Explore() {
-  const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const { addTopic } = useSearchBar()
+  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex, setInputValue, inputValue } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
-  const {headerRef} = useHeader()
+  const { headerRef } = useHeader()
+  const [onExplorePage] = useState(true)
 
-  const handleCardClick = (index: number) => {
+  const handleCardClick = (index: number | null) => {
     setSelectedQuoteIndex(index)
     setIsAnimatingOut(false)
   }
@@ -69,6 +71,8 @@ function Explore() {
       topics.push([Number(author), 'author'])
 
     addTopic(topics, true)
+    if (keyword)
+      setInputValue(keyword)
 
     if (!topics.length && !keyword) {
       setSearch(null)
@@ -116,9 +120,9 @@ function Explore() {
   }
 
   return (
-    <ExploreContext.Provider value={{ updateQuote }}>
+    <ExploreContext.Provider value={{ onExplorePage, updateQuote }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '90%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
           {search?.data.map((quote, index) => (
             <CompactCard
               key={index}
@@ -126,6 +130,7 @@ function Explore() {
               quote={quote}
               onClick={handleCardClick}
               updateQuote={updateQuote}
+              keyword={inputValue === '' ? undefined : inputValue}
             />
           ))}
         </Box>

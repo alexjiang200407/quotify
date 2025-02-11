@@ -2,7 +2,6 @@ import type { Quote } from '../types/httpResponseTypes'
 import axios from 'axios'
 import { useNotification } from '../Components/NotificationProvider'
 import { useAppSelector } from '../Datastore/hooks'
-import { useExplore } from '../Pages/Explore'
 
 export interface QuoteActions {
   onLike: (e: React.MouseEvent, isActive: boolean) => void
@@ -55,12 +54,12 @@ export function useQuoteActions(quoteProps: Quote, updateQuote: (q: Quote) => vo
   }
 
   const canLikeSave = () => {
-    return !!token;
+    return !!token
   }
 
   return {
     onLike,
     onSave,
-    canLikeSave
+    canLikeSave,
   }
 }
