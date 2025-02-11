@@ -8,7 +8,7 @@ import {
   faHeart as solidHeart,
 } from '@fortawesome/free-solid-svg-icons'
 import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useQuoteActions } from '../Actions/QuoteActions'
 import { IconButton } from './IconButton'
 import TagComponent from './Tag'
@@ -18,10 +18,19 @@ interface CompactCardProps {
   index: number
   onClick: (index: number) => void
   updateQuote: (q: Quote) => void
+  keyword?: string
 }
 
-export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote }) => {
+export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote, keyword }) => {
   const { onLike, onSave } = useQuoteActions(quote, updateQuote)
+  const quoteRef = useRef<HTMLElement|null>(null)
+
+  useEffect(() => {
+    if (!keyword || !quoteRef.current)
+      return
+    let regEx = new RegExp(keyword, "ig");
+    quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
+  }, [quote])
 
   return (
     <Card
@@ -33,10 +42,14 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
         'transition': 'transform 0.2s',
         '&:hover': { transform: 'scale(1.01)' },
         'backgroundColor': '#f5f5f5',
+        '& .search-keyword': {
+          color: 'primary.main'
+        }
       }}
     >
       <CardContent sx={{ 'flexGrow': 1, 'overflow': 'hidden', 'padding': 0, '&:last-child': { pb: 0 } }}>
         <Typography
+          ref={quoteRef}
           variant="body1"
           sx={{
             overflow: 'hidden',

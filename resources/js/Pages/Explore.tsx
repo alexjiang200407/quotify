@@ -44,7 +44,7 @@ function Explore() {
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex, setInputValue } = useSearchBar()
+  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex, setInputValue, inputValue } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
   const { headerRef } = useHeader()
@@ -130,6 +130,7 @@ function Explore() {
               quote={quote}
               onClick={handleCardClick}
               updateQuote={updateQuote}
+              keyword={inputValue === ''? undefined : inputValue}
             />
           ))}
         </Box>

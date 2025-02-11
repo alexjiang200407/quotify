@@ -144,6 +144,13 @@ export function SearchBar(props: SearchBarProps) {
     goToPage(tags, author?.id ?? null, keyword === '' ? null : keyword)
   }
 
+  const keyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents the default selection behavior
+      onSearch([...selectedTags.values()], inputValue)
+    }
+  }
+
   return (
     <Paper
       component="form"
@@ -168,6 +175,7 @@ export function SearchBar(props: SearchBarProps) {
         getOptionLabel={tag => tag.label}
         onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
         onChange={(_, newValue) => { onSearch(newValue, '') }}
+        onKeyDown={keyDown}
         renderInput={params => (
           <TextField
             {...params}

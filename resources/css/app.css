@@ -102,3 +102,7 @@ main {
 #vara-svg {
   width: 100%;
 }
+
+p {
+  transition: color 1s ease-in;
+}
