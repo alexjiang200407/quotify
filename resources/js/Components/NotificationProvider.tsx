@@ -35,7 +35,7 @@ function NotificationProvider({ children }: NotificationProviderProps) {
   const handleHttpError = (err: Error, logoutIfUnauthorized: boolean = true) => {
     if (axios.isAxiosError(err) && err.status !== 500 && err.response) {
       if (err.status === 401) {
-        addNotification({ label: 'Please Login to access feature', alert: 'error' })
+        addNotification({ label: err.response.data.error ?? 'Please login to access this feature', alert: 'error' })
         if (logoutIfUnauthorized)
           dispatch(logout())
         return
