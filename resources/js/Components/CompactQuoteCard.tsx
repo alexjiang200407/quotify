@@ -24,12 +24,17 @@ interface CompactCardProps {
 export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick, updateQuote, keyword }) => {
   const { onLike, onSave } = useQuoteActions(quote, updateQuote)
   const quoteRef = useRef<HTMLElement|null>(null)
+  const authorRef = useRef<HTMLElement|null>(null)
 
   useEffect(() => {
-    if (!keyword || !quoteRef.current)
+    if (!keyword)
       return
-    let regEx = new RegExp(keyword, "ig");
-    quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
+    let regEx = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "ig");
+
+    if (quoteRef.current)
+      quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
+    if (authorRef.current)
+      authorRef.current.innerHTML = authorRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
   }, [quote])
 
   return (
@@ -63,7 +68,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
           {quote.quote}
         </Typography>
 
-        <Typography variant="caption" sx={{ fontStyle: 'italic', display: 'block', marginBottom: 1.5 }}>
+        <Typography variant="caption" sx={{ fontStyle: 'italic', display: 'block', marginBottom: 1.5 }} ref={authorRef}>
           {quote.author.full_name}
         </Typography>
 
