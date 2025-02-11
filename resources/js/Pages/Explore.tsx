@@ -55,8 +55,8 @@ export const Explore = () => {
     setIsAnimatingOut(false)
   }
 
-  const setSearch = (result: SearchResult | null) => {
-    dispatch(setSearchResult(result))
+  const setSearch = (res: SearchResult | null) => {
+    dispatch(setSearchResult({res}))
   }
 
   useEffect(() => {

@@ -32,8 +32,10 @@ const searchSlice = createSlice({
       }
 
       state.lastSearchResult = action.payload.res
-      state.lastSearchApiRoute = action.payload.url
-      state.lastSearchUrl = window.location.href
+      if (action.payload.url)
+        state.lastSearchApiRoute = action.payload.url
+      if (action.payload.url)
+        state.lastSearchUrl = window.location.href
     },
   },
 })
@@ -62,9 +64,8 @@ export const searchQuotesUrl = (url: string, token?: string | null) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
     const state = getState()
 
-    if (state.search.lastSearchApiRoute === url) {
+    if (state.search.lastSearchApiRoute === url)
       return
-    }
 
     return axios.get(url, auth)
       .then(res => res.data as SearchResult)
