@@ -34,7 +34,7 @@ export const CompactCard: React.FC<CompactCardProps> = ({ quote, index, onClick,
     if (quoteRef.current)
       quoteRef.current.innerHTML = quoteRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
     if (authorRef.current)
-      authorRef.current.innerHTML = authorRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? quoteRef.current.innerHTML
+      authorRef.current.innerHTML = authorRef.current.textContent?.replaceAll(regEx, s => `<span class='search-keyword'>${s}</span>`) ?? authorRef.current.innerHTML
   }, [quote])
 
   return (
