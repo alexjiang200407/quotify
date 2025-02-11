@@ -41,14 +41,14 @@ const searchSlice = createSlice({
 export const { setTopics, setSearchResult } = searchSlice.actions
 export default searchSlice.reducer
 
-export function initSearchSlice() {
+export const initSearchSlice = () => {
   return async (dispatch: Dispatch) => {
     return axios.get('/api/search/topics')
       .then(res => dispatch(setTopics(res.data)))
   }
 }
 
-export function searchQuotes(tagIDs?: string[] | null, authorID?: string | null, keyword?: string | null, token?: string | null) {
+export const searchQuotes = (tagIDs?: string[] | null, authorID?: string | null, keyword?: string | null, token?: string | null) => {
   return searchQuotesUrl(
     `/api/search/${token ? 'auth/' : ''}quotes/?${
       tagIDs?.map(tag => `tags[]=${tag}`).join('&')
@@ -57,7 +57,7 @@ export function searchQuotes(tagIDs?: string[] | null, authorID?: string | null,
   )
 }
 
-export function searchQuotesUrl(url: string, token?: string | null) {
+export const searchQuotesUrl = (url: string, token?: string | null) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
     const state = getState()

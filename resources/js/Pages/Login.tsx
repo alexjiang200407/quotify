@@ -21,7 +21,7 @@ import { useNotification } from '../Components/NotificationProvider'
 import { loginUser } from '../Datastore/authSlice'
 import { useAppDispatch } from '../Datastore/hooks'
 
-function AuthPage() {
+export const AuthPage = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)

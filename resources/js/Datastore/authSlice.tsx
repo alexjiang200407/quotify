@@ -1,24 +1,23 @@
 import type { Dispatch } from '@reduxjs/toolkit'
+import type { User } from '../types/httpResponseTypes'
+import type { AppDispatch, RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { User } from '../types/httpResponseTypes'
-import { AppDispatch, RootState } from './store'
-
 
 interface InitialState {
   user: User | null
-  token: string | null,
-  isAuthenticated: boolean,
-  loading: boolean,
-  error: null,
+  token: string | null
+  isAuthenticated: boolean
+  loading: boolean
+  error: null
 }
 
-const initialState : InitialState = {
+const initialState: InitialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   loading: false,
   error: null,
-  user: null
+  user: null,
 }
 
 const authSlice = createSlice({
@@ -45,7 +44,7 @@ const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload
-    }
+    },
   },
 })
 
@@ -65,7 +64,7 @@ export const getUser = () => {
   }
 }
 
-export function loginUser(email: string, password: string) {
+export const loginUser = (email: string, password: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(loginStart())
     const response = await axios.post('/api/login', {
@@ -77,7 +76,7 @@ export function loginUser(email: string, password: string) {
   }
 }
 
-export function logoutUser(token: string) {
+export const logoutUser = (token: string) => {
   return async (dispatch: AppDispatch) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
     return axios.delete('/api/logout', auth)

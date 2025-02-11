@@ -14,7 +14,7 @@ export interface HeaderProps {
   pages: LinkProps[]
 };
 
-function Logo() {
+export const Logo = () => {
   return (
     <RouterLink to="/spa/">
       <Tooltip title="Go Home" placement="right" arrow>
@@ -49,7 +49,7 @@ interface HeaderProviderProps {
   children: React.ReactNode
 }
 
-export function HeaderProvider({ children }: HeaderProviderProps) {
+export const HeaderProvider = ({ children }: HeaderProviderProps) => {
   const headerRef = useRef(null)
 
   return (
@@ -61,7 +61,7 @@ export function HeaderProvider({ children }: HeaderProviderProps) {
 
 export const useHeader = () => useContext(HeaderContext)
 
-function Header(props: HeaderProps) {
+export const Header = (props: HeaderProps) => {
   const [scrollPosition, setScrollPosition] = useState(window.screenY)
   const { headerRef } = useHeader()
   const handleScroll = () => {

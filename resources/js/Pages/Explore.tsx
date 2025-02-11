@@ -39,7 +39,7 @@ const ExploreContext = createContext<ExploreContextType>({
 
 export const useExplore = () => useContext(ExploreContext)
 
-function Explore() {
+export const Explore = () => {
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)

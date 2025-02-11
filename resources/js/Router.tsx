@@ -13,7 +13,7 @@ import Profile from './Pages/Profile'
 import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
 
-function App() {
+export const App = () => {
   const token = useAppSelector(state => state.auth.token)
   const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()

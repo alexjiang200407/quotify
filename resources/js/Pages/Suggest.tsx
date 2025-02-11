@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Suggest() {
+export const Suggest = () => {
   return <p>Suggest</p>
 }
 

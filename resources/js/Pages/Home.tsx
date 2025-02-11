@@ -6,7 +6,7 @@ import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
 import { useNotification } from '../Components/NotificationProvider'
 import { useAppSelector } from '../Datastore/hooks'
 
-function Home() {
+export const Home = () => {
   const { handleHttpError } = useNotification()
   const [quote, setQuote] = useState<Quote | null>(null)
   const token = useAppSelector(state => state.auth.token)
