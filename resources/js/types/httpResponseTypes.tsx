@@ -10,6 +10,12 @@ export interface Signature {
   letter_spacing: number
 }
 
+export interface User {
+  id: number
+  name: string
+  email: string
+}
+
 export interface Author {
   id: number
   full_name: string
