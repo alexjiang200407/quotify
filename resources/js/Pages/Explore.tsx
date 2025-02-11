@@ -44,7 +44,7 @@ function Explore() {
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
-  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex } = useSearchBar()
+  const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex, setInputValue } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
   const { headerRef } = useHeader()
@@ -71,6 +71,8 @@ function Explore() {
       topics.push([Number(author), 'author'])
 
     addTopic(topics, true)
+    if (keyword)
+      setInputValue(keyword)
 
     if (!topics.length && !keyword) {
       setSearch(null)

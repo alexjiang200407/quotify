@@ -25,6 +25,8 @@ interface SearchBarContextType {
   goToPage: (tags: number[], author: number | null, keyword: string | null) => void
   selectedQuoteIndex: number | null
   setSelectedQuoteIndex: (idx: number | null) => void
+  setInputValue: (keyword: string) => void
+  inputValue: string
 }
 
 interface SearchBarProviderProps {
@@ -40,6 +42,8 @@ const SearchBarContext = createContext<SearchBarContextType>({
   goToPage: (_1: number[], _2: number | null, _3: string | null) => console.warn('SearchBar Provider not setup'),
   selectedQuoteIndex: null,
   setSelectedQuoteIndex: (_: number | null) => console.warn('SearchBar Provider not setup'),
+  setInputValue: (_: string) => console.warn('SearchBar Provider not setup'),
+  inputValue: ''
 })
 
 export const useSearchBar = () => useContext(SearchBarContext)
@@ -51,6 +55,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   const [authorSelected, setAuthorSelected] = useState<boolean>(false)
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<number | null>(null)
   const navigate = useNavigate()
+  const [inputValue, setInputValue] = useState('')
 
   const makeTopicID = (t: Topic) => {
     return `${t.type}---${t.id}`
@@ -71,10 +76,13 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   }
 
   const addTopic = (idAndType: [number, string][], clear: boolean = false) => {
-    if (!clear)
+    if (!clear) {
       setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []), true)
-    else
+    }
+    else {
       setSelectedTopics(idAndType.flatMap(([id, type]) => topics.find(t => t.id === id && t.type === type) ?? []))
+      setInputValue('')
+    }
   }
 
   const goToPage = (tags: number[], author: number | null, keyword: string | null) => {
@@ -93,21 +101,25 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
       topics.push([author, 'author'])
 
     addTopic(topics, true)
+    if (keyword)
+      setInputValue(keyword)
   }
 
   return (
-    <SearchBarContext.Provider value={{ setSelectedTopics, authorSelected, selectedTags, addTopic, tagCount, goToPage, setSelectedQuoteIndex, selectedQuoteIndex }}>
+    <SearchBarContext.Provider value={{
+      setSelectedTopics, authorSelected, selectedTags,
+      addTopic, tagCount, goToPage, setSelectedQuoteIndex,
+      selectedQuoteIndex, setInputValue, inputValue
+    }}>
       {children}
     </SearchBarContext.Provider>
   )
 }
 
 export function SearchBar(props: SearchBarProps) {
-  const keywordRef = useRef<HTMLInputElement | undefined>(undefined)
   const GROUP_OPTION_COUNT = 3
   const topics = useAppSelector(state => state.search.topics)
-  const { authorSelected, selectedTags, tagCount, goToPage } = useSearchBar()
-  const [inputValue, setInputValue] = useState('')
+  const { authorSelected, selectedTags, tagCount, goToPage, inputValue, setInputValue } = useSearchBar()
 
   const filterTopics = (topics: Topic[], state: FilterOptionsState<Topic>): Topic[] => {
     let authorsChosen = 0
@@ -148,6 +160,7 @@ export function SearchBar(props: SearchBarProps) {
         id="multiple-limit-tags"
         sx={{ flex: 1, paddingInline: 2 }}
         openOnFocus
+        inputValue={inputValue}
         value={[...selectedTags.values()]}
         isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
         groupBy={tag => tag.type}
@@ -160,7 +173,6 @@ export function SearchBar(props: SearchBarProps) {
             {...params}
             placeholder={props.label}
             variant="standard"
-            inputRef={keywordRef}
             sx={{
               'paddingBlock': 1,
               '& .MuiInput-underline:before, & .MuiInput-underline:after': {
