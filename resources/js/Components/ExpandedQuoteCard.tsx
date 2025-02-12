@@ -71,7 +71,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
             text: quote.author.full_name, // String, text to be shown
             color: quote.author.signature.color,
             duration: quote.author.signature.duration * quote.author.full_name.length,
-            strokeWidth: 0.1,
+            strokeWidth: quote.author.signature.stroke_width,
             fontSize: quote.author.signature.font_size,
             letterSpacing: quote.author.signature.letter_spacing,
             autoAnimation: true, // Boolean, Whether to animate the text automatically
