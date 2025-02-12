@@ -824,3 +824,9 @@ Diogenes|https://en.wikipedia.org/wiki/Diogenes|Diogenes of Sinope, was a Greek 
 Heraclitus|https://en.wikipedia.org/wiki/Heraclitus|Greek philosopher (late 6th/early 5th-century BC)
 Odyssey|https://en.wikipedia.org/wiki/Odyssey|Epic poem attributed to Homer
 Iliad|https://en.wikipedia.org/wiki/Iliad|Epic poem attributed to Homer
+On the Waterfront|https://en.wikipedia.org/wiki/On_the_Waterfront|1954 film by Elia Kazan
+Lawrence of Arabia|https://en.wikipedia.org/wiki/Lawrence_of_Arabia|1962 film directed by David Lean
+Nostalghia|https://en.wikipedia.org/wiki/Nostalghia|1983 Movie by Andrei Tarkovsky
+John Ruskin|https://en.wikipedia.org/wiki/John_Ruskin|English writer and art critic (1819–1900)
+Herbert Spencer|https://en.wikipedia.org/wiki/Herbert_Spencer|English philosopher and political theorist (1820–1903)
+Henry George|https://en.wikipedia.org/wiki/Henry_George|American political economist and journalist (1839–1897)

@@ -15,7 +15,6 @@ Out of suffering have emerged the strongest souls; the most massive characters a
 Everyone falls down. Getting back up is how you learn how to walk.|Walt Disney|Hollywood,Motivational,Resilience
 By seeking and blundering we learn.|Johann Wolfgang von Goethe|Germany,Motivational,Learning
 Give a man a fish, and you’ll feed him for a day. Teach a man to fish, and he’ll buy a funny hat. Talk to a hungry man about fish, and you’re a consultant.|Scott Adams|Funny,Satire,Advice
-I am the punishment of God.|Genghis Khan|Conquerors,Scary,Power
 No good movie is too long and no bad movie is short enough.|Roger Ebert|Film,Funny,Criticism
 If pro is the opposite of con, what is the opposite of Congress?|Will Rogers|Funny,Roast,Politics,Satire
 Success is most often achieved by those who don't know that failure is inevitable.|Coco Chanel|France,Motivational,Ambition
@@ -2058,3 +2057,22 @@ If I gained one thing from philosophy is that at the very least, I am well prepa
 Everything flows and nothing abides.|Heraclitus|Ancient Greece,Change
 Stay strong, heart, for you have seen worse sights than this.|Odyssey|Ancient Greece,Poetry,Resilience
 Be both a speaker of words and a doer of deeds.|Iliad|Ancient Greece,Poetry,Action
+You don't understand! I coulda had class. I coulda been a contender. I could've been somebody, instead of a bum, which is what I am.|On the Waterfront|Cinema,Failure
+There may be honor among thieves, but there's none in politicians.|Lawrence of Arabia|Politics,Cynical,Cinema
+Truly, for some men nothing is written unless THEY write it.|Lawrence of Arabia|Cinema,Destiny
+Feelings unspoken are unforgettable.|Nostalghia|Cinema,Sad
+I am the punishment of God...If you had not committed great sins, God would not have sent a punishment like me upon you.|Genghis Khan|Conquerors,Scary,Power
+Remembrance of things past is not necessarily the remembrance of things as they were.|Marcel Proust|Memory,Nostalgia
+Happiness is beneficial for the body, but it is grief that develops the powers of the mind.|Marcel Proust|Happiness,Grief
+Love is a striking example of how little reality means to us.|Marcel Proust|Love,Reality
+We are healed of a suffering only by experiencing it to the full.|Marcel Proust|Suffering,Experience
+If a little dreaming is dangerous, the cure for it is not to dream less, but to dream more, to dream all the time.|Marcel Proust|Dreams,Inspirational
+Experience without theory is blind, but theory without experience is mere intellectual play.|Immanuel Kant|Experience,Theory
+To banish imperfection is to destroy expression, to check exertion, to paralyze vitality.|John Ruskin|Perfection,Expression
+It is better to lose your pride with someone you love rather than to lose that someone you love with your useless pride.|John Ruskin|Love,Pride
+Sunshine is delicious, rain is refreshing, wind braces us up, snow is exhilarating; there is really no such thing as bad weather, only different kinds of good weather.|John Ruskin|Weather,Beauty
+All art is but dirtying the paper delicately.|John Ruskin|Art,Beauty
+The great aim of education is not knowledge but action.|Herbert Spencer|Education,Action
+No man is equal to his book. All the best products of his mental activity go into his book, where they come separated from the mass of inferior products with which they are mingled in his daily talk.|Herbert Spencer|Books,Productivity
+Desire makes everything blossom; possession makes everything wither and fade.|Marcel Proust|Desire,Possession
+Man is the only animal whose desires increase as they are fed; the only animal that is never satisfied.|Henry George|Mankind,Desire
