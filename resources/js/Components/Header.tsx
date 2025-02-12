@@ -9,12 +9,15 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { Link as RouterLink } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 
 export interface HeaderProps {
   pages: LinkProps[]
 };
 
-function Logo() {
+export const Logo = () => {
+  const isMobile = isMobileDevice()
+
   return (
     <RouterLink to="/spa/">
       <Tooltip title="Go Home" placement="right" arrow>
@@ -49,7 +52,7 @@ interface HeaderProviderProps {
   children: React.ReactNode
 }
 
-export function HeaderProvider({ children }: HeaderProviderProps) {
+export const HeaderProvider = ({ children }: HeaderProviderProps) => {
   const headerRef = useRef(null)
 
   return (
@@ -61,9 +64,11 @@ export function HeaderProvider({ children }: HeaderProviderProps) {
 
 export const useHeader = () => useContext(HeaderContext)
 
-function Header(props: HeaderProps) {
+export const Header = (props: HeaderProps) => {
   const [scrollPosition, setScrollPosition] = useState(window.screenY)
   const { headerRef } = useHeader()
+  const isMobile = isMobileDevice()
+
   const handleScroll = () => {
     const position = window.pageYOffset
     setScrollPosition(position)
@@ -91,13 +96,21 @@ function Header(props: HeaderProps) {
     >
       <Container>
         <Stack
-          sx={{ padding: 4, minWidth: 0 }}
+          sx={{
+            padding: isMobile? 0 : 4,
+            paddingTop: isMobile? 2 : 4,
+            minWidth: isMobile? '100%' : 0,
+          }}
           direction="row"
           justifyContent="space-between"
           alignItems="center"
           spacing={10}
+          
         >
-          <Logo />
+          {
+            !isMobile &&
+            <Logo />
+          }
           <SearchBar
             label="Search Quotes or Authors"
           />

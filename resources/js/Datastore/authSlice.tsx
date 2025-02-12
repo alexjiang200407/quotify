@@ -1,19 +1,31 @@
 import type { Dispatch } from '@reduxjs/toolkit'
+import type { User } from '../types/httpResponseTypes'
+import type { AppDispatch, RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+interface InitialState {
+  user: User | null
+  token: string | null
+  isAuthenticated: boolean
+  loading: boolean
+  error: null
+}
+
+const initialState: InitialState = {
+  token: localStorage.getItem('token'),
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+  user: null,
+}
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    token: localStorage.getItem('token'),
-    isAuthenticated: false,
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
     loginStart: (state) => {
       state.loading = true
-      state.error = null
     },
     loginSuccess: (state, action) => {
       state.token = action.payload
@@ -21,36 +33,58 @@ const authSlice = createSlice({
       state.loading = false
       localStorage.setItem('token', action.payload)
     },
-    loginFailure: (state, action) => {
+    loginFailure: (state) => {
       state.loading = false
-      state.error = action.payload
     },
     logout: (state) => {
       state.token = null
       state.isAuthenticated = false
+      state.user = null
       localStorage.removeItem('token')
+    },
+    setUser: (state, action) => {
+      state.user = action.payload
     },
   },
 })
 
-export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions
+export const { loginStart, loginSuccess, loginFailure, logout, setUser } = authSlice.actions
 export default authSlice.reducer
 
-export function loginUser(email: string, password: string) {
-  return async (dispatch: Dispatch) => {
+export const getUser = () => {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const token = getState().auth.token
+
+    if (!token)
+      return
+
+    const auth = { headers: { Authorization: `Bearer ${token}` } }
+    return axios.get('/api/user', auth)
+      .then(res => dispatch(setUser(res.data)))
+      .catch(_e => dispatch(logout()))
+  }
+}
+
+export const loginUser = (email: string, password: string) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(loginStart())
     const response = await axios.post('/api/login', {
       email,
       password,
     })
     dispatch(loginSuccess(response.data.token))
+    dispatch(getUser())
   }
 }
 
-export function logoutUser(token: string) {
-  return async (dispatch: Dispatch) => {
+export const logoutUser = (token: string) => {
+  return async (dispatch: AppDispatch) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
     return axios.delete('/api/logout', auth)
       .then(() => dispatch(logout()))
   }
+}
+
+export const makeAuthHeader = (token: string) => {
+  return { headers: { Authorization: `Bearer ${token}` } }
 }

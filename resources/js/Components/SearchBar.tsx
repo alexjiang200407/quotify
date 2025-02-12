@@ -2,7 +2,7 @@ import type { FilterOptionsState } from '@mui/material'
 import type { Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
+import { Autocomplete, Chip, Divider, IconButton, InputAdornment, Paper, Popper, styled, TextField } from '@mui/material'
 import React, { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../Datastore/hooks'
@@ -48,7 +48,7 @@ const SearchBarContext = createContext<SearchBarContextType>({
 
 export const useSearchBar = () => useContext(SearchBarContext)
 
-export function SearchBarProvider({ children }: SearchBarProviderProps) {
+export const SearchBarProvider = ({ children }: SearchBarProviderProps) => {
   const topics = useAppSelector(state => state.search.topics)
   const [selectedTags, setSelectedTags] = useState<Map<string, Topic>>(new Map())
   const [tagCount, setTagCount] = useState(0)
@@ -124,7 +124,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   )
 }
 
-export function SearchBar(props: SearchBarProps) {
+export const SearchBar = (props: SearchBarProps) => {
   const GROUP_OPTION_COUNT = 3
   const topics = useAppSelector(state => state.search.topics)
   const { authorSelected, selectedTags, tagCount, goToPage, inputValue, setInputValue } = useSearchBar()
@@ -160,50 +160,64 @@ export function SearchBar(props: SearchBarProps) {
   }
 
   return (
-    <Paper
-      component="form"
-      sx={{ display: 'inline-flex', alignItems: 'center', borderRadius: 10, flex: 1 }}
-    >
-      <Autocomplete
-        clearOnBlur={false}
-        fullWidth
-        multiple
-        filterSelectedOptions={true}
-        filterOptions={filterTopics}
-        slots={{ popper: CustomPopper }}
-        limitTags={2}
-        id="multiple-limit-tags"
-        sx={{ flex: 1, paddingInline: 2 }}
-        openOnFocus
-        inputValue={inputValue}
-        value={[...selectedTags.values()]}
-        isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
-        groupBy={tag => tag.type}
-        options={topics}
-        getOptionLabel={tag => tag.label}
-        onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-        onChange={(_, newValue) => { onSearch(newValue, '') }}
-        onKeyDown={keyDown}
-        renderInput={params => (
-          <TextField
-            {...params}
-            placeholder={props.label}
-            variant="standard"
-            sx={{
-              'paddingBlock': 1,
-              '& .MuiInput-underline:before, & .MuiInput-underline:after': {
-                display: 'none',
-              },
-            }}
-          />
-        )}
-      />
+    <Autocomplete
+      clearOnBlur={false}
+      fullWidth
+      multiple
+      filterSelectedOptions={true}
+      filterOptions={filterTopics}
+      slots={{
+        popper: CustomPopper,
+      }}
+      limitTags={2}
+      id="multiple-limit-tags"
+      sx={{ flex: 1 }}
+      openOnFocus
+      inputValue={inputValue}
+      value={[...selectedTags.values()]}
+      isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
+      groupBy={tag => tag.type}
+      options={topics}
+      getOptionLabel={tag => tag.label}
+      onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
+      onChange={(_, newValue) => { onSearch(newValue, '') }}
+      onKeyDown={keyDown}
+      renderInput={params => (
+        
+        <TextField
+          {...params}
+          placeholder={props.label}
+          variant="outlined"
+          sx={{
+            'paddingBlock': 1,
+            '& .MuiInput-underline:before, & .MuiInput-underline:after': {
+              display: 'none',
+            },
+            '& .MuiInputBase-root': {
+              paddingRight: '0 !important'
+            },
+            overflow: 'hidden',
+            whiteSpace: 'nowrap'
+          }}
+          size='small'
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              endAdornment: (
+              <InputAdornment position='end'>
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </IconButton>
+              </InputAdornment>       
+              )
+            }
+          }}
+        >
 
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
-        <FontAwesomeIcon icon={faSearch} />
-      </IconButton>
-    </Paper>
+        </TextField>
+      )}
+    />
   )
 }
 

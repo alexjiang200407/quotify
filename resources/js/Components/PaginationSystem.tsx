@@ -8,6 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Pagination, PaginationItem, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 
 interface PaginationSystemProps {
   currentPage: number
@@ -35,6 +36,7 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 4 }}>
       <Pagination
+        size={isMobileDevice() ? 'small' : 'medium'}
         count={totalPages}
         page={currentPage}
         onChange={(_, page) => onPageChange(page)}
@@ -60,21 +62,24 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
           />
         )}
       />
+      {
+        !isMobileDevice() &&
+        <TextField
+          label="Go to page"
+          value={pageInput}
+          onChange={e => setPageInput(e.target.value.replace(/\D/, ''))}
+          onKeyPress={handleKeyPress}
+          type="number"
+          size="small"
+          sx={{ width: 120 }}
+          inputProps={{
+            min: 1,
+            max: totalPages,
+            style: { textAlign: 'center' },
+          }}
+        />
+      }
 
-      <TextField
-        label="Go to page"
-        value={pageInput}
-        onChange={e => setPageInput(e.target.value.replace(/\D/, ''))}
-        onKeyPress={handleKeyPress}
-        type="number"
-        size="small"
-        sx={{ width: 120 }}
-        inputProps={{
-          min: 1,
-          max: totalPages,
-          style: { textAlign: 'center' },
-        }}
-      />
     </Box>
   )
 }

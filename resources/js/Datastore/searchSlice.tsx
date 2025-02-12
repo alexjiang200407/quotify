@@ -1,6 +1,5 @@
 import type { Dispatch } from '@reduxjs/toolkit'
 import type { SearchResult, Topic } from '../types/httpResponseTypes'
-import type { RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
@@ -32,8 +31,10 @@ const searchSlice = createSlice({
       }
 
       state.lastSearchResult = action.payload.res
-      state.lastSearchApiRoute = action.payload.url
-      state.lastSearchUrl = window.location.href
+      if (action.payload.url)
+        state.lastSearchApiRoute = action.payload.url
+      if (action.payload.url)
+        state.lastSearchUrl = window.location.href
     },
   },
 })
@@ -41,30 +42,16 @@ const searchSlice = createSlice({
 export const { setTopics, setSearchResult } = searchSlice.actions
 export default searchSlice.reducer
 
-export function initSearchSlice() {
+export const initSearchSlice = () => {
   return async (dispatch: Dispatch) => {
     return axios.get('/api/search/topics')
       .then(res => dispatch(setTopics(res.data)))
   }
 }
 
-export function searchQuotes(tagIDs?: string[] | null, authorID?: string | null, keyword?: string | null, token?: string | null) {
-  return searchQuotesUrl(
-    `/api/search/${token ? 'auth/' : ''}quotes/?${
-      tagIDs?.map(tag => `tags[]=${tag}`).join('&')
-    }${authorID ? `&author=${authorID}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
-    token,
-  )
-}
-
-export function searchQuotesUrl(url: string, token?: string | null) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+export const searchQuotesUrl = (url: string, token?: string | null) => {
+  return async (dispatch: Dispatch) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const state = getState()
-
-    if (state.search.lastSearchApiRoute === url) {
-      return
-    }
 
     return axios.get(url, auth)
       .then(res => res.data as SearchResult)
@@ -72,4 +59,13 @@ export function searchQuotesUrl(url: string, token?: string | null) {
         dispatch(setSearchResult({ res, url }))
       })
   }
+}
+
+export const searchQuotes = (tagIDs?: string[] | null, authorID?: string | null, keyword?: string | null, token?: string | null) => {
+  return searchQuotesUrl(
+    `/api/search/${token ? 'auth/' : ''}quotes/?${
+      tagIDs?.map(tag => `tags[]=${tag}`).join('&')
+    }${authorID ? `&author=${authorID}` : ''}${keyword ? `&keyword=${keyword}` : ''}`,
+    token,
+  )
 }

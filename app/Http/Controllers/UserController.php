@@ -11,7 +11,30 @@ class UserController extends Controller
 { 
     public function getSaved(Request $request) {
         $user = $this->getUser($request);
-        return response()->json($user->saves()->get());
+        $res = $user->saves()
+            ->selectRaw("
+                quotes.*,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM quote_likes 
+                        WHERE quote_likes.quote_id = quotes.id AND quote_likes.user_id = $user->id
+                    ) THEN TRUE
+                    ELSE FALSE
+                END AS user_upvoted,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM quote_saves 
+                        WHERE quote_saves.quote_id = quotes.id AND quote_saves.user_id = $user->id
+                    ) THEN TRUE
+                    ELSE FALSE
+                END AS user_saved
+            ")
+            ->with(['author', 'tags', 'author.signature'])
+            ->withCount(['likes as upvotes', 'saves as saves'])
+            ->paginate(10)
+            ->appends(request()->query());
+
+        return response()->json($res);
     }
 
     public function getUpvoted(Request $request) {

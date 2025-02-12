@@ -20,12 +20,15 @@ import { useNavigate } from 'react-router-dom'
 import { useNotification } from '../Components/NotificationProvider'
 import { loginUser } from '../Datastore/authSlice'
 import { useAppDispatch } from '../Datastore/hooks'
+import { isMobileDevice } from '../ResponsiveUIProvider'
+import { useHeader } from '../Components/Header'
 
-function AuthPage() {
+export const AuthPage = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const dispatch = useAppDispatch()
+  const { headerRef } = useHeader()
   const { handleHttpError, addNotification } = useNotification()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -77,7 +80,16 @@ function AuthPage() {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', p: 2 }}>
+    <Box
+      sx={{
+        p: 2,
+        paddingTop: isMobileDevice() ? `${(headerRef?.current?.clientHeight ?? 0) + 20}px` : 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
+    >
       <Card sx={{ p: 4, width: '100%', maxWidth: 450, boxShadow: 3, borderRadius: 2, backgroundColor: 'white', animation: 'fadeIn 0.3s ease-in' }}>
         <Tabs value={activeTab} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 3 }}>
           <Tab label="Sign In" />

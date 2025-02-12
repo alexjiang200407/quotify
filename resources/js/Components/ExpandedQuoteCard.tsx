@@ -16,17 +16,16 @@ import { useNotification } from './NotificationProvider'
 import { useSearchBar } from './SearchBar'
 import TagComponent from './Tag'
 import WikiPortrait from './WikiPortrait'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
-  isMobile?: boolean
   updateQuote: (q: Quote) => void
 }
 
 export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   quote,
   updateQuote,
-  // isMobile = true,
 }) => {
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
   const varaRef = useRef<VaraType | boolean>(false)
@@ -89,6 +88,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   return (
     <Box>
       <Box sx={{
+        width: isMobileDevice() ? '95vw' : '45vw',
         'paddingInline': 2,
         'paddingBlock': 4,
         'boxShadow': 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;',
@@ -105,13 +105,21 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         'backgroundColor': 'background.default',
       }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxHeight: '80vh' }}>
           <WikiPortrait personName={quote.author.full_name} width={100} height={100} />
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
             {/* Content Box */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '40vw', textAlign: 'center', padding: 2, paddingTop: 0 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                textAlign: 'center',
+                padding: 2,
+                paddingTop: 0
+              }}
+            >
               <Card sx={{ boxShadow: 'none', backgroundColor: 'background.default' }}>
-                <CardContent>
+                <CardContent sx={{maxHeight: '30vh', overflow: 'auto'}}>
                   {quote.quote.split('\n').map((line, index) => (
                     <Typography
                       key={index}
@@ -148,7 +156,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         </Box>
         <Box sx={{
           display: 'flex',
-          justifyContent: 'right',
+          justifyContent: isMobileDevice() ? 'center' :  'right',
         }}
         >
           <Box

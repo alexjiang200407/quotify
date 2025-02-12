@@ -8,7 +8,7 @@ export interface LinkProps {
   onClick?: (e: React.MouseEvent) => void
 };
 
-function Link(props: LinkProps) {
+export const Link = (props: LinkProps) => {
   return (
     <MuiLink
       component={RouterLink}

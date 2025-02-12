@@ -9,7 +9,7 @@ export interface NotificationProps {
   alert?: OverridableStringUnion<AlertColor, AlertPropsColorOverrides>
 };
 
-function Notification({ label, duration = 3000, alert = 'info' }: NotificationProps) {
+export const Notification = ({ label, duration = 3000, alert = 'info' }: NotificationProps) => {
   const [open, setOpen] = React.useState(true)
 
   const handleClose = (
