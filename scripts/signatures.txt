@@ -5,4 +5,5 @@ disney|25|0.45|1|300|black|Walt Disney
 picasso|30|0.55|1|225|black|Pablo Picasso
 medieval|20|1|2|225|#292929|Dante Alighieri,Thomas Aquinas,Geoffrey Chaucer,Joan of Arc
 tolkien|20|0.2|1|225|black|J.R.R. Tolkien
-german|13|0.3|1|200|black|
+german|13|0.3|1|200|black|Johann Wolfgang von Goethe,Robert Schumann,Wolfgang Amadeus Mozart,Victor Frankl,Georg Wilhelm Friedrich Hegel,Friedrich Nietzsche,Ludwig Van Beethoven,Arthur Schopenhauer,Otto von Bismarck
+lennon|30|0.1|-1|225|black|John Lennon
