@@ -17,7 +17,7 @@ const initializeApp = async () => {
 
     await Promise.all([
       store.dispatch(initSearchSlice()),
-      store.dispatch(getUser())
+      store.dispatch(getUser()),
     ])
 
     root.render(
