@@ -1,9 +1,9 @@
-import type { Quote } from '../types/httpResponseTypes'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Box, keyframes } from '@mui/material'
-import React, { useState } from 'react'
-import { ExpandedQuoteCard } from './ExpandedQuoteCard'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, keyframes } from "@mui/material";
+import React, { useState } from "react";
+import { ExpandedQuoteCard } from "./ExpandedQuoteCard";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Quote } from "../types/httpResponseTypes";
 
 const expandAnimation = keyframes`
   from { transform: scale(0.95); opacity: 0; }
@@ -21,7 +21,7 @@ interface ExpandedQuoteModalProps {
   updateQuote: (q: Quote) => void
 }
 
-export const ExpandedQuoteModal = ({ quote, onClose, updateQuote }: ExpandedQuoteModalProps) => {
+export const ExpandedQuoteModal = ({ quote, onClose, updateQuote } : ExpandedQuoteModalProps) => {
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
 
   const closeExpandedView = () => {
@@ -35,33 +35,33 @@ export const ExpandedQuoteModal = ({ quote, onClose, updateQuote }: ExpandedQuot
   return (
     <Box
       sx={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        bgcolor: 'background.paper',
+        width: "100%",
+        height: "100%",
+        bgcolor: "background.paper",
         zIndex: 1300,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         padding: 4,
         animation: `${
           isAnimatingOut ? collapseAnimation : expandAnimation
         } 0.3s ease-out`,
-        pointerEvents: isAnimatingOut ? 'none' : 'auto',
+        pointerEvents: isAnimatingOut ? "none" : "auto",
       }}
     >
       <Box
         onClick={closeExpandedView}
         sx={{
-          'position': 'absolute',
-          'top': 16,
-          'left': 16,
-          'cursor': 'pointer',
-          'zIndex': 1,
-          'padding': 1,
-          '&:hover': { bgcolor: 'action.hover', borderRadius: '50%' },
+          position: "absolute",
+          top: 16,
+          left: 16,
+          cursor: "pointer",
+          zIndex: 1,
+          padding: 1,
+          "&:hover": { bgcolor: "action.hover", borderRadius: "50%" },
         }}
       >
         <FontAwesomeIcon icon={faTimes} size="lg" />
@@ -72,5 +72,5 @@ export const ExpandedQuoteModal = ({ quote, onClose, updateQuote }: ExpandedQuot
         updateQuote={updateQuote}
       />
     </Box>
-  )
-}
+  );
+};
