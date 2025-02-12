@@ -48,7 +48,7 @@ const SearchBarContext = createContext<SearchBarContextType>({
 
 export const useSearchBar = () => useContext(SearchBarContext)
 
-export function SearchBarProvider({ children }: SearchBarProviderProps) {
+export const SearchBarProvider = ({ children }: SearchBarProviderProps) => {
   const topics = useAppSelector(state => state.search.topics)
   const [selectedTags, setSelectedTags] = useState<Map<string, Topic>>(new Map())
   const [tagCount, setTagCount] = useState(0)
@@ -124,7 +124,7 @@ export function SearchBarProvider({ children }: SearchBarProviderProps) {
   )
 }
 
-export function SearchBar(props: SearchBarProps) {
+export const SearchBar = (props: SearchBarProps) => {
   const GROUP_OPTION_COUNT = 3
   const topics = useAppSelector(state => state.search.topics)
   const { authorSelected, selectedTags, tagCount, goToPage, inputValue, setInputValue } = useSearchBar()

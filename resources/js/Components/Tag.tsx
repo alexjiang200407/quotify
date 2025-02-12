@@ -3,7 +3,7 @@ import { Chip } from '@mui/material'
 import React from 'react'
 import { useSearchBar } from './SearchBar'
 
-function TagComponent({ label, id }: Tag) {
+export const TagComponent = ({ label, id }: Tag) => {
   const { goToPage } = useSearchBar()
   return (
     <Chip

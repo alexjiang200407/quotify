@@ -21,7 +21,7 @@ const NotificationContext = createContext<NotificationContextType>({
 
 export const useNotification = () => useContext(NotificationContext)
 
-function NotificationProvider({ children }: NotificationProviderProps) {
+export const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [notifications, setNotifications] = useState<React.JSX.Element[]>([])
   const dispatch = useAppDispatch()
 

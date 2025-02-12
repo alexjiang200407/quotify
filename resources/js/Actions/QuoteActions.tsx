@@ -9,7 +9,7 @@ export interface QuoteActions {
   canLikeSave: () => boolean
 }
 
-export function useQuoteActions(quoteProps: Quote, updateQuote: (q: Quote) => void): QuoteActions {
+export const useQuoteActions = (quoteProps: Quote, updateQuote: (q: Quote) => void): QuoteActions => {
   const { handleHttpError } = useNotification()
   const token = useAppSelector(state => state.auth.token)
   let prevState: Quote | null = null

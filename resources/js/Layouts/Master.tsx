@@ -13,7 +13,7 @@ export interface MasterProps {
   headerProps: HeaderProps
 };
 
-function Master(props: MasterProps) {
+export const Master = (props: MasterProps) => {
   return (
     <div>
       <ThemeProvider theme={props.theme}>

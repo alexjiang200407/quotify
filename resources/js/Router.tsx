@@ -10,10 +10,9 @@ import Explore from './Pages/Explore'
 import Home from './Pages/Home'
 import Login from './Pages/Login'
 import Profile from './Pages/Profile'
-import Suggest from './Pages/Suggest'
 import { createDefaultTheme } from './Themes/DefaultTheme'
 
-function App() {
+export const App = () => {
   const token = useAppSelector(state => state.auth.token)
   const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()
@@ -37,10 +36,6 @@ function App() {
       {
         label: 'Profile',
         link: '/spa/profile',
-      },
-      {
-        label: 'Suggest',
-        link: '/spa/suggest',
       },
       {
         label: 'Explore',
@@ -90,7 +85,6 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/spa/login" element={<Login />} />
         <Route path="/spa/profile" element={<Profile />} />
-        <Route path="/spa/suggest" element={<Suggest />} />
         <Route path="/spa/explore" element={<Explore />} />
       </Route>
     </Routes>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +30,13 @@ class Quote extends Model
 
     public function saves() {
         return $this->belongsToMany(User::class, 'quote_saves');
+    }
+
+    public function isSavedBy(User $user) {
+        return $this->saves()->where('user_id', '=', $user->id)->exists();
+    }
+
+    public function isUpvotedBy(User $user) {
+        return $this->likes()->where('user_id', '=', $user->id)->exists();
     }
 }

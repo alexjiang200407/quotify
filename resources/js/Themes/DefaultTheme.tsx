@@ -13,7 +13,7 @@ const defaultColorTheme = createTheme({
   },
 })
 
-export function createDefaultTheme(colorTheme: Theme = defaultColorTheme): Theme {
+export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme => {
   const theme = createTheme(colorTheme, {
     typography: {
       body1: {

@@ -23,7 +23,7 @@ interface WikiPortraitProps {
   height?: number
 }
 
-function WikiPortrait({ personName, width = 200, height = 200 }: WikiPortraitProps) {
+export const WikiPortrait = ({ personName, width = 200, height = 200 }: WikiPortraitProps) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
