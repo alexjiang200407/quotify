@@ -10,6 +10,7 @@ import { useSearchBar } from '../Components/SearchBar'
 import { useAppDispatch, useAppSelector } from '../Datastore/hooks'
 import { searchQuotes, searchQuotesUrl, setSearchResult } from '../Datastore/searchSlice'
 import { ExpandedQuoteModal } from '../Components/ExpandedQuoteModal'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 
 interface ExploreContextType {
   onExplorePage: boolean
@@ -24,7 +25,6 @@ const ExploreContext = createContext<ExploreContextType>({
 export const useExplore = () => useContext(ExploreContext)
 
 export const Explore = () => {
-  // const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const [searchParams] = useSearchParams()
   const search = useAppSelector(state => state.search.lastSearchResult)
   const { handleHttpError, addNotification } = useNotification()
@@ -33,6 +33,7 @@ export const Explore = () => {
   const dispatch = useAppDispatch()
   const { headerRef } = useHeader()
   const [onExplorePage] = useState(true)
+  const isMobile = isMobileDevice()
 
   const handleCardClick = (index: number | null) => {
     setSelectedQuoteIndex(index)
@@ -98,7 +99,7 @@ export const Explore = () => {
   return (
     <ExploreContext.Provider value={{ onExplorePage, updateQuote }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: isMobile? '90%': '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
           {search?.data.map((quote, index) => (
             <CompactCard
               key={index}
