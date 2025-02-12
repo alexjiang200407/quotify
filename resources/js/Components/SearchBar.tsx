@@ -160,75 +160,64 @@ export const SearchBar = (props: SearchBarProps) => {
   }
 
   return (
-    <Paper
-      component="form"
-      sx={{ display: 'inline-flex', alignItems: 'center', borderRadius: 10, flex: 1, paddingInline: 2 }}
-    >
-      <Autocomplete
-        clearOnBlur={false}
-        fullWidth
-        multiple
-        filterSelectedOptions={true}
-        filterOptions={filterTopics}
-        slots={{
-          popper: CustomPopper,
-        }}
-        limitTags={2}
-        id="multiple-limit-tags"
-        sx={{ flex: 1 }}
-        openOnFocus
-        inputValue={inputValue}
-        value={[...selectedTags.values()]}
-        isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
-        groupBy={tag => tag.type}
-        options={topics}
-        getOptionLabel={tag => tag.label}
-        onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-        onChange={(_, newValue) => { onSearch(newValue, '') }}
-        onKeyDown={keyDown}
-        renderInput={params => (
-          
-          <TextField
-            {...params}
-            placeholder={props.label}
-            variant="standard"
-            sx={{
-              'paddingBlock': 1,
-              '& .MuiInput-underline:before, & .MuiInput-underline:after': {
-                display: 'none',
-              },
-              '& .MuiInputBase-root': {
-                paddingRight: '0 !important'
-              },
-              overflow: 'hidden',
-              whiteSpace: 'nowrap'
-            }}
-            size='small'
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                endAdornment: (
-                <InputAdornment position='end'>
-                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                  <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
-                    <FontAwesomeIcon icon={faSearch} />
-                  </IconButton>
-                </InputAdornment>       
-                )
-              }
-            }}
-            // inputProps={{ style: { resize: "horizontal" } }}
-          >
+    <Autocomplete
+      clearOnBlur={false}
+      fullWidth
+      multiple
+      filterSelectedOptions={true}
+      filterOptions={filterTopics}
+      slots={{
+        popper: CustomPopper,
+      }}
+      limitTags={2}
+      id="multiple-limit-tags"
+      sx={{ flex: 1 }}
+      openOnFocus
+      inputValue={inputValue}
+      value={[...selectedTags.values()]}
+      isOptionEqualToValue={(t1, t2) => t1.id === t2.id && t1.type === t2.type}
+      groupBy={tag => tag.type}
+      options={topics}
+      getOptionLabel={tag => tag.label}
+      onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
+      onChange={(_, newValue) => { onSearch(newValue, '') }}
+      onKeyDown={keyDown}
+      renderInput={params => (
+        
+        <TextField
+          {...params}
+          placeholder={props.label}
+          variant="outlined"
+          sx={{
+            'paddingBlock': 1,
+            '& .MuiInput-underline:before, & .MuiInput-underline:after': {
+              display: 'none',
+            },
+            '& .MuiInputBase-root': {
+              paddingRight: '0 !important'
+            },
+            overflow: 'hidden',
+            whiteSpace: 'nowrap'
+          }}
+          size='small'
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              endAdornment: (
+              <InputAdornment position='end'>
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </IconButton>
+              </InputAdornment>       
+              )
+            }
+          }}
+        >
 
-          </TextField>
-        )}
-      />
-
-      {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
-        <FontAwesomeIcon icon={faSearch} />
-      </IconButton> */}
-    </Paper>
+        </TextField>
+      )}
+    />
   )
 }
 
