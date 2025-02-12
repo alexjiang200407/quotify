@@ -60,12 +60,8 @@ export const searchQuotes = (tagIDs?: string[] | null, authorID?: string | null,
 }
 
 export const searchQuotesUrl = (url: string, token?: string | null) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: Dispatch) => {
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const state = getState()
-
-    if (state.search.lastSearchApiRoute === url)
-      return
 
     return axios.get(url, auth)
       .then(res => res.data as SearchResult)

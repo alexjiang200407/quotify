@@ -1,8 +1,9 @@
 import type { Dispatch } from '@reduxjs/toolkit'
-import type { User } from '../types/httpResponseTypes'
+import type { Quote, SearchResult, User } from '../types/httpResponseTypes'
 import type { AppDispatch, RootState } from './store'
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { useAppDispatch, useAppSelector } from './hooks'
 
 interface InitialState {
   user: User | null
@@ -59,8 +60,9 @@ export const getUser = () => {
       return
 
     const auth = { headers: { Authorization: `Bearer ${token}` } }
-    const response = await axios.get('/api/user', auth)
-    dispatch(setUser(response.data))
+    return axios.get('/api/user', auth)
+      .then(res => dispatch(setUser(res.data)))
+      .catch(e => dispatch(logout()))
   }
 }
 
@@ -83,3 +85,7 @@ export const logoutUser = (token: string) => {
       .then(() => dispatch(logout()))
   }
 }
+
+export const makeAuthHeader = (token: string) => {
+  return { headers: { Authorization: `Bearer ${token}` } }
+} 

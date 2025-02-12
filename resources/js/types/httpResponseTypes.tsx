@@ -52,9 +52,9 @@ export interface PageLink {
   active: boolean
 }
 
-export interface SearchResult {
+export interface PaginationQueryResult<T> {
   current_page: number
-  data: Quote[]
+  data: T[]
   first_page_url: string
   from: number
   last_page: number
@@ -67,6 +67,8 @@ export interface SearchResult {
   to: number
   total: number
 }
+
+export type SearchResult = PaginationQueryResult<Quote>
 
 export interface HTTPErrorResponse {
   error: string
