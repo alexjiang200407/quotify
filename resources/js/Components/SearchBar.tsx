@@ -2,7 +2,7 @@ import type { FilterOptionsState } from '@mui/material'
 import type { Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Autocomplete, Divider, IconButton, Paper, Popper, styled, TextField } from '@mui/material'
+import { Autocomplete, Chip, Divider, IconButton, InputAdornment, Paper, Popper, styled, TextField } from '@mui/material'
 import React, { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../Datastore/hooks'
@@ -162,7 +162,7 @@ export const SearchBar = (props: SearchBarProps) => {
   return (
     <Paper
       component="form"
-      sx={{ display: 'inline-flex', alignItems: 'center', borderRadius: 10, flex: 1 }}
+      sx={{ display: 'inline-flex', alignItems: 'center', borderRadius: 10, flex: 1, paddingInline: 2 }}
     >
       <Autocomplete
         clearOnBlur={false}
@@ -170,10 +170,12 @@ export const SearchBar = (props: SearchBarProps) => {
         multiple
         filterSelectedOptions={true}
         filterOptions={filterTopics}
-        slots={{ popper: CustomPopper }}
+        slots={{
+          popper: CustomPopper,
+        }}
         limitTags={2}
         id="multiple-limit-tags"
-        sx={{ flex: 1, paddingInline: 2 }}
+        sx={{ flex: 1 }}
         openOnFocus
         inputValue={inputValue}
         value={[...selectedTags.values()]}
@@ -185,6 +187,7 @@ export const SearchBar = (props: SearchBarProps) => {
         onChange={(_, newValue) => { onSearch(newValue, '') }}
         onKeyDown={keyDown}
         renderInput={params => (
+          
           <TextField
             {...params}
             placeholder={props.label}
@@ -194,15 +197,37 @@ export const SearchBar = (props: SearchBarProps) => {
               '& .MuiInput-underline:before, & .MuiInput-underline:after': {
                 display: 'none',
               },
+              '& .MuiInputBase-root': {
+                paddingRight: '0 !important'
+              },
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
             }}
-          />
+            size='small'
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                endAdornment: (
+                <InputAdornment position='end'>
+                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                  <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </IconButton>
+                </InputAdornment>       
+                )
+              }
+            }}
+            // inputProps={{ style: { resize: "horizontal" } }}
+          >
+
+          </TextField>
         )}
       />
 
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      {/* <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
         <FontAwesomeIcon icon={faSearch} />
-      </IconButton>
+      </IconButton> */}
     </Paper>
   )
 }
