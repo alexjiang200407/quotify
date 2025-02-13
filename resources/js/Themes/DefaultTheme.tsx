@@ -1,5 +1,6 @@
 import type { Theme } from '@mui/material'
 import { createTheme, responsiveFontSizes } from '@mui/material'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 
 const defaultColorTheme = createTheme({
   palette: {
@@ -20,6 +21,7 @@ export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme
         fontFamily: [
           `body-font`,
         ].join(', '),
+        lineHeight: isMobileDevice()? 1.5 : 2.5,
       },
     },
     components: {

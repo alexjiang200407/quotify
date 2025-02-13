@@ -124,8 +124,6 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
                     <Typography
                       key={index}
                       variant="body1"
-                      fontSize={20}
-                      sx={{ lineHeight: 2.5 }}
                     >
                       {line}
                     </Typography>
@@ -183,7 +181,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
                 startingActive={quote.user_upvoted}
                 size={30}
               />
-              <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.upvotes}</Typography>
+              <Typography variant="caption" sx={{ userSelect: 'none' }}>{quote.upvotes}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
               <IconButton
@@ -197,7 +195,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
                 startingActive={quote.user_saved}
                 size={30}
               />
-              <Typography variant="caption" fontSize={15} sx={{ userSelect: 'none' }}>{quote.saves}</Typography>
+              <Typography variant="caption" sx={{ userSelect: 'none' }}>{quote.saves}</Typography>
             </Box>
             <IconButton
               tooltip={quote.author.wiki_page !== '' ? 'Open Wikipedia Page' : 'No Wikipedia Page'}
