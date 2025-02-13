@@ -33,7 +33,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   const { goToPage } = useSearchBar()
 
   const getFont = (type: string) => {
-    return import(/* @vite-ignore */`../../vara/signatures/${type}`)
+    return fetch(`/signatures/${type}.json`).then(res => res.json())
   }
 
   const authorSearch = () => {
@@ -164,7 +164,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
               flexDirection: 'row',
               gap: 1,
               borderRadius: 2,
-              opacity: 0,
+              opacity: isMobileDevice() ? 1 : 0,
               color: 'white',
               transition: 'opacity 0.2s ease-in',
             }}

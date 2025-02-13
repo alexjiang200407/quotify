@@ -3,18 +3,23 @@ import laravel from 'laravel-vite-plugin'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/resources',
+  base: '/build',
   plugins: [
     react(),
     laravel({
       input: [
         'resources/css/app.css',
         'resources/js/app.tsx',
+        'resources/js/Pages/Explore.tsx',
+        'resources/js/Pages/Home.tsx',
+        'resources/js/Pages/Login.tsx',
+        'resources/js/Pages/Profile.tsx',
       ],
       refresh: [
         'resources/**',
         'routes/**',
         'resources/views/**',
+        'resources/vara/**'
       ],
     }),
   ],
