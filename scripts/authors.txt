@@ -830,3 +830,4 @@ Nostalghia|https://en.wikipedia.org/wiki/Nostalghia|1983 Movie by Andrei Tarkovs
 John Ruskin|https://en.wikipedia.org/wiki/John_Ruskin|English writer and art critic (1819–1900)
 Herbert Spencer|https://en.wikipedia.org/wiki/Herbert_Spencer|English philosopher and political theorist (1820–1903)
 Henry George|https://en.wikipedia.org/wiki/Henry_George|American political economist and journalist (1839–1897)
+St. Augustine|https://en.wikipedia.org/wiki/St._Augustine|Christian theologian and philosopher (354–430)
