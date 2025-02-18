@@ -19,21 +19,20 @@ interface WikipediaResponse {
 
 interface WikiPortraitProps {
   personName: string
-  width?: number|string
-  height?: number|string
+  width?: number | string
+  height?: number | string
 }
 
 export const WikiPortrait = ({ personName, width = 200, height = 200 }: WikiPortraitProps) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  
-  
+
   const remToPx = (rem: string) => {
-    return parseFloat(rem) * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return Number.parseFloat(rem) * Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
   }
 
   useEffect(() => {
-    const widthPx = typeof width == 'string'? remToPx(width) : width + 'px';
+    const widthPx = typeof width == 'string' ? remToPx(width) : `${width}px`
     const fetchImage = async () => {
       try {
         const response = await fetch(

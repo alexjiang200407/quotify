@@ -1,3 +1,4 @@
+import type { SetStateAction } from 'react'
 import type { LinkProps } from './Link'
 import { Stack, Tooltip } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -5,11 +6,11 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import React, { createContext, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 import Link from './Link'
 import SearchBar from './SearchBar'
-import { isMobileDevice } from '../ResponsiveUIProvider'
 
 export interface HeaderProps {
   pages: LinkProps[]
@@ -39,9 +40,9 @@ export const Logo = () => {
 }
 
 interface HeaderContextType {
-  headerRef: React.RefObject<HTMLElement | null> | undefined,
-  headerHeight: undefined|number,
-  setHeaderHeight: (x: SetStateAction<undefined|number>) => void,
+  headerRef: React.RefObject<HTMLElement | null> | undefined
+  headerHeight: undefined | number
+  setHeaderHeight: (x: SetStateAction<undefined | number>) => void
   updateHeaderHeight: () => void
 }
 
@@ -57,23 +58,22 @@ interface HeaderProviderProps {
 }
 
 export const HeaderProvider = ({ children }: HeaderProviderProps) => {
-  const [headerHeight, setHeaderHeight] = useState<number|undefined>()
+  const [headerHeight, setHeaderHeight] = useState<number | undefined>()
   const headerRef = useRef<HTMLElement>(null)
 
   const updateHeaderHeight = () => {
     if (headerRef.current?.clientHeight) {
       setHeaderHeight(headerRef.current?.clientHeight + 20)
-    }    
+    }
   }
 
   useEffect(() => {
     // Set header size with a slight delay because the header is still loading its contents
-    window.addEventListener("resize", () => setTimeout(updateHeaderHeight, 500))
+    window.addEventListener('resize', () => setTimeout(updateHeaderHeight, 500))
 
     return () => {
       window.removeEventListener('scroll', updateHeaderHeight)
     }
-
   }, [])
 
   return (
@@ -86,7 +86,7 @@ export const HeaderProvider = ({ children }: HeaderProviderProps) => {
 export const useHeader = () => useContext(HeaderContext)
 
 export const Header = (props: HeaderProps) => {
-  const [ scrollPosition, setScrollPosition ] = useState(window.screenY)
+  const [scrollPosition, setScrollPosition] = useState(window.screenY)
   const { headerRef, updateHeaderHeight } = useHeader()
   const isMobile = isMobileDevice()
 
@@ -97,7 +97,7 @@ export const Header = (props: HeaderProps) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     updateHeaderHeight()
 
     return () => {
@@ -120,19 +120,19 @@ export const Header = (props: HeaderProps) => {
       <Container>
         <Stack
           sx={{
-            padding: isMobile? 0 : 4,
-            paddingTop: isMobile? 2 : 4,
-            minWidth: isMobile? '100%' : 0,
+            padding: isMobile ? 0 : 4,
+            paddingTop: isMobile ? 2 : 4,
+            minWidth: isMobile ? '100%' : 0,
           }}
           direction="row"
           justifyContent="space-between"
           alignItems="center"
           spacing={10}
-          
+
         >
           {
-            !isMobile &&
-            <Logo />
+            !isMobile
+            && <Logo />
           }
           <SearchBar
             label="Search Quotes or Authors"

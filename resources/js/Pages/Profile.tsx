@@ -62,8 +62,9 @@ const Profile = () => {
 
   return (
     <Box sx={{
-      paddingBottom: 2
-    }}>
+      paddingBottom: 2,
+    }}
+    >
       <Card
         sx={{
           p: 3,

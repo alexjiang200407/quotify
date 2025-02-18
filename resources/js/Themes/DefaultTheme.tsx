@@ -23,7 +23,7 @@ export const createDefaultTheme = (): Theme => {
         fontFamily: [
           `body-font`,
         ].join(', '),
-        lineHeight: isMobileDevice()? 1.5 : 2.5,
+        lineHeight: isMobileDevice() ? 1.5 : 2.5,
       },
     },
     components: {

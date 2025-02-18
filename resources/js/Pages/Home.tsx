@@ -3,9 +3,9 @@ import { Box } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import { useHeader } from '../Components/Header'
 import { useNotification } from '../Components/NotificationProvider'
 import { useAppSelector } from '../Datastore/hooks'
-import { useHeader } from '../Components/Header'
 import { isMobileDevice } from '../ResponsiveUIProvider'
 
 export const Home = () => {
@@ -33,9 +33,9 @@ export const Home = () => {
         paddingTop: isMobileDevice() ? `${headerHeight}px` : 0,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: isMobileDevice()? 'normal' : 'center',
+        justifyContent: isMobileDevice() ? 'normal' : 'center',
         alignItems: 'center',
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
     >
       {/* Add a container with 800px width */}

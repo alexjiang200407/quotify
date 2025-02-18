@@ -1,4 +1,3 @@
-import type { VaraType } from '../../vara/Vara'
 import type { Quote } from '../types/httpResponseTypes'
 import { faWikipediaW, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 
@@ -11,12 +10,12 @@ import { Box, Card, CardContent, Link, Tooltip, Typography } from '@mui/material
 import React, { useEffect, useRef } from 'react'
 import Vara from '../../vara/Vara'
 import { useQuoteActions } from '../Actions/QuoteActions'
+import { isMobileDevice } from '../ResponsiveUIProvider'
 import { IconButton } from './IconButton'
 import { useNotification } from './NotificationProvider'
 import { useSearchBar } from './SearchBar'
 import TagComponent from './Tag'
 import WikiPortrait from './WikiPortrait'
-import { isMobileDevice } from '../ResponsiveUIProvider'
 
 interface ExpandedQuoteCardProps {
   quote: Quote
@@ -59,7 +58,6 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   }
 
   useEffect(() => {
-    
     const drawSignature = () => getFont(quote.author.signature.type)
       .then((font) => {
         if (varaRef.current)
@@ -82,23 +80,23 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         ], {
           textAlign: 'center',
         }).getSVG()
-        if (signature) {         
+        if (signature) {
           varaRef.current = signature
         }
-    })
-    
+      })
+
     if (!varaRef.current)
       drawSignature()
 
-    window.addEventListener("resize", drawSignature);
-    
-    return () => window.removeEventListener("resize", drawSignature);
+    window.addEventListener('resize', drawSignature)
+
+    return () => window.removeEventListener('resize', drawSignature)
   }, [])
 
   return (
     <Box>
       <Box sx={{
-        width: isMobileDevice() ? '95vw' : '45vw',
+        'width': isMobileDevice() ? '95vw' : '45vw',
         'paddingInline': 2,
         'paddingBlock': 4,
         'boxShadow': 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;',
@@ -116,7 +114,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
       }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxHeight: '80vh' }}>
-          <WikiPortrait personName={quote.author.full_name} width='6rem' height='6rem' />
+          <WikiPortrait personName={quote.author.full_name} width="6rem" height="6rem" />
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
             {/* Content Box */}
             <Box
@@ -126,11 +124,11 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
                 textAlign: 'center',
                 padding: 2,
                 paddingTop: 0,
-                width: '100%'
+                width: '100%',
               }}
             >
               <Card sx={{ boxShadow: 'none', backgroundColor: 'background.default' }}>
-                <CardContent sx={{maxHeight: '30vh', overflow: 'auto'}}>
+                <CardContent sx={{ maxHeight: '30vh', overflow: 'auto' }}>
                   {quote.quote.split('\n').map((line, index) => (
                     <Typography
                       key={index}
@@ -165,7 +163,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
         </Box>
         <Box sx={{
           display: 'flex',
-          justifyContent: isMobileDevice() ? 'center' :  'right',
+          justifyContent: isMobileDevice() ? 'center' : 'right',
         }}
         >
           <Box

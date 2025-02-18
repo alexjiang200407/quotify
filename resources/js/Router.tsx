@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import type { Theme } from '@emotion/react'
 
+import React, { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { useNotification } from './Components/NotificationProvider'
 import { logoutUser } from './Datastore/authSlice'
@@ -11,25 +12,23 @@ import Home from './Pages/Home'
 import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import { createDefaultTheme } from './Themes/DefaultTheme'
-import { Theme } from '@emotion/react'
 
 export const App = () => {
   const token = useAppSelector(state => state.auth.token)
   const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()
   const { handleHttpError, addNotification } = useNotification()
-  const [ theme, setTheme ] = useState<Partial<Theme>>(createDefaultTheme())
+  const [theme, setTheme] = useState<Partial<Theme>>(createDefaultTheme())
 
   useEffect(() => {
     const handleResize = () => {
       setTheme(createDefaultTheme())
-    };
+    }
 
-    window.addEventListener("resize", handleResize);
-    
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
 
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const tryLogOut = () => {
     if (token) {

@@ -17,11 +17,11 @@ import {
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useHeader } from '../Components/Header'
 import { useNotification } from '../Components/NotificationProvider'
 import { loginUser } from '../Datastore/authSlice'
 import { useAppDispatch } from '../Datastore/hooks'
 import { isMobileDevice } from '../ResponsiveUIProvider'
-import { useHeader } from '../Components/Header'
 
 export const AuthPage = () => {
   const [activeTab, setActiveTab] = useState<number>(0)

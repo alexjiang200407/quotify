@@ -63,21 +63,23 @@ export const PaginationSystem: React.FC<PaginationSystemProps> = ({
         )}
       />
       {
-        !isMobileDevice() &&
-        <TextField
-          label="Go to page"
-          value={pageInput}
-          onChange={e => setPageInput(e.target.value.replace(/\D/, ''))}
-          onKeyPress={handleKeyPress}
-          type="number"
-          size="small"
-          sx={{ width: 120 }}
-          inputProps={{
-            min: 1,
-            max: totalPages,
-            style: { textAlign: 'center' },
-          }}
-        />
+        !isMobileDevice()
+        && (
+          <TextField
+            label="Go to page"
+            value={pageInput}
+            onChange={e => setPageInput(e.target.value.replace(/\D/, ''))}
+            onKeyPress={handleKeyPress}
+            type="number"
+            size="small"
+            sx={{ width: 120 }}
+            inputProps={{
+              min: 1,
+              max: totalPages,
+              style: { textAlign: 'center' },
+            }}
+          />
+        )
       }
 
     </Box>

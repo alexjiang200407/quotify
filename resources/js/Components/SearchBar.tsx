@@ -2,7 +2,7 @@ import type { FilterOptionsState } from '@mui/material'
 import type { Topic } from '../types/httpResponseTypes'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Autocomplete, Chip, Divider, IconButton, InputAdornment, Paper, Popper, styled, TextField } from '@mui/material'
+import { Autocomplete, Divider, IconButton, InputAdornment, Popper, styled, TextField } from '@mui/material'
 import React, { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../Datastore/hooks'
@@ -183,7 +183,7 @@ export const SearchBar = (props: SearchBarProps) => {
       onChange={(_, newValue) => { onSearch(newValue, '') }}
       onKeyDown={keyDown}
       renderInput={params => (
-        
+
         <TextField
           {...params}
           placeholder={props.label}
@@ -194,24 +194,24 @@ export const SearchBar = (props: SearchBarProps) => {
               display: 'none',
             },
             '& .MuiInputBase-root': {
-              paddingRight: '0 !important'
+              paddingRight: '0 !important',
             },
-            overflow: 'hidden',
-            whiteSpace: 'nowrap'
+            'overflow': 'hidden',
+            'whiteSpace': 'nowrap',
           }}
-          size='small'
+          size="small"
           slotProps={{
             input: {
               ...params.InputProps,
               endAdornment: (
-              <InputAdornment position='end'>
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
-                  <FontAwesomeIcon icon={faSearch} />
-                </IconButton>
-              </InputAdornment>       
-              )
-            }
+                <InputAdornment position="end">
+                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                  <IconButton sx={{ mr: 1 }} onClick={() => onSearch([...selectedTags.values()], inputValue ?? '')}>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         >
 
