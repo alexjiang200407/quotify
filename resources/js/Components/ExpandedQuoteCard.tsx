@@ -129,7 +129,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
               }}
             >
               <Card sx={{ boxShadow: 'none', backgroundColor: 'background.default' }}>
-                <CardContent sx={{ maxHeight: '30vh', overflow: 'auto' }}>
+                <CardContent sx={{ maxHeight: '20vh', overflow: 'auto' }}>
                   {quote.quote.split('\n').map((line, index) => (
                     <Typography
                       key={index}

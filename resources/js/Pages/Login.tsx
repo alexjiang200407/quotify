@@ -83,7 +83,7 @@ export const AuthPage = () => {
     <Box
       sx={{
         p: 2,
-        paddingTop: isMobileDevice() ? `${(headerHeight ?? 0) + 20}px` : 0,
+        paddingTop: `${(headerHeight ?? 0) + 20}px`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

@@ -85,7 +85,7 @@ const Profile = () => {
       </Card>
       <Divider sx={{ margin: 2 }} />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '75%', animation: 'fadeIn 0.4s ease-in' }}>
           {saved?.data.map((quote, index) => (
             <CompactCard
               key={index}
