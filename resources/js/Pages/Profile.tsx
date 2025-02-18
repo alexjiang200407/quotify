@@ -12,7 +12,7 @@ import { useAppSelector } from '../Datastore/hooks'
 
 const Profile = () => {
   const user = useAppSelector(state => state.auth.user)
-  const { headerRef } = useHeader()
+  const { headerHeight } = useHeader()
 
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState<null | number>(null)
   const token = useAppSelector(state => state.auth.token)
@@ -54,7 +54,7 @@ const Profile = () => {
 
   if (!saved || !user) {
     return (
-      <Box sx={{ paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px`, textAlign: 'center' }}>
+      <Box sx={{ paddingTop: `${headerHeight}px`, textAlign: 'center' }}>
         <Typography>Please Login</Typography>
       </Box>
     )
@@ -69,7 +69,7 @@ const Profile = () => {
           p: 3,
           textAlign: 'center',
           boxShadow: 3,
-          paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px`,
+          paddingTop: `${headerHeight}px`,
           bgcolor: 'background.default',
           animation: 'fadeIn 0.3s ease-in',
         }}

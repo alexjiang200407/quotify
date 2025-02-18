@@ -12,7 +12,7 @@ export const Home = () => {
   const { handleHttpError } = useNotification()
   const [quote, setQuote] = useState<Quote | null>(null)
   const token = useAppSelector(state => state.auth.token)
-  const { headerRef } = useHeader()
+  const { headerHeight } = useHeader()
   useState(() => {
     let req
     if (token) {
@@ -30,7 +30,7 @@ export const Home = () => {
   return (
     <Box
       sx={{
-        paddingTop: isMobileDevice() ? `${(headerRef?.current?.clientHeight ?? 0) + 20}px` : 0,
+        paddingTop: isMobileDevice() ? `${headerHeight}px` : 0,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: isMobileDevice()? 'normal' : 'center',

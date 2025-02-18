@@ -5,7 +5,7 @@ import type { HeaderProps } from '../Components/Header'
 import { ThemeProvider } from '@emotion/react'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header, { HeaderProvider } from '../Components/Header'
+import Header, { HeaderProvider, useHeader } from '../Components/Header'
 import { SearchBarProvider } from '../Components/SearchBar'
 
 export interface MasterProps {

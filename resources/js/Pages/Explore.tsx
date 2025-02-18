@@ -31,7 +31,7 @@ export const Explore = () => {
   const { addTopic, selectedQuoteIndex, setSelectedQuoteIndex, setInputValue, inputValue } = useSearchBar()
   const token = useAppSelector(state => state.auth.token)
   const dispatch = useAppDispatch()
-  const { headerRef } = useHeader()
+  const { headerHeight } = useHeader()
   const [onExplorePage] = useState(true)
   const isMobile = isMobileDevice()
 
@@ -90,7 +90,7 @@ export const Explore = () => {
 
   if (!search?.data.length) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 2, paddingTop: `${headerHeight}px` }}>
         <Typography>Please Enter a Search Query</Typography>
       </Box>
     )
@@ -98,7 +98,7 @@ export const Explore = () => {
 
   return (
     <ExploreContext.Provider value={{ onExplorePage, updateQuote }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${(headerRef?.current?.clientHeight ?? 0) + 20}px` }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, paddingTop: `${headerHeight}px` }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: isMobile? '90%': '75%', animation: 'bounce 0.4s ease-in, fadeIn 0.3s ease-in' }}>
           {search?.data.map((quote, index) => (
             <CompactCard

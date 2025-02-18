@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import Link from './Link'
 import SearchBar from './SearchBar'
@@ -16,8 +16,6 @@ export interface HeaderProps {
 };
 
 export const Logo = () => {
-  const isMobile = isMobileDevice()
-
   return (
     <RouterLink to="/spa/">
       <Tooltip title="Go Home" placement="right" arrow>
@@ -30,7 +28,7 @@ export const Logo = () => {
             '&:hover': {
               color: 'lightgrey',
             },
-            'transition': 'all 0.2s ease-in',
+            'transition': 'color 0.2s ease-in,color 0.2s ease-in',
           }}
         >
           Quotify
@@ -41,11 +39,17 @@ export const Logo = () => {
 }
 
 interface HeaderContextType {
-  headerRef: React.RefObject<HTMLElement | null> | undefined
+  headerRef: React.RefObject<HTMLElement | null> | undefined,
+  headerHeight: undefined|number,
+  setHeaderHeight: (x: SetStateAction<undefined|number>) => void,
+  updateHeaderHeight: () => void
 }
 
 const HeaderContext = createContext<HeaderContextType>({
   headerRef: undefined,
+  headerHeight: undefined,
+  setHeaderHeight: () => console.warn('Not in correct context'),
+  updateHeaderHeight: () => console.warn('Not in correct context'),
 })
 
 interface HeaderProviderProps {
@@ -53,10 +57,26 @@ interface HeaderProviderProps {
 }
 
 export const HeaderProvider = ({ children }: HeaderProviderProps) => {
-  const headerRef = useRef(null)
+  const [headerHeight, setHeaderHeight] = useState<number|undefined>()
+  const headerRef = useRef<HTMLElement>(null)
+
+  const updateHeaderHeight = () => {
+    if (headerRef.current?.clientHeight) {
+      setHeaderHeight(headerRef.current?.clientHeight + 20)
+    }    
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", () => setTimeout(updateHeaderHeight, 500))
+
+    return () => {
+      window.removeEventListener('scroll', updateHeaderHeight)
+    }
+
+  }, [])
 
   return (
-    <HeaderContext.Provider value={{ headerRef }}>
+    <HeaderContext.Provider value={{ headerHeight, setHeaderHeight, headerRef, updateHeaderHeight }}>
       {children}
     </HeaderContext.Provider>
   )
@@ -65,8 +85,8 @@ export const HeaderProvider = ({ children }: HeaderProviderProps) => {
 export const useHeader = () => useContext(HeaderContext)
 
 export const Header = (props: HeaderProps) => {
-  const [scrollPosition, setScrollPosition] = useState(window.screenY)
-  const { headerRef } = useHeader()
+  const [ scrollPosition, setScrollPosition ] = useState(window.screenY)
+  const { headerRef, updateHeaderHeight } = useHeader()
   const isMobile = isMobileDevice()
 
   const handleScroll = () => {
@@ -76,6 +96,8 @@ export const Header = (props: HeaderProps) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    updateHeaderHeight()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)

@@ -22,7 +22,6 @@ export const App = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      console.log('asdas')
       setTheme(createDefaultTheme())
     };
 
