@@ -1,1 +1,3 @@
-export const isMobileDevice = () => window.innerWidth < 1000
+export const getDisplayWidth = () => window.innerWidth
+export const getDisplayHeight = () => window.innerHeight
+export const isMobileDevice = () => getDisplayWidth() < 1000

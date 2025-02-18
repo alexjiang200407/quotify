@@ -1,6 +1,6 @@
 import type { Theme } from '@mui/material'
 import { createTheme, responsiveFontSizes } from '@mui/material'
-import { isMobileDevice } from '../ResponsiveUIProvider'
+import { getDisplayWidth, isMobileDevice } from '../ResponsiveUIProvider'
 
 const defaultColorTheme = () => createTheme({
   palette: {
@@ -12,7 +12,7 @@ const defaultColorTheme = () => createTheme({
       paper: '#F1EFE2',
     },
   },
-  spacing: Math.max(4, Math.floor(window.innerWidth / 1920 * 8)),
+  spacing: Math.max(4, Math.floor(getDisplayWidth() / 1920 * 8)),
 
 })
 
