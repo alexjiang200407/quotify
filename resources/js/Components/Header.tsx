@@ -67,6 +67,7 @@ export const HeaderProvider = ({ children }: HeaderProviderProps) => {
   }
 
   useEffect(() => {
+    // Set header size with a slight delay because the header is still loading its contents
     window.addEventListener("resize", () => setTimeout(updateHeaderHeight, 500))
 
     return () => {
