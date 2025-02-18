@@ -134,7 +134,7 @@ export const SearchBar = (props: SearchBarProps) => {
     let tagsChosen = 0
 
     return topics.filter((topic) => {
-      if (!topic.label.includes(state.inputValue))
+      if (!topic.label.toLowerCase().includes(state.inputValue.toLowerCase()))
         return false
 
       if (topic.type === 'tag') {
