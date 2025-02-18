@@ -128,6 +128,8 @@ declare class VaraType {
      */
     playAll(): void;
 
+    getSVG(): SVGElement;
+
     createNode(noneName: string, properties: { [k: string]: string }): SVGElement;
 
     getSVGData(): void;

@@ -3,16 +3,16 @@ import { Box } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { ExpandedQuoteCard } from '../Components/ExpandedQuoteCard'
+import { useHeader } from '../Components/Header'
 import { useNotification } from '../Components/NotificationProvider'
 import { useAppSelector } from '../Datastore/hooks'
-import { useHeader } from '../Components/Header'
 import { isMobileDevice } from '../ResponsiveUIProvider'
 
 export const Home = () => {
   const { handleHttpError } = useNotification()
   const [quote, setQuote] = useState<Quote | null>(null)
   const token = useAppSelector(state => state.auth.token)
-  const { headerRef } = useHeader()
+  const { headerHeight } = useHeader()
   useState(() => {
     let req
     if (token) {
@@ -30,12 +30,12 @@ export const Home = () => {
   return (
     <Box
       sx={{
-        paddingTop: isMobileDevice() ? `${(headerRef?.current?.clientHeight ?? 0) + 20}px` : 0,
+        paddingTop: isMobileDevice() ? `${headerHeight}px` : 0,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: isMobileDevice() ? 'normal' : 'center',
         alignItems: 'center',
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
     >
       {/* Add a container with 800px width */}

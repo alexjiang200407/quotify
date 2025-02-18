@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import type { Theme } from '@emotion/react'
 
+import React, { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { useNotification } from './Components/NotificationProvider'
 import { logoutUser } from './Datastore/authSlice'
@@ -17,6 +18,17 @@ export const App = () => {
   const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()
   const { handleHttpError, addNotification } = useNotification()
+  const [theme, setTheme] = useState<Partial<Theme>>(createDefaultTheme())
+
+  useEffect(() => {
+    const handleResize = () => {
+      setTheme(createDefaultTheme())
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const tryLogOut = () => {
     if (token) {
@@ -80,7 +92,7 @@ export const App = () => {
     <Routes>
       <Route
         path="/spa/"
-        element={<Master headerProps={header} theme={createDefaultTheme()} />}
+        element={<Master headerProps={header} theme={theme} />}
       >
         <Route index element={<Home />} />
         <Route path="/spa/login" element={<Login />} />

@@ -19,7 +19,7 @@ export default defineConfig({
         'resources/**',
         'routes/**',
         'resources/views/**',
-        'resources/vara/**'
+        'resources/vara/**',
       ],
     }),
   ],

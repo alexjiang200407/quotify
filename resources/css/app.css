@@ -38,6 +38,15 @@
     }
 }
 
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
 .icon-inactive {
   transition: color 0.3s ease; 
 }
@@ -74,6 +83,12 @@
 }
 
 @media (min-width: 0px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1280px) {
   html {
     font-size: 14px;
   }

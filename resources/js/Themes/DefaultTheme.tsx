@@ -2,7 +2,7 @@ import type { Theme } from '@mui/material'
 import { createTheme, responsiveFontSizes } from '@mui/material'
 import { isMobileDevice } from '../ResponsiveUIProvider'
 
-const defaultColorTheme = createTheme({
+const defaultColorTheme = () => createTheme({
   palette: {
     primary: {
       main: '#f04720',
@@ -12,16 +12,18 @@ const defaultColorTheme = createTheme({
       paper: '#F1EFE2',
     },
   },
+  spacing: Math.max(4, Math.floor(window.innerWidth / 1920 * 8)),
+
 })
 
-export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme => {
-  const theme = createTheme(colorTheme, {
+export const createDefaultTheme = (): Theme => {
+  const theme = createTheme(defaultColorTheme(), {
     typography: {
       body1: {
         fontFamily: [
           `body-font`,
         ].join(', '),
-        lineHeight: isMobileDevice()? 1.5 : 2.5,
+        lineHeight: isMobileDevice() ? 1.5 : 2.5,
       },
     },
     components: {
@@ -39,7 +41,7 @@ export const createDefaultTheme = (colorTheme: Theme = defaultColorTheme): Theme
             'transition': 'color 0.3s ease',
             'textDecoration': 'none',
             '&:hover': {
-              color: defaultColorTheme.palette.primary.main,
+              color: defaultColorTheme().palette.primary.main,
               textDecoration: 'none',
             },
           },
