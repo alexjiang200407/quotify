@@ -79,6 +79,12 @@
   }
 }
 
+@media (min-width: 1280px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 @media (min-width: 1920px) {
   html {
     font-size: 16px;

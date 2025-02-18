@@ -28,7 +28,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   updateQuote,
 }) => {
   const { onLike, onSave, canLikeSave } = useQuoteActions(quote, updateQuote)
-  const varaRef = useRef<VaraType | boolean>(false)
+  const varaRef = useRef<SVGElement | null>(null)
   const { addNotification } = useNotification()
   const { goToPage } = useSearchBar()
 
@@ -59,20 +59,20 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   }
 
   useEffect(() => {
-    if (varaRef.current !== false)
-      return
-
-    varaRef.current = true
-
-    getFont(quote.author.signature.type)
+    
+    const drawSignature = () => getFont(quote.author.signature.type)
       .then((font) => {
-        varaRef.current = new Vara('#vara-container', font, [
+        if (varaRef.current)
+          varaRef.current.remove()
+
+        const signature = new Vara('#vara-container', font, [
           {
+            id: 'vara-signature-svg',
             text: quote.author.full_name, // String, text to be shown
             color: quote.author.signature.color,
             duration: quote.author.signature.duration * quote.author.full_name.length,
             strokeWidth: quote.author.signature.stroke_width,
-            fontSize: quote.author.signature.font_size,
+            fontSize: quote.author.signature.font_size * window.innerHeight / 1080,
             letterSpacing: quote.author.signature.letter_spacing,
             autoAnimation: true, // Boolean, Whether to animate the text automatically
             queued: true, // Boolean, Whether the animation should be in a queue
@@ -81,9 +81,19 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
           },
         ], {
           textAlign: 'center',
-        })
-      })
-  })
+        }).getSVG()
+        if (signature) {         
+          varaRef.current = signature
+        }
+    })
+    
+    if (!varaRef.current)
+      drawSignature()
+
+    window.addEventListener("resize", drawSignature);
+    
+    return () => window.removeEventListener("resize", drawSignature);
+  }, [])
 
   return (
     <Box>
@@ -106,7 +116,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
       }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxHeight: '80vh' }}>
-          <WikiPortrait personName={quote.author.full_name} width={100} height={100} />
+          <WikiPortrait personName={quote.author.full_name} width='6rem' height='6rem' />
           <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', margin: 'auto', justifyContent: 'center', alignItems: 'center' }}>
             {/* Content Box */}
             <Box
@@ -115,7 +125,8 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
                 flexDirection: 'column',
                 textAlign: 'center',
                 padding: 2,
-                paddingTop: 0
+                paddingTop: 0,
+                width: '100%'
               }}
             >
               <Card sx={{ boxShadow: 'none', backgroundColor: 'background.default' }}>

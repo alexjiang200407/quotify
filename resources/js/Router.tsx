@@ -11,12 +11,26 @@ import Home from './Pages/Home'
 import Login from './Pages/Login'
 import Profile from './Pages/Profile'
 import { createDefaultTheme } from './Themes/DefaultTheme'
+import { Theme } from '@emotion/react'
 
 export const App = () => {
   const token = useAppSelector(state => state.auth.token)
   const explorePageUrl = useAppSelector(state => state.search.lastSearchUrl)
   const dispatch = useAppDispatch()
   const { handleHttpError, addNotification } = useNotification()
+  const [ theme, setTheme ] = useState<Partial<Theme>>(createDefaultTheme())
+
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('asdas')
+      setTheme(createDefaultTheme())
+    };
+
+    window.addEventListener("resize", handleResize);
+    
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   const tryLogOut = () => {
     if (token) {
@@ -80,7 +94,7 @@ export const App = () => {
     <Routes>
       <Route
         path="/spa/"
-        element={<Master headerProps={header} theme={createDefaultTheme()} />}
+        element={<Master headerProps={header} theme={theme} />}
       >
         <Route index element={<Home />} />
         <Route path="/spa/login" element={<Login />} />

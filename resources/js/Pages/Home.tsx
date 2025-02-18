@@ -33,7 +33,7 @@ export const Home = () => {
         paddingTop: isMobileDevice() ? `${(headerRef?.current?.clientHeight ?? 0) + 20}px` : 0,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: isMobileDevice()? 'normal' : 'center',
         alignItems: 'center',
         minHeight: '100vh'
       }}

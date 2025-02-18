@@ -54,6 +54,10 @@ Vara.prototype.createNode = function (n, v) {
   return n;
 };
 
+Vara.prototype.getSVG = function () {
+  return this.svg;
+}
+
 /**
  * Used to extract data from the JSON data
  */

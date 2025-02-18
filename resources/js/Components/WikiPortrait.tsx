@@ -19,8 +19,8 @@ interface WikipediaResponse {
 
 interface WikiPortraitProps {
   personName: string
-  width?: number
-  height?: number
+  width?: number|string
+  height?: number|string
 }
 
 export const WikiPortrait = ({ personName, width = 200, height = 200 }: WikiPortraitProps) => {
