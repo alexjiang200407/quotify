@@ -5,16 +5,6 @@ import { ExpandedQuoteCard } from "./ExpandedQuoteCard";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Quote } from "../types/httpResponseTypes";
 
-const expandAnimation = keyframes`
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-`
-
-const collapseAnimation = keyframes`
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
-`
-
 interface ExpandedQuoteModalProps {
   quote: Quote
   onClose: () => void
@@ -46,9 +36,7 @@ export const ExpandedQuoteModal = ({ quote, onClose, updateQuote } : ExpandedQuo
         justifyContent: "center",
         alignItems: "center",
         padding: 4,
-        animation: `${
-          isAnimatingOut ? collapseAnimation : expandAnimation
-        } 0.3s ease-out`,
+        animation: `${isAnimatingOut? 'fadeOut' : 'fadeIn'} 0.3s ease-out`,
         pointerEvents: isAnimatingOut ? "none" : "auto",
       }}
     >
