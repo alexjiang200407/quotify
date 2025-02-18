@@ -63,7 +63,7 @@ export const HeaderProvider = ({ children }: HeaderProviderProps) => {
 
   const updateHeaderHeight = () => {
     if (headerRef.current?.clientHeight) {
-      setHeaderHeight(headerRef.current?.clientHeight + 20)
+      setHeaderHeight(headerRef.current?.clientHeight)
     }
   }
 

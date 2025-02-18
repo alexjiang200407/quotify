@@ -30,7 +30,7 @@ export const Home = () => {
   return (
     <Box
       sx={{
-        paddingTop: isMobileDevice() ? `${headerHeight}px` : 0,
+        paddingTop: `${(headerHeight ?? 0) + (isMobileDevice() ? 20 : 0)}px`,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: isMobileDevice() ? 'normal' : 'center',

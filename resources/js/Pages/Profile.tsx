@@ -54,7 +54,7 @@ const Profile = () => {
 
   if (!saved || !user) {
     return (
-      <Box sx={{ paddingTop: `${headerHeight}px`, textAlign: 'center' }}>
+      <Box sx={{ paddingTop: `${(headerHeight ?? 0) + 20}px`, textAlign: 'center' }}>
         <Typography>Please Login</Typography>
       </Box>
     )
@@ -70,7 +70,7 @@ const Profile = () => {
           p: 3,
           textAlign: 'center',
           boxShadow: 3,
-          paddingTop: `${headerHeight}px`,
+          paddingTop: `${(headerHeight ?? 0) + 20}px`,
           bgcolor: 'background.default',
           animation: 'fadeIn 0.3s ease-in',
         }}

@@ -10,7 +10,7 @@ import { Box, Card, CardContent, Link, Tooltip, Typography } from '@mui/material
 import React, { useEffect, useRef } from 'react'
 import Vara from '../../vara/Vara'
 import { useQuoteActions } from '../Actions/QuoteActions'
-import { isMobileDevice } from '../ResponsiveUIProvider'
+import { getDisplayWidth, isMobileDevice } from '../ResponsiveUIProvider'
 import { IconButton } from './IconButton'
 import { useNotification } from './NotificationProvider'
 import { useSearchBar } from './SearchBar'
@@ -70,7 +70,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
             color: quote.author.signature.color,
             duration: quote.author.signature.duration * quote.author.full_name.length,
             strokeWidth: quote.author.signature.stroke_width,
-            fontSize: quote.author.signature.font_size * window.innerHeight / 1080,
+            fontSize: Math.max(quote.author.signature.font_size - 10, quote.author.signature.font_size * getDisplayWidth() / 1920),
             letterSpacing: quote.author.signature.letter_spacing,
             autoAnimation: true, // Boolean, Whether to animate the text automatically
             queued: true, // Boolean, Whether the animation should be in a queue
@@ -96,6 +96,7 @@ export const ExpandedQuoteCard: React.FC<ExpandedQuoteCardProps> = ({
   return (
     <Box>
       <Box sx={{
+        'minWidth': isMobileDevice() ? 0 : 800,
         'width': isMobileDevice() ? '95vw' : '45vw',
         'paddingInline': 2,
         'paddingBlock': 4,
